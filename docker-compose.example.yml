@@ -1,0 +1,36 @@
+version: "3.8"
+services:
+  mongo:
+    image: mongo:7
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: lolabot
+    volumes:
+      - mongo_data:/data/db
+
+  app:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      NEXT_PUBLIC_APP_URL: http://localhost:3000
+      WEBHOOK_OUTGOING_URL: http://localhost:8765/webhook
+      MONGODB_URI: mongodb://mongo:27017
+      MONGODB_DB: lolabot
+      STORAGE_PROVIDER: S3
+      S3_BUCKET: your-bucket
+      S3_REGION: us-east-1
+      AWS_ACCESS_KEY_ID: your-key
+      AWS_SECRET_ACCESS_KEY: your-secret
+      EMBED_ALLOWED_ORIGINS: http://localhost:3000
+    depends_on:
+      - mongo
+
+volumes:
+  mongo_data: {}
+
+
