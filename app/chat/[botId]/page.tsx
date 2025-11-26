@@ -1,12 +1,15 @@
 import ChatWidget from "../../../components/chat/ChatWidget";
 
-export default function ChatPage({ params, searchParams }: { params: { botId: string }; searchParams: Record<string, string | string[]> }) {
-  const apiBase = typeof searchParams.apiBase === "string" ? searchParams.apiBase : "";
-  const userId = typeof searchParams.userId === "string" ? searchParams.userId : undefined;
-  const chatId = typeof searchParams.chatId === "string" ? searchParams.chatId : undefined;
+export default async function ChatPage({ params, searchParams }: { params: Promise<{ botId: string }>; searchParams: Promise<Record<string, string | string[]>> }) {
+  const { botId } = await params;
+  const resolvedSearchParams = await searchParams;
+
+  const apiBase = typeof resolvedSearchParams.apiBase === "string" ? resolvedSearchParams.apiBase : "";
+  const userId = typeof resolvedSearchParams.userId === "string" ? resolvedSearchParams.userId : undefined;
+  const chatId = typeof resolvedSearchParams.chatId === "string" ? resolvedSearchParams.chatId : undefined;
   return (
     <main style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
-      <ChatWidget botId={params.botId} apiBase={apiBase} userId={userId} chatId={chatId} />
+      <ChatWidget botId={botId} apiBase={apiBase} userId={userId} chatId={chatId} />
     </main>
   );
 }

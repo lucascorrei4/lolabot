@@ -27,6 +27,9 @@ export default function ChatWidget(props: WidgetProps) {
   const isUserScrollingRef = useRef(false);
   const isProgrammaticScrollRef = useRef(false);
 
+  const [isMaximized, setIsMaximized] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
   // Detect system theme preference only on client after hydration
   useEffect(() => {
     // Only run if theme wasn't explicitly provided via props
@@ -128,12 +131,21 @@ export default function ChatWidget(props: WidgetProps) {
       // Small delay to ensure DOM is updated
       setTimeout(() => {
         const wasNearBottom = isNearBottom();
+        const lastMsg = messages[messages.length - 1];
+        const isUser = lastMsg?.role === "user";
+
+        if (isUser) {
+          // User sent a message: Always scroll to bottom to show it
+          scrollToBottom("smooth");
+          isUserScrollingRef.current = false;
+          return;
+        }
         
         // Only auto-scroll if user was already near the bottom or hasn't manually scrolled
         if (wasNearBottom || !isUserScrollingRef.current) {
           isProgrammaticScrollRef.current = true;
           const lastMessageIndex = messages.length - 1;
-          const lastMessage = scrollerRef.current?.querySelector(`[data-message-index="${lastMessageIndex}"]`);
+          const lastMessage = scrollerRef.current?.querySelector(`[data-original-index="${lastMessageIndex}"]`);
           
           if (lastMessage) {
             // Scroll to show the top of the new message (so user can read from beginning)
@@ -328,8 +340,8 @@ export default function ChatWidget(props: WidgetProps) {
     ? {
         bg: "#1a1a1a",
         surface: "#252525",
-        surfaceElevated: "#2d2d2d",
-        border: "#333333",
+        surfaceElevated: "rgb(37 37 37)",
+        border: "rgb(37 37 37)",
         text: "#ffffff",
         textSecondary: "#a0a0a0",
         userBubble: "#0066ff",
@@ -353,10 +365,12 @@ export default function ChatWidget(props: WidgetProps) {
   return (
     <div
       style={{
-        width: 380,
-        height: 560,
-        borderRadius: 20,
-        border: `1px solid ${colors.border}`,
+        width: isMaximized ? "100vw" : 380,
+        height: isMaximized ? "100vh" : (isCollapsed ? "auto" : 560),
+        maxWidth: isMaximized ? "none" : "95vw",
+        maxHeight: isMaximized ? "none" : "90vh",
+        borderRadius: isMaximized ? 0 : 20,
+        border: isMaximized ? "none" : `1px solid ${colors.border}`,
         overflow: "hidden",
         display: "flex",
         flexDirection: "column",
@@ -365,44 +379,108 @@ export default function ChatWidget(props: WidgetProps) {
           ? "0 20px 60px rgba(0, 0, 0, 0.5)"
           : "0 20px 60px rgba(0, 0, 0, 0.12)",
         transition: "all 0.3s ease",
-        position: "relative",
+        position: isMaximized ? "fixed" : "relative",
+        top: isMaximized ? 0 : undefined,
+        left: isMaximized ? 0 : undefined,
+        zIndex: isMaximized ? 9999 : undefined,
       }}
     >
       {/* Header */}
       <div
         style={{
           padding: "16px 20px",
-          borderBottom: `1px solid ${colors.border}`,
+          borderBottom: isCollapsed ? "none" : `1px solid ${colors.border}`,
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
           background: colors.surfaceElevated,
         }}
       >
-        <div style={{ fontWeight: 600, fontSize: 16, color: colors.text }}>LolaBot</div>
-        <button
-          onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-          style={{
-            background: "transparent",
-            border: `1px solid ${colors.border}`,
-            borderRadius: 8,
-            padding: "6px 10px",
-            cursor: "pointer",
-            display: "flex",
-            alignItems: "center",
-            color: colors.textSecondary,
-            fontSize: 12,
-            transition: "all 0.2s ease",
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.background = colors.surface;
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.background = "transparent";
-          }}
-        >
-          {isDark ? "☀️" : "🌙"}
-        </button>
+        <div style={{ fontWeight: 600, fontSize: 16, color: colors.text }}>{process.env.NEXT_PUBLIC_BOT_SHORTNAME || "LolaBot"}</div>
+        <div style={{ display: "flex", gap: 8 }}>
+          <button
+            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            style={{
+              background: "transparent",
+              border: `1px solid ${colors.border}`,
+              borderRadius: 8,
+              padding: 6,
+              width: 32,
+              height: 32,
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              color: colors.textSecondary,
+              transition: "all 0.2s ease",
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.background = colors.surface)}
+            onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+            title="Toggle Theme"
+          >
+            {isDark ? "☀️" : "🌙"}
+          </button>
+          <button
+            onClick={() => {
+              setIsCollapsed(!isCollapsed);
+              if (!isCollapsed) setIsMaximized(false);
+            }}
+            style={{
+              background: "transparent",
+              border: `1px solid ${colors.border}`,
+              borderRadius: 8,
+              padding: 6,
+              width: 32,
+              height: 32,
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              color: colors.textSecondary,
+              transition: "all 0.2s ease",
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.background = colors.surface)}
+            onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+            title={isCollapsed ? "Expand" : "Collapse"}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M5 12h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
+          <button
+            onClick={() => {
+              setIsMaximized(!isMaximized);
+              if (!isMaximized) setIsCollapsed(false);
+            }}
+            style={{
+              background: "transparent",
+              border: `1px solid ${colors.border}`,
+              borderRadius: 8,
+              padding: 6,
+              width: 32,
+              height: 32,
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              color: colors.textSecondary,
+              transition: "all 0.2s ease",
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.background = colors.surface)}
+            onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+            title={isMaximized ? "Restore" : "Maximize"}
+          >
+            {isMaximized ? (
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M4 14h6v6M20 10h-6V4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            ) : (
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            )}
+          </button>
+        </div>
       </div>
 
       {/* Messages Area */}
@@ -415,6 +493,7 @@ export default function ChatWidget(props: WidgetProps) {
         tabIndex={0}
         style={{
           flex: 1,
+          display: isCollapsed ? "none" : undefined,
           overflow: "auto",
           padding: 16,
           background: isDraggingOverChat ? (isDark ? "#2a3a4a" : "#e8f2ff") : colors.surface,
@@ -482,7 +561,7 @@ export default function ChatWidget(props: WidgetProps) {
       </div>
 
       {/* Scroll to Bottom Button */}
-      {showScrollButton && (
+      {showScrollButton && !isCollapsed && (
         <button
           onClick={() => {
             scrollToBottom("smooth");
@@ -526,7 +605,7 @@ export default function ChatWidget(props: WidgetProps) {
       )}
 
       {/* Composer */}
-      <div style={{ borderTop: `1px solid ${colors.border}`, background: colors.surfaceElevated }}>
+      <div style={{ borderTop: `1px solid ${colors.border}`, background: colors.surfaceElevated, display: isCollapsed ? "none" : "block" }}>
         <Composer onSend={onSend} disabled={!session || loading} theme={theme} colors={colors} />
       </div>
     </div>

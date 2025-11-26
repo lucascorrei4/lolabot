@@ -30,7 +30,7 @@ export default function MessageList({ items, typing, theme = "light", colors }: 
     const result: any[] = [];
     let globalIndex = 0;
 
-    items.forEach((m) => {
+    items.forEach((m, index) => {
       // Only split bot messages with text that has double line breaks (paragraph breaks)
       if (m.role === "bot" && m.type === "text" && m.text && m.text.includes('\n\n')) {
         // Split by double line breaks (paragraph breaks) - like WhatsApp
@@ -45,15 +45,16 @@ export default function MessageList({ items, typing, theme = "light", colors }: 
               _optimisticId: m._optimisticId ? `${m._optimisticId}-part-${paraIndex}` : undefined,
               text: paragraph.trim(),
               _splitIndex: globalIndex++,
+              _originalIndex: index,
             });
           });
         } else {
           // Only one paragraph after splitting - keep as single bubble
-          result.push({ ...m, _splitIndex: globalIndex++ });
+          result.push({ ...m, _splitIndex: globalIndex++, _originalIndex: index });
         }
       } else {
         // Keep as is (user messages, images, audio, or bot messages without double breaks)
-        result.push({ ...m, _splitIndex: globalIndex++ });
+        result.push({ ...m, _splitIndex: globalIndex++, _originalIndex: index });
       }
     });
 
@@ -65,7 +66,11 @@ export default function MessageList({ items, typing, theme = "light", colors }: 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
       {splitItems.map((m, i) => (
-        <div key={m._id || m._optimisticId || `split-${i}`} data-message-index={m._splitIndex ?? i}>
+        <div 
+          key={m._id || m._optimisticId || `split-${i}`} 
+          data-message-index={m._splitIndex ?? i}
+          data-original-index={m._originalIndex}
+        >
           <Bubble
             role={m.role}
             type={m.type}
