@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { ensureIndexes, insertMessage, listMessages, resolveSession, getCollections } from "../../../lib/db/mongo";
+import { ensureIndexes, insertMessage, listMessages, resolveSession, getCollections, touchSession } from "../../../lib/db/mongo";
 import { callOutgoingWebhook, toWebhookHistory, getMessageType } from "../../../lib/webhook";
 import type { Message } from "../../../lib/types";
 import { ObjectId } from "mongodb";
@@ -49,6 +49,7 @@ export async function POST(req: NextRequest) {
       createdAt: new Date(),
     };
     await insertMessage(userMsg);
+    await touchSession(session._id as string);
 
     const history = await listMessages(session._id as string, 100);
     const payload = {

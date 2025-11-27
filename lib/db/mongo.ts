@@ -1,4 +1,4 @@
-import { MongoClient, ServerApiVersion } from "mongodb";
+import { MongoClient, ServerApiVersion, Document } from "mongodb";
 import { env } from "../env";
 import type { Message, Session, Upload } from "../types";
 
@@ -17,7 +17,7 @@ export async function getMongoClient(): Promise<MongoClient> {
   return client;
 }
 
-function col<T>(name: string) {
+function col<T extends Document>(name: string) {
   if (!env.MONGODB_DB) throw new Error("MONGODB_DB not set");
   const db = client!.db(env.MONGODB_DB);
   return db.collection<T>(name);
@@ -51,7 +51,20 @@ export async function resolveSession(params: {
   if (params.userId) query.userId = params.userId;
   if (params.chatId) query.chatId = params.chatId;
 
-  let doc = await sessions.findOne(query);
+  let doc = await sessions.findOne(query, { sort: { lastActivityAt: -1 } });
+
+  // Check if session is expired (older than 24 hours)
+  if (doc) {
+    const now = new Date();
+    const lastActivity = new Date(doc.lastActivityAt || doc.updatedAt || doc.createdAt);
+    const hoursSinceLastActivity = (now.getTime() - lastActivity.getTime()) / (1000 * 60 * 60);
+    
+    // Reset session if inactive for more than 24 hours
+    if (hoursSinceLastActivity > 24) {
+      doc = null;
+    }
+  }
+
   if (!doc && params.createIfMissing) {
     const now = new Date();
     const toInsert: Session = {
@@ -63,7 +76,7 @@ export async function resolveSession(params: {
       lastActivityAt: now,
     };
     const res = await sessions.insertOne(toInsert as any);
-    doc = { ...toInsert, _id: res.insertedId.toHexString() } as Session;
+    doc = { ...toInsert, _id: res.insertedId.toString() } as any;
   }
   if (!doc) throw new Error("Session not found");
   return doc;

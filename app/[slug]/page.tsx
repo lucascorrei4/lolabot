@@ -15,7 +15,12 @@ export default async function BotSlugPage({ params }: { params: Promise<{ slug: 
         <h1 style={{ fontSize: 28, marginBottom: 8 }}>{env.NEXT_PUBLIC_BOT_TITLE}</h1>
         <p style={{ color: "#555", marginBottom: 24 }}>{env.NEXT_PUBLIC_BOT_DESCRIPTION}</p>
         <div style={{ marginTop: 40 }}>
-          <ChatWidget botId="lola-demo" />
+          <ChatWidget 
+            botId="lola-demo" 
+            title={env.NEXT_PUBLIC_BOT_TITLE}
+            description={env.NEXT_PUBLIC_BOT_DESCRIPTION}
+            shortName={env.NEXT_PUBLIC_BOT_SHORTNAME}
+          />
         </div>
       </div>
     </main>
