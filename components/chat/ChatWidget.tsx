@@ -9,6 +9,9 @@ type WidgetProps = {
   userId?: string;
   chatId?: string;
   theme?: "light" | "dark";
+  title?: string;
+  description?: string;
+  shortName?: string;
 };
 
 export default function ChatWidget(props: WidgetProps) {
@@ -30,8 +33,27 @@ export default function ChatWidget(props: WidgetProps) {
   const [isMaximized, setIsMaximized] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
 
+  // Notify parent window about state changes (for embed resizing)
+  useEffect(() => {
+    if (window.parent !== window) {
+      window.parent.postMessage({ 
+        type: 'LOLA_RESIZE', 
+        isMaximized, 
+        isCollapsed 
+      }, '*');
+    }
+  }, [isMaximized, isCollapsed]);
+
   // Detect system theme preference only on client after hydration
   useEffect(() => {
+    // Apply font-family to body to ensure it matches the design
+    document.body.style.fontFamily = "system-ui, -apple-system, sans-serif";
+    document.body.style.margin = "0";
+    document.body.style.padding = "0";
+    // Also ensure html is 100% height/width for full screen
+    document.documentElement.style.height = "100%";
+    document.body.style.height = "100%";
+    
     // Only run if theme wasn't explicitly provided via props
     if (!props.theme) {
       const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
@@ -88,21 +110,58 @@ export default function ChatWidget(props: WidgetProps) {
     const init = async () => {
       try {
         setError(null);
-        const res = await fetch(`${apiBase}/api/sessions`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ botId: props.botId, userId: props.userId, chatId: props.chatId }),
-        });
-        if (!res.ok) {
-          const errorText = await res.text().catch(() => "Unknown error");
-          throw new Error(`Failed to create session: ${res.status} ${errorText}`);
+        
+        // Try to get stored session ID from localStorage
+        // Key includes botId so we don't mix up sessions for different bots
+        const storageKey = `lolabot_session_${props.botId}${props.userId ? `_${props.userId}` : ''}`;
+        const storedSessionId = localStorage.getItem(storageKey);
+        
+        // Determine if we should try to resume a session or create a new one
+        let currentSession = null;
+        
+        if (storedSessionId) {
+          // Verify if the stored session is still valid
+          try {
+             const res = await fetch(`${apiBase}/api/sessions?sessionId=${storedSessionId}`);
+             // Note: We need to implement GET /api/sessions to validate/fetch session by ID
+             // For now, we'll assume we can just use it if we can fetch messages
+             if (res.ok) {
+               // Proceed to use this session
+               currentSession = { _id: storedSessionId };
+             } else {
+               // Session invalid or expired, clear it
+               localStorage.removeItem(storageKey);
+             }
+          } catch (e) {
+             localStorage.removeItem(storageKey);
+          }
         }
-        const json = await res.json();
-        setSession(json.session);
+
+        // If no valid stored session, create/resolve one via API
+        if (!currentSession) {
+          const res = await fetch(`${apiBase}/api/sessions`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ botId: props.botId, userId: props.userId, chatId: props.chatId }),
+          });
+          if (!res.ok) {
+            const errorText = await res.text().catch(() => "Unknown error");
+            throw new Error(`Failed to create session: ${res.status} ${errorText}`);
+          }
+          const json = await res.json();
+          currentSession = json.session;
+          
+          // Store the new session ID
+          if (currentSession?._id) {
+            localStorage.setItem(storageKey, currentSession._id);
+          }
+        }
+        
+        setSession(currentSession);
         
         // Load existing messages for this session
-        if (json.session?._id) {
-          const messagesRes = await fetch(`${apiBase}/api/messages?sessionId=${encodeURIComponent(json.session._id)}`);
+        if (currentSession?._id) {
+          const messagesRes = await fetch(`${apiBase}/api/messages?sessionId=${encodeURIComponent(currentSession._id)}`);
           if (messagesRes.ok) {
             const messagesJson = await messagesRes.json();
             if (messagesJson.messages) {
@@ -365,23 +424,24 @@ export default function ChatWidget(props: WidgetProps) {
   return (
     <div
       style={{
-        width: isMaximized ? "100vw" : 380,
-        height: isMaximized ? "100vh" : (isCollapsed ? "auto" : 560),
-        maxWidth: isMaximized ? "none" : "95vw",
-        maxHeight: isMaximized ? "none" : "90vh",
+        width: isMaximized ? "100%" : 380,
+        height: isMaximized ? "100%" : (isCollapsed ? "auto" : 560),
+        maxWidth: isMaximized ? "1440px" : "100vw",
+        maxHeight: isMaximized ? "none" : "100vh",
         borderRadius: isMaximized ? 0 : 20,
-        border: isMaximized ? "none" : `1px solid ${colors.border}`,
+        border: isMaximized || isCollapsed ? "none" : `1px solid ${colors.border}`,
         overflow: "hidden",
         display: "flex",
         flexDirection: "column",
-        background: colors.bg,
+        background: isCollapsed ? "transparent" : colors.bg,
         boxShadow: isDark
           ? "0 20px 60px rgba(0, 0, 0, 0.5)"
           : "0 20px 60px rgba(0, 0, 0, 0.12)",
         transition: "all 0.3s ease",
         position: isMaximized ? "fixed" : "relative",
         top: isMaximized ? 0 : undefined,
-        left: isMaximized ? 0 : undefined,
+        left: isMaximized ? "50%" : undefined,
+        transform: isMaximized ? "translateX(-50%)" : undefined,
         zIndex: isMaximized ? 9999 : undefined,
       }}
     >
@@ -393,10 +453,11 @@ export default function ChatWidget(props: WidgetProps) {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          background: colors.surfaceElevated,
+          background: isCollapsed ? "transparent" : colors.surfaceElevated,
+          flex: isCollapsed ? 1 : undefined,
         }}
       >
-        <div style={{ fontWeight: 600, fontSize: 16, color: colors.text }}>{process.env.NEXT_PUBLIC_BOT_SHORTNAME || "LolaBot"}</div>
+        <div style={{ fontWeight: 600, fontSize: 16, color: colors.text }}>{props.shortName || "LolaBot"}</div>
         <div style={{ display: "flex", gap: 8 }}>
           <button
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}

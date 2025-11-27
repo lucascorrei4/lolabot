@@ -1,4 +1,5 @@
 import ChatWidget from "../../../components/chat/ChatWidget";
+import { env } from "../../../lib/env";
 
 export default async function ChatPage({ params, searchParams }: { params: Promise<{ botId: string }>; searchParams: Promise<Record<string, string | string[]>> }) {
   const { botId } = await params;
@@ -9,7 +10,15 @@ export default async function ChatPage({ params, searchParams }: { params: Promi
   const chatId = typeof resolvedSearchParams.chatId === "string" ? resolvedSearchParams.chatId : undefined;
   return (
     <main style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
-      <ChatWidget botId={botId} apiBase={apiBase} userId={userId} chatId={chatId} />
+      <ChatWidget 
+        botId={botId} 
+        apiBase={apiBase} 
+        userId={userId} 
+        chatId={chatId}
+        title={env.NEXT_PUBLIC_BOT_TITLE}
+        description={env.NEXT_PUBLIC_BOT_DESCRIPTION}
+        shortName={env.NEXT_PUBLIC_BOT_SHORTNAME}
+      />
     </main>
   );
 }
