@@ -47,11 +47,18 @@ export async function resolveSession(params: {
   createIfMissing?: boolean;
 }): Promise<Session> {
   const { sessions } = await getCollections();
-  const query: any = { botId: params.botId };
-  if (params.userId) query.userId = params.userId;
-  if (params.chatId) query.chatId = params.chatId;
+  
+  let doc: Session | null = null;
 
-  let doc = await sessions.findOne(query, { sort: { lastActivityAt: -1 } });
+  // Only query for existing session if userId or chatId is provided
+  // If anonymous (only botId), we should NOT match any existing session to avoid sharing history
+  if (params.userId || params.chatId) {
+    const query: any = { botId: params.botId };
+    if (params.userId) query.userId = params.userId;
+    if (params.chatId) query.chatId = params.chatId;
+    
+    doc = await sessions.findOne(query, { sort: { lastActivityAt: -1 } });
+  }
 
   // Check if session is expired (older than 24 hours)
   if (doc) {
