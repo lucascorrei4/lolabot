@@ -15,16 +15,17 @@ export default async function BotSlugPage({ params }: { params: Promise<{ slug: 
   }
 
   return (
-    <main style={{ display: "flex", minHeight: "100vh", alignItems: "center", justifyContent: "center", fontFamily: "system-ui, sans-serif", gap: 40, padding: 20 }}>
+    <main style={{ display: "flex", minHeight: "100vh", alignItems: "center", justifyContent: "center", fontFamily: "system-ui, sans-serif", gap: 40, padding: 20, backgroundColor: "#111827", color: "#f3f4f6" }}>
       <div style={{ textAlign: "center" }}>
-        <h1 style={{ fontSize: 28, marginBottom: 8 }}>{env.NEXT_PUBLIC_BOT_TITLE}</h1>
-        <p style={{ color: "#555", marginBottom: 24 }}>{env.NEXT_PUBLIC_BOT_DESCRIPTION}</p>
+        <h1 style={{ fontSize: 28, marginBottom: 8, color: "#f3f4f6" }}>{env.NEXT_PUBLIC_BOT_TITLE}</h1>
+        <p style={{ color: "#9ca3af", marginBottom: 24 }}>{env.NEXT_PUBLIC_BOT_DESCRIPTION}</p>
         <div style={{ marginTop: 40 }}>
           <ChatWidget 
             botId="lola-demo" 
             title={env.NEXT_PUBLIC_BOT_TITLE}
             description={env.NEXT_PUBLIC_BOT_DESCRIPTION}
             shortName={env.NEXT_PUBLIC_BOT_SHORTNAME}
+            theme="dark"
           />
         </div>
       </div>
