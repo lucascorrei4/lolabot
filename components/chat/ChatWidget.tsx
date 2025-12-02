@@ -108,7 +108,10 @@ export default function ChatWidget(props: WidgetProps) {
   }, []);
 
   useEffect(() => {
+    let mounted = true;
+
     const init = async () => {
+      if (!mounted) return;
       try {
         setError(null);
         
@@ -158,11 +161,13 @@ export default function ChatWidget(props: WidgetProps) {
           }
         }
         
+        if (!mounted) return;
         setSession(currentSession);
         
         // Load existing messages for this session
         if (currentSession?._id) {
           const messagesRes = await fetch(`${apiBase}/api/messages?sessionId=${encodeURIComponent(currentSession._id)}`);
+          if (!mounted) return;
           if (messagesRes.ok) {
             const messagesJson = await messagesRes.json();
             if (messagesJson.messages) {
@@ -173,13 +178,32 @@ export default function ChatWidget(props: WidgetProps) {
           }
         }
       } catch (err: any) {
+        if (!mounted) return;
         console.error("Session initialization error:", err);
         setError(err.message || "Failed to initialize chat");
       } finally {
-        setIsInitializing(false);
+        if (mounted) {
+          setIsInitializing(false);
+        }
       }
     };
-    init();
+
+    // Only start initialization when the page is fully loaded
+    // This prevents potential race conditions with scripts/styles
+    const runInit = () => {
+      if (document.readyState === "complete") {
+        init();
+      } else {
+        window.addEventListener("load", init);
+      }
+    };
+
+    runInit();
+
+    return () => {
+      mounted = false;
+      window.removeEventListener("load", init);
+    };
   }, [apiBase, props.botId, props.userId, props.chatId]);
 
   // Smart scroll handling for new messages
