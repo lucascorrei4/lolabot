@@ -1,4 +1,4 @@
-import { MongoClient, ServerApiVersion, Document } from "mongodb";
+import { MongoClient, Document } from "mongodb";
 import { env } from "../env";
 import type { Message, Session, Upload } from "../types";
 
