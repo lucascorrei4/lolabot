@@ -6,13 +6,7 @@ let client: MongoClient | null = null;
 
 export async function getMongoClient(): Promise<MongoClient> {
   if (client) return client;
-  client = new MongoClient(env.MONGODB_URI, {
-    serverApi: {
-      version: ServerApiVersion.v1,
-      strict: true,
-      deprecationErrors: true,
-    },
-  });
+  client = new MongoClient(env.MONGODB_URI);
   await client.connect();
   return client;
 }
