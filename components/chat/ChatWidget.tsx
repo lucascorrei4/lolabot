@@ -27,6 +27,7 @@ export default function ChatWidget(props: WidgetProps) {
   const lastMessageCountRef = useRef(0);
   const [showScrollButton, setShowScrollButton] = useState(false);
   const [isDraggingOverChat, setIsDraggingOverChat] = useState(false);
+  const [isInitializing, setIsInitializing] = useState(true);
   const isUserScrollingRef = useRef(false);
   const isProgrammaticScrollRef = useRef(false);
 
@@ -174,6 +175,8 @@ export default function ChatWidget(props: WidgetProps) {
       } catch (err: any) {
         console.error("Session initialization error:", err);
         setError(err.message || "Failed to initialize chat");
+      } finally {
+        setIsInitializing(false);
       }
     };
     init();
@@ -565,60 +568,96 @@ export default function ChatWidget(props: WidgetProps) {
           transition: "all 0.2s ease",
         }}
       >
-        {error && (
+        {isInitializing ? (
           <div
             style={{
-              padding: "10px 12px",
-              marginBottom: 12,
-              background: isDark ? "#3a1f1f" : "#fee",
-              color: colors.error,
-              borderRadius: 8,
-              fontSize: 12,
-              border: `1px solid ${colors.error}40`,
-            }}
-          >
-            {error}
-          </div>
-        )}
-        {isDraggingOverChat && (
-          <div
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
               display: "flex",
+              flexDirection: "column",
               alignItems: "center",
               justifyContent: "center",
-              background: isDark ? "rgba(42, 58, 74, 0.9)" : "rgba(232, 242, 255, 0.9)",
-              zIndex: 100,
-              borderRadius: 12,
+              height: "100%",
+              color: colors.textSecondary,
+              gap: 12,
             }}
           >
+            <style>
+              {`
+                @keyframes lola-spin {
+                  0% { transform: rotate(0deg); }
+                  100% { transform: rotate(360deg); }
+                }
+              `}
+            </style>
             <div
               style={{
-                padding: "20px 32px",
-                background: colors.surfaceElevated,
-                borderRadius: 16,
-                border: `2px dashed #0066ff`,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                gap: 8,
-                boxShadow: "0 8px 24px rgba(0, 0, 0, 0.15)",
+                width: 32,
+                height: 32,
+                border: `3px solid ${colors.border}`,
+                borderTopColor: colors.userBubble,
+                borderRadius: "50%",
+                animation: "lola-spin 0.8s linear infinite",
               }}
-            >
-              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ color: "#0066ff" }}>
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-              <div style={{ fontSize: 16, fontWeight: 600, color: colors.text }}>Solte aqui para enviar</div>
-              <div style={{ fontSize: 12, color: colors.textSecondary }}>Imagens e áudio</div>
-            </div>
+            />
+            <span style={{ fontSize: 14 }}>Connecting...</span>
           </div>
+        ) : (
+          <>
+            {error && (
+              <div
+                style={{
+                  padding: "10px 12px",
+                  marginBottom: 12,
+                  background: isDark ? "#3a1f1f" : "#fee",
+                  color: colors.error,
+                  borderRadius: 8,
+                  fontSize: 12,
+                  border: `1px solid ${colors.error}40`,
+                }}
+              >
+                {error}
+              </div>
+            )}
+            {isDraggingOverChat && (
+              <div
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  background: isDark ? "rgba(42, 58, 74, 0.9)" : "rgba(232, 242, 255, 0.9)",
+                  zIndex: 100,
+                  borderRadius: 12,
+                }}
+              >
+                <div
+                  style={{
+                    padding: "20px 32px",
+                    background: colors.surfaceElevated,
+                    borderRadius: 16,
+                    border: `2px dashed #0066ff`,
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    gap: 8,
+                    boxShadow: "0 8px 24px rgba(0, 0, 0, 0.15)",
+                  }}
+                >
+                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ color: "#0066ff" }}>
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                  <div style={{ fontSize: 16, fontWeight: 600, color: colors.text }}>Solte aqui para enviar</div>
+                  <div style={{ fontSize: 12, color: colors.textSecondary }}>Imagens e áudio</div>
+                </div>
+              </div>
+            )}
+            <MessageList items={messages} typing={loading} theme={theme} colors={colors} />
+            <div ref={messagesEndRef} style={{ height: 1 }} />
+          </>
         )}
-        <MessageList items={messages} typing={loading} theme={theme} colors={colors} />
-        <div ref={messagesEndRef} style={{ height: 1 }} />
       </div>
 
       {/* Scroll to Bottom Button */}
