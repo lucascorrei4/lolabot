@@ -1,6 +1,11 @@
 import { notFound } from "next/navigation";
+import { Metadata } from "next";
 import ChatWidget from "../../components/chat/ChatWidget";
 import { env } from "../../lib/env";
+
+export const metadata: Metadata = {
+  title: env.NEXT_PUBLIC_BOT_SHORTNAME,
+};
 
 export default async function BotSlugPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
