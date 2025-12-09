@@ -5,6 +5,7 @@
     var userId = options.userId || '';
     var chatId = options.chatId || '';
     var theme = options.theme || 'light';
+    var context = options.context || null;
 
     var launcher = document.createElement('button');
     launcher.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
@@ -47,7 +48,7 @@
     iframe.allow = "clipboard-read; clipboard-write; microphone";
 
     var base = options.baseUrl || '';
-    var qs = '?apiBase=' + encodeURIComponent(apiBase) + (userId ? '&userId=' + encodeURIComponent(userId) : '') + (chatId ? '&chatId=' + encodeURIComponent(chatId) : '') + (theme ? '&theme=' + encodeURIComponent(theme) : '');
+    var qs = '?apiBase=' + encodeURIComponent(apiBase) + (userId ? '&userId=' + encodeURIComponent(userId) : '') + (chatId ? '&chatId=' + encodeURIComponent(chatId) : '') + (theme ? '&theme=' + encodeURIComponent(theme) : '') + (context ? '&context=' + encodeURIComponent(JSON.stringify(context)) : '');
     iframe.src = (base || '') + '/chat/' + encodeURIComponent(botId) + qs;
 
     // Track maximization state
@@ -135,6 +136,16 @@
     var baseUrl = srcUrl.origin; // Detect origin from script source
 
     var botId = script.getAttribute('data-bot-id') || 'lola-demo';
+    
+    var context = null;
+    try {
+      var contextStr = script.getAttribute('data-context');
+      if (contextStr) {
+        context = JSON.parse(contextStr);
+      }
+    } catch (e) {
+      console.error('LolaBot: Invalid JSON in data-context attribute', e);
+    }
 
     mount({
       botId: botId,
@@ -142,6 +153,7 @@
       userId: script.getAttribute('data-user-id') || '',
       chatId: script.getAttribute('data-chat-id') || '',
       theme: script.getAttribute('data-theme') || 'light',
+      context: context,
       baseUrl: baseUrl // Use detected origin
     });
   }

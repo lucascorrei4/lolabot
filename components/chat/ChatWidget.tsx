@@ -12,6 +12,8 @@ type WidgetProps = {
   title?: string;
   description?: string;
   shortName?: string;
+  context?: any;
+  initialGreeting?: string;
 };
 
 export default function ChatWidget(props: WidgetProps) {
@@ -170,10 +172,19 @@ export default function ChatWidget(props: WidgetProps) {
           if (!mounted) return;
           if (messagesRes.ok) {
             const messagesJson = await messagesRes.json();
-            if (messagesJson.messages) {
+            if (messagesJson.messages && messagesJson.messages.length > 0) {
               setMessages(messagesJson.messages);
               // Scroll to bottom on initial load
               setTimeout(() => scrollToBottom("auto"), 100);
+            } else if (props.initialGreeting) {
+              console.log("Setting initial greeting:", props.initialGreeting);
+              setMessages([{
+                _id: "initial-greeting",
+                role: "bot",
+                type: "text",
+                text: props.initialGreeting,
+                createdAt: new Date().toISOString()
+              }]);
             }
           }
         }
@@ -381,7 +392,11 @@ export default function ChatWidget(props: WidgetProps) {
       const res = await fetch(`${apiBase}/api/messages`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ sessionId: session._id, message: { type: payload.type, text: payload.text, url, mime: payload.mime } }),
+        body: JSON.stringify({ 
+          sessionId: session._id, 
+          message: { type: payload.type, text: payload.text, url, mime: payload.mime },
+          context: props.context
+        }),
       });
       if (!res.ok) {
         let errorMessage = `Failed to send message (${res.status})`;
