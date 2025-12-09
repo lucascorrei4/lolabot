@@ -23,7 +23,7 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json().catch(() => ({}));
-    const { sessionId, botId, userId, chatId, message } = body || {};
+    const { sessionId, botId, userId, chatId, message, context } = body || {};
 
     if (!message?.type) {
       return NextResponse.json({ error: "message.type is required" }, { status: 400 });
@@ -64,6 +64,7 @@ export async function POST(req: NextRequest) {
         mime: message.mime 
       },
       history: toWebhookHistory(history),
+      context: context,
     };
 
     let response;

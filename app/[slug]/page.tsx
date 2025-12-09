@@ -25,6 +25,7 @@ export default async function BotSlugPage({ params }: { params: Promise<{ slug: 
             title={env.NEXT_PUBLIC_BOT_TITLE}
             description={env.NEXT_PUBLIC_BOT_DESCRIPTION}
             shortName={env.NEXT_PUBLIC_BOT_SHORTNAME}
+            initialGreeting={env.NEXT_PUBLIC_INITIAL_GREETING}
             theme="dark"
           />
         </div>

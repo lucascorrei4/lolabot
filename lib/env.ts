@@ -8,6 +8,7 @@ const EnvSchema = z.object({
   NEXT_PUBLIC_BOT_DESCRIPTION: z.string().default("Immigration Advisor"),
   NEXT_PUBLIC_BOT_SHORTNAME: z.string().default("LolaBot"),
   NEXT_PUBLIC_BOT_SLUG: z.string().default("immigration-advisor"),
+  NEXT_PUBLIC_INITIAL_GREETING: z.string().optional(),
 
   WEBHOOK_OUTGOING_URL: z.string().url(),
   WEBHOOK_SIGNATURE_SECRET: z.preprocess((val) => (val === "" ? undefined : val), z.string().min(16).optional()),
