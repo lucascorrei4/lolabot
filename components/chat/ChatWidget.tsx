@@ -631,8 +631,12 @@ export default function ChatWidget(props: WidgetProps) {
               style={{
                 width: 32,
                 height: 32,
-                border: `3px solid ${colors.border}`,
+                borderWidth: "3px",
+                borderStyle: "solid",
                 borderTopColor: colors.userBubble,
+                borderRightColor: colors.border,
+                borderBottomColor: colors.border,
+                borderLeftColor: colors.border,
                 borderRadius: "50%",
                 animation: "lola-spin 0.8s linear infinite",
               }}
