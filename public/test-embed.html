@@ -1,54 +1,455 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LolaBot Embed Test</title>
+    <title>LolaBot Developer Documentation</title>
     <style>
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #1a1a1a;
+            --sidebar-bg: #f8f9fa;
+            --border-color: #e5e7eb;
+            --accent-color: #0066ff;
+            --accent-hover: #0052cc;
+            --code-bg: #1e1e1e;
+            --code-text: #e0e0e0;
+            --note-bg: rgba(0, 102, 255, 0.05);
+            --note-border: #0066ff;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: #0f1115;
+                --text-color: #e0e0e0;
+                --sidebar-bg: #16181d;
+                --border-color: #2d2d2d;
+                --code-bg: #000000;
+                --note-bg: rgba(0, 102, 255, 0.1);
+            }
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
-            font-family: system-ui, -apple-system, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 40px 20px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+            background-color: var(--bg-color);
+            color: var(--text-color);
             line-height: 1.6;
-            color: #333;
+            display: flex;
+            min-height: 100vh;
         }
 
-        h1 {
-            color: #111;
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 280px;
+            background: var(--sidebar-bg);
+            border-right: 1px solid var(--border-color);
+            padding: 2rem;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            flex-shrink: 0;
+            display: none; /* Hidden on mobile */
         }
 
-        .content {
-            background: #f5f5f5;
-            padding: 20px;
+        @media (min-width: 1024px) {
+            .sidebar { display: block; }
+        }
+
+        .logo {
+            font-weight: 800;
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            display: block;
+            color: var(--accent-color);
+            text-decoration: none;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 0.5rem 0;
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 0.95rem;
+            opacity: 0.7;
+            transition: all 0.2s;
+        }
+
+        .nav-link:hover { opacity: 1; color: var(--accent-color); transform: translateX(2px); }
+        .nav-section { margin-bottom: 2.5rem; }
+        .nav-title {
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            color: var(--text-color);
+            opacity: 0.4;
+            margin-bottom: 0.75rem;
+        }
+
+        /* Main Content */
+        .main {
+            flex: 1;
+            padding: 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        @media (min-width: 768px) {
+            .main { padding: 4rem; }
+        }
+
+        h1 { font-size: 2.5rem; margin-bottom: 1.5rem; letter-spacing: -0.03em; font-weight: 800; }
+        h2 { font-size: 1.75rem; margin: 3.5rem 0 1.5rem; letter-spacing: -0.02em; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem; font-weight: 700; }
+        h3 { font-size: 1.25rem; margin: 2rem 0 1rem; font-weight: 600; }
+        p { margin-bottom: 1.5rem; opacity: 0.9; font-size: 1.05rem; }
+
+        /* Code Blocks */
+        pre {
+            background: var(--code-bg);
+            color: var(--code-text);
+            padding: 1.5rem;
+            border-radius: 12px;
+            overflow-x: auto;
+            margin-bottom: 2rem;
+            font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+            font-size: 0.9rem;
+            border: 1px solid var(--border-color);
+            line-height: 1.5;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        code {
+            font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+        }
+
+        p code {
+            background: var(--sidebar-bg);
+            padding: 0.2em 0.4em;
+            border-radius: 6px;
+            font-size: 0.85em;
+            border: 1px solid var(--border-color);
+            font-weight: 500;
+            color: var(--accent-color);
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+            border: 1px solid var(--border-color);
             border-radius: 8px;
-            margin-top: 20px;
+            overflow: hidden;
         }
+
+        th, td {
+            text-align: left;
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th { 
+            font-weight: 600; 
+            background: var(--sidebar-bg);
+            color: var(--text-color);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        tr:last-child td { border-bottom: none; }
+
+        /* Note */
+        .note {
+            background: var(--note-bg);
+            border-left: 4px solid var(--note-border);
+            padding: 1.5rem;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+
+        .note strong { color: var(--accent-color); }
+
+        /* Demo Panel */
+        .demo-panel {
+            background: var(--sidebar-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .demo-controls {
+            display: grid;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            opacity: 0.7;
+        }
+
+        input, textarea {
+            padding: 0.75rem;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-color);
+            color: var(--text-color);
+            font-family: inherit;
+            font-size: 0.9rem;
+        }
+
+        textarea { font-family: 'Menlo', monospace; min-height: 100px; }
+
+        button.primary {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: background 0.2s;
+            align-self: flex-start;
+        }
+
+        button.primary:hover { background: var(--accent-hover); }
+
+        .json-key { color: #9cdcfe; }
+        .json-string { color: #ce9178; }
+        .json-number { color: #b5cea8; }
     </style>
 </head>
-
 <body>
-    <h1>LolaBot Embed Integration Test</h1>
-    <p>This page demonstrates how the chat widget appears on an external website.</p>
 
-    <div class="content">
-        <h2>Integration Instructions</h2>
-        <p>To add this chat to your website, simply include the following script tag before the closing
-            <code>&lt;/body&gt;</code> tag:
-        </p>
-        <pre style="background: #e5e5e5; padding: 15px; border-radius: 4px; overflow-x: auto;">
-                &lt;script 
-                src="http://localhost:3000/embed/lolabot.js"
-                data-bot-id="lola-demo"
-                data-user-id="lola-demo-user"
-                data-theme="light"
-                &gt;&lt;/script&gt;</pre>
-    </div>
+    <nav class="sidebar">
+        <a href="#" class="logo">LolaBot</a>
+        
+        <div class="nav-section">
+            <div class="nav-title">Getting Started</div>
+            <a href="#quick-start" class="nav-link">Quick Start</a>
+            <a href="#configuration" class="nav-link">Configuration</a>
+        </div>
 
-    <!-- LolaBot Embed Script -->
-    <script src="http://localhost:3000/embed/lolabot.js" data-bot-id="lola-demo" data-user-id="lola-demo-user"
-        data-theme="dark"></script>
+        <div class="nav-section">
+            <div class="nav-title">Context</div>
+            <a href="#static-context" class="nav-link">Static Context</a>
+            <a href="#dynamic-context" class="nav-link">Dynamic Context (JS)</a>
+            <a href="#backend-processing" class="nav-link">Backend Processing</a>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-title">API Reference</div>
+            <a href="#attributes" class="nav-link">Data Attributes</a>
+            <a href="#methods" class="nav-link">JavaScript Methods</a>
+        </div>
+        
+        <div class="nav-section">
+            <div class="nav-title">Playground</div>
+            <a href="#interactive-demo" class="nav-link">Live Demo</a>
+        </div>
+    </nav>
+
+    <main class="main">
+        <h1>Integration Guide</h1>
+        <p>LolaBot is a powerful, context-aware AI chat widget that you can embed into any website. It supports rich media, theming, and deep integration with your application's state.</p>
+
+        <div class="note">
+            <strong>Active Demo:</strong> The chat widget on this page is live! Use the <a href="#interactive-demo" style="color: inherit; text-decoration: underline;">Interactive Demo</a> section below to update its context in real-time.
+        </div>
+
+        <h2 id="quick-start">Quick Start</h2>
+        <p>To add LolaBot to your website, simply copy the following code snippet and paste it before the closing <code>&lt;/body&gt;</code> tag of your HTML file.</p>
+
+        <pre>&lt;script 
+  src="http://localhost:3000/embed/lolabot.js"
+  data-bot-id="lola-demo"
+&gt;&lt;/script&gt;</pre>
+
+        <h2 id="configuration">Configuration</h2>
+        <p>You can customize the widget's appearance and behavior using standard HTML data attributes.</p>
+
+        <pre>&lt;script 
+  src="http://localhost:3000/embed/lolabot.js"
+  data-bot-id="lola-demo"
+  data-user-id="user_123"
+  data-theme="dark"
+&gt;&lt;/script&gt;</pre>
+
+        <h2 id="static-context">Passing Static Context</h2>
+        <p>Context allows the AI to know about the page or user environment. For static data (like page category or language), use the <code>data-context</code> attribute with a valid JSON string.</p>
+
+        <pre>&lt;script 
+  src="http://localhost:3000/embed/lolabot.js"
+  data-bot-id="lola-demo"
+  data-context='{"page": "pricing", "plan": "pro", "lang": "en"}'
+&gt;&lt;/script&gt;</pre>
+
+        <h2 id="dynamic-context">Dynamic Context (JavaScript)</h2>
+        <p>For modern web applications (SPAs, React, Vue, etc.) where data changes dynamically, use the JavaScript API. This gives you full control over when the bot initializes and what data it receives.</p>
+        
+        <p><strong>Step 1:</strong> Load the script without initialization parameters.</p>
+        <pre>&lt;script src="http://localhost:3000/embed/lolabot.js"&gt;&lt;/script&gt;</pre>
+
+        <p><strong>Step 2:</strong> Initialize the widget using <code>LolaBot.mount()</code> when your application state is ready.</p>
+        <pre>
+// Example: Initialize with user data from your app
+const userContext = {
+  id: "u_999",
+  name: "Sarah Connor",
+  role: "admin",
+  currentOrder: {
+    id: "ord_555",
+    total: 120.50
+  }
+};
+
+// Wait for script to load (or use script onload event)
+window.addEventListener('load', () => {
+  if (window.LolaBot) {
+    window.LolaBot.mount({
+      botId: "lola-demo",
+      userId: "u_999",     // Optional: for session persistence
+      context: userContext // <--- Passed to the LLM
+    });
+  }
+});</pre>
+
+        <h2 id="backend-processing">Backend Processing</h2>
+        <p>When you pass <code>context</code> to the widget, it is securely transmitted to the LolaBot API and forwarded to your LLM handler or webhook.</p>
+        
+        <p>The JSON payload sent to your webhook will look like this:</p>
+        <pre>{
+  "message": {
+    "role": "user",
+    "text": "Where is my order?"
+  },
+  "history": [ ... ],
+  <span class="json-key">"context"</span>: {
+    <span class="json-key">"id"</span>: <span class="json-string">"u_999"</span>,
+    <span class="json-key">"name"</span>: <span class="json-string">"Sarah Connor"</span>,
+    <span class="json-key">"currentOrder"</span>: {
+      <span class="json-key">"id"</span>: <span class="json-string">"ord_555"</span>,
+      <span class="json-key">"total"</span>: <span class="json-number">120.50</span>
+    }
+  }
+}</pre>
+        <p>Your LLM system prompt can then use this data to provide personalized answers, e.g., <em>"Hello Sarah, I see your order #ord_555 is being processed."</em></p>
+
+        <h2 id="interactive-demo">Interactive Demo</h2>
+        <p>Try it yourself! Modify the context JSON below and click <strong>Update Widget</strong> to restart the bot with new data.</p>
+        
+        <div class="demo-panel">
+            <div class="control-group">
+                <label for="demo-context">Context JSON</label>
+                <textarea id="demo-context">{
+  "user": "Developer",
+  "role": "Guest",
+  "page": "Documentation"
+}</textarea>
+            </div>
+            <br>
+            <button class="primary" onclick="updateWidget()">Update Widget</button>
+        </div>
+
+        <h2 id="attributes">Reference: Data Attributes</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>data-bot-id</code></td>
+                    <td>String</td>
+                    <td><strong>Required</strong>. The unique identifier for your bot.</td>
+                </tr>
+                <tr>
+                    <td><code>data-user-id</code></td>
+                    <td>String</td>
+                    <td>Optional. Unique ID for the user to maintain session history.</td>
+                </tr>
+                <tr>
+                    <td><code>data-theme</code></td>
+                    <td>String</td>
+                    <td>Optional. <code>light</code> or <code>dark</code>. Defaults to system preference.</td>
+                </tr>
+                <tr>
+                    <td><code>data-context</code></td>
+                    <td>JSON</td>
+                    <td>Optional. JSON string of data to pass to the LLM.</td>
+                </tr>
+                <tr>
+                    <td><code>data-api-base</code></td>
+                    <td>String</td>
+                    <td>Optional. Override the API base URL (default: current origin).</td>
+                </tr>
+            </tbody>
+        </table>
+    </main>
+
+    <!-- 
+      LolaBot Script 
+      Loaded without auto-init to allow manual control via the demo 
+    -->
+    <script src="http://localhost:3000/embed/lolabot.js"></script>
+    
+    <script>
+        function updateWidget() {
+            try {
+                const contextStr = document.getElementById('demo-context').value;
+                const context = JSON.parse(contextStr);
+                
+                // Unmount existing if possible (simple reload simulation)
+                const existingFrame = document.querySelector('iframe[src*="/chat/"]');
+                const existingLauncher = document.querySelector('button[style*="z-index: 999999"]'); // Heuristic selector
+                
+                if (existingFrame) existingFrame.remove();
+                if (existingLauncher) existingLauncher.remove();
+
+                // Mount with new context
+                window.LolaBot.mount({
+                    botId: 'lola-demo',
+                    userId: 'demo-user-' + Math.floor(Math.random() * 10000),
+                    context: context
+                });
+                
+                // Visual feedback
+                const btn = document.querySelector('button.primary');
+                const originalText = btn.innerText;
+                btn.innerText = "Widget Updated!";
+                setTimeout(() => btn.innerText = originalText, 2000);
+                
+            } catch (e) {
+                alert("Invalid JSON context: " + e.message);
+            }
+        }
+
+        // Initial Load
+        window.addEventListener('load', function() {
+            if (window.LolaBot) {
+                updateWidget(); // Use the default value in textarea
+            }
+        });
+    </script>
 </body>
-
 </html>
