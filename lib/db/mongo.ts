@@ -83,6 +83,16 @@ export async function resolveSession(params: {
   return doc;
 }
 
+export async function getSessionById(sessionId: string) {
+  const { sessions } = await getCollections();
+  try {
+      const doc = await sessions.findOne({ _id: new (await import("mongodb")).ObjectId(sessionId) } as any);
+      return doc;
+  } catch (e) {
+      return null;
+  }
+}
+
 export async function touchSession(sessionId: string) {
   const { sessions } = await getCollections();
   await sessions.updateOne({ _id: new (await import("mongodb")).ObjectId(sessionId) } as any, {
@@ -109,4 +119,19 @@ export async function recordUpload(upload: Upload) {
   await uploads.insertOne(upload as any);
 }
 
+export async function listSessions(limit = 20, offset = 0, botId?: string) {
+  const { sessions } = await getCollections();
+  const query = botId ? { botId } : {};
+  return sessions
+    .find(query)
+    .sort({ lastActivityAt: -1, createdAt: -1 })
+    .skip(offset)
+    .limit(limit)
+    .toArray();
+}
 
+export async function countSessions(botId?: string) {
+  const { sessions } = await getCollections();
+  const query = botId ? { botId } : {};
+  return sessions.countDocuments(query);
+}
