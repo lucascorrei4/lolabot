@@ -25,6 +25,27 @@
     launcher.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
     launcher.style.transition = 'all 0.2s ease';
     launcher.style.zIndex = 999999;
+    launcher.style.position = 'fixed'; // ensure positioning context for badge
+
+    // Notification badge (shows "1" until chat is opened)
+    var badge = document.createElement('span');
+    badge.textContent = '1';
+    badge.style.position = 'absolute';
+    badge.style.top = '-4px';
+    badge.style.right = '-4px';
+    badge.style.background = '#ff3b30';
+    badge.style.color = '#fff';
+    badge.style.fontSize = '10px';
+    badge.style.fontWeight = '600';
+    badge.style.width = '18px';
+    badge.style.height = '18px';
+    badge.style.borderRadius = '50%';
+    badge.style.display = 'flex';
+    badge.style.alignItems = 'center';
+    badge.style.justifyContent = 'center';
+    badge.style.boxShadow = '0 1px 3px rgba(0,0,0,0.3)';
+    badge.style.pointerEvents = 'none';
+    launcher.appendChild(badge);
 
     launcher.onmouseenter = function() { launcher.style.transform = 'scale(1.05)'; };
     launcher.onmouseleave = function() { launcher.style.transform = 'scale(1)'; };
@@ -96,6 +117,10 @@
     });
 
     launcher.addEventListener('click', function () {
+      // Hide badge on first interaction
+      if (badge && badge.style.display !== 'none') {
+        badge.style.display = 'none';
+      }
       if (iframe.style.display === 'none') {
         iframe.style.display = 'block';
         // Animate in
