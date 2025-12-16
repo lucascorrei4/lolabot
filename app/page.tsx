@@ -1,6 +1,12 @@
 import { redirect } from "next/navigation";
-import { env } from "../lib/env";
+import { getDefaultBot } from "../lib/env";
 
 export default function HomePage() {
-  redirect(`/${env.NEXT_PUBLIC_BOT_SLUG}`);
+  const defaultBot = getDefaultBot();
+  if (defaultBot) {
+    redirect(`/${defaultBot.slug}`);
+  } else {
+    // Fallback if no bots configured
+    redirect("/immigration-advisor");
+  }
 }

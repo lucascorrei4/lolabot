@@ -69,7 +69,7 @@ export async function POST(req: NextRequest) {
 
     let response;
     try {
-      response = await callOutgoingWebhook(payload);
+      response = await callOutgoingWebhook(payload, session.botId);
     } catch (webhookError: any) {
       console.error("Webhook error:", webhookError);
       // Continue with empty response if webhook fails

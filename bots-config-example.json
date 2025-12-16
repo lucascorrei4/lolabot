@@ -1,0 +1,21 @@
+[
+  {
+    "id": "comiva-ai",
+    "slug": "comiva-ai",
+    "title": "Comiva Feinagro",
+    "description": "Comiva Feinagro Assistant",
+    "shortName": "Comiva Bot",
+    "initialGreeting": "Olá, eu sou um Assistente de IA da Comiva! Quer começar a pontuar?",
+    "webhookOutgoingUrl": "https://panel.n8n.aionz.com.br/webhook/db0b23db-9008-47d3-ad26-664c0e06ac4b"
+  },
+  {
+    "id": "comiva-ai-resgate-e-estoque",
+    "slug": "comiva-ai-resgate-e-estoque",
+    "title": "Comiva Feinagro",
+    "description": "Assistente de Resgate e Estoque",
+    "shortName": "Comiva Bot",
+    "initialGreeting": "Olá, eu sou um Assistente de restage e prêmios da Comiva. Vamos Começar?",
+    "webhookOutgoingUrl": "https://panel.n8n.aionz.com.br/webhook/671cec8e-9273-45bd-9fcf-9e0bc4ba53bb"
+  }
+]
+

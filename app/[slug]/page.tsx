@@ -1,31 +1,36 @@
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import ChatWidget from "../../components/chat/ChatWidget";
-import { env } from "../../lib/env";
+import { getBotBySlug, getDefaultBot } from "../../lib/env";
 
-export const metadata: Metadata = {
-  title: env.NEXT_PUBLIC_BOT_SHORTNAME,
-};
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const bot = getBotBySlug(slug);
+  return {
+    title: bot?.shortName || "LolaBot",
+  };
+}
 
 export default async function BotSlugPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  // Check if the slug matches the configured BOT_SLUG
-  if (slug !== env.NEXT_PUBLIC_BOT_SLUG) {
+  const bot = getBotBySlug(slug);
+
+  if (!bot) {
     notFound();
   }
 
   return (
     <main style={{ display: "flex", minHeight: "100vh", alignItems: "center", justifyContent: "center", fontFamily: "system-ui, sans-serif", gap: 40, padding: 20, backgroundColor: "#111827", color: "#f3f4f6" }}>
       <div style={{ textAlign: "center" }}>
-        <h1 style={{ fontSize: 28, marginBottom: 8, color: "#f3f4f6" }}>{env.NEXT_PUBLIC_BOT_TITLE}</h1>
-        <p style={{ color: "#9ca3af", marginBottom: 24 }}>{env.NEXT_PUBLIC_BOT_DESCRIPTION}</p>
+        <h1 style={{ fontSize: 28, marginBottom: 8, color: "#f3f4f6" }}>{bot.title}</h1>
+        <p style={{ color: "#9ca3af", marginBottom: 24 }}>{bot.description}</p>
         <div style={{ marginTop: 40 }}>
           <ChatWidget 
-            botId="lola-demo" 
-            title={env.NEXT_PUBLIC_BOT_TITLE}
-            description={env.NEXT_PUBLIC_BOT_DESCRIPTION}
-            shortName={env.NEXT_PUBLIC_BOT_SHORTNAME}
-            initialGreeting={env.NEXT_PUBLIC_INITIAL_GREETING}
+            botId={bot.id} 
+            title={bot.title}
+            description={bot.description}
+            shortName={bot.shortName}
+            initialGreeting={bot.initialGreeting}
             theme="dark"
           />
         </div>

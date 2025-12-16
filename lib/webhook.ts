@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { env } from "./env";
+import { env, getBotById } from "./env";
 import type { Message, MessageType } from "./types";
 
 export const WebhookReplySchema = z.discriminatedUnion("type", [
@@ -32,8 +32,28 @@ export function getMessageType(type: MessageType): string {
   }
 }
 
-export async function callOutgoingWebhook(payload: any) {
-  const res = await fetch(env.WEBHOOK_OUTGOING_URL, {
+export async function callOutgoingWebhook(payload: any, botId?: string) {
+  // Get bot-specific webhook URL
+  let webhookUrl: string;
+  
+  if (botId) {
+    const botConfig = getBotById(botId);
+    if (botConfig?.webhookOutgoingUrl) {
+      webhookUrl = botConfig.webhookOutgoingUrl;
+    } else {
+      // Fallback to legacy env var if bot not found
+      webhookUrl = env.WEBHOOK_OUTGOING_URL || "";
+    }
+  } else {
+    // Fallback to legacy env var
+    webhookUrl = env.WEBHOOK_OUTGOING_URL || "";
+  }
+
+  if (!webhookUrl) {
+    throw new Error("No webhook URL configured for bot");
+  }
+
+  const res = await fetch(webhookUrl, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),

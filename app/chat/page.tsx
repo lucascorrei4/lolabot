@@ -1,3 +1,4 @@
+import { getDefaultBot } from "../../lib/env";
 import { env } from "../../lib/env";
 import Script from "next/script";
 import { Metadata } from "next";
@@ -12,7 +13,8 @@ export default function ChatTestPage() {
   // Ensure we don't have double slash if appUrl ends with /
   const baseUrl = appUrl.replace(/\/$/, "");
   const scriptSrc = `${baseUrl}/embed/lolabot.js`;
-  const botId = env.NEXT_PUBLIC_BOT_SLUG || "lola-demo";
+  const defaultBot = getDefaultBot();
+  const botId = defaultBot?.id || "lola-demo";
 
   const codeSnippet = `<script 
   src="${scriptSrc}"

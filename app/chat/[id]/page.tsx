@@ -1,6 +1,6 @@
 import ChatWidget from "../../../components/chat/ChatWidget";
 import MessageList from "../../../components/chat/MessageList";
-import { env } from "../../../lib/env";
+import { getBotById, getDefaultBot } from "../../../lib/env";
 import { listMessages, getSessionById } from "../../../lib/db/mongo";
 import Link from "next/link";
 
@@ -144,6 +144,9 @@ export default async function ChatPage({ params, searchParams }: { params: Promi
     }
   }
 
+  // Get bot configuration by botId, or use default
+  const bot = getBotById(id) || getDefaultBot();
+
   return (
     <main style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
       <ChatWidget 
@@ -152,10 +155,10 @@ export default async function ChatPage({ params, searchParams }: { params: Promi
         userId={userId} 
         chatId={chatId}
         context={context}
-        title={env.NEXT_PUBLIC_BOT_TITLE}
-        description={env.NEXT_PUBLIC_BOT_DESCRIPTION}
-        shortName={env.NEXT_PUBLIC_BOT_SHORTNAME}
-        initialGreeting={env.NEXT_PUBLIC_INITIAL_GREETING}
+        title={bot?.title}
+        description={bot?.description}
+        shortName={bot?.shortName}
+        initialGreeting={bot?.initialGreeting}
       />
     </main>
   );
