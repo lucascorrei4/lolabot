@@ -6,22 +6,23 @@ type MessageListProps = {
   typing?: boolean;
   theme?: "light" | "dark";
   colors?: any;
+  timezone?: string;
 };
 
-export default function MessageList({ items, typing, theme = "light", colors }: MessageListProps) {
+export default function MessageList({ items, typing, theme = "light", colors, timezone = "America/New_York" }: MessageListProps) {
   const defaultColors = theme === "dark"
     ? {
-        text: "#ffffff",
-        textSecondary: "#a0a0a0",
-        userBubble: "#0066ff",
-        botBubble: "#2d2d2d",
-      }
+      text: "#ffffff",
+      textSecondary: "#a0a0a0",
+      userBubble: "#0066ff",
+      botBubble: "#2d2d2d",
+    }
     : {
-        text: "#1a1a1a",
-        textSecondary: "#6b7280",
-        userBubble: "#0066ff",
-        botBubble: "#f1f3f5",
-      };
+      text: "#1a1a1a",
+      textSecondary: "#6b7280",
+      userBubble: "#0066ff",
+      botBubble: "#f1f3f5",
+    };
 
   const finalColors = colors || defaultColors;
 
@@ -35,7 +36,7 @@ export default function MessageList({ items, typing, theme = "light", colors }: 
       if (m.role === "bot" && m.type === "text" && m.text && m.text.includes('\n\n')) {
         // Split by double line breaks (paragraph breaks) - like WhatsApp
         const paragraphs = m.text.split(/\n\n+/).filter((p: string) => p.trim());
-        
+
         if (paragraphs.length > 1) {
           // Multiple paragraphs - split into separate bubbles (like WhatsApp)
           paragraphs.forEach((paragraph: string, paraIndex: number) => {
@@ -66,8 +67,8 @@ export default function MessageList({ items, typing, theme = "light", colors }: 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
       {splitItems.map((m, i) => (
-        <div 
-          key={m._id || m._optimisticId || `split-${i}`} 
+        <div
+          key={m._id || m._optimisticId || `split-${i}`}
           data-message-index={m._splitIndex ?? i}
           data-original-index={m._originalIndex}
         >
@@ -79,6 +80,8 @@ export default function MessageList({ items, typing, theme = "light", colors }: 
             mime={m.mime}
             theme={theme}
             colors={finalColors}
+            createdAt={m.createdAt}
+            timezone={timezone}
           />
         </div>
       ))}
@@ -95,6 +98,8 @@ function Bubble({
   mime,
   theme,
   colors,
+  createdAt,
+  timezone,
 }: {
   role: string;
   type: string;
@@ -103,20 +108,28 @@ function Bubble({
   mime?: string;
   theme?: "light" | "dark";
   colors?: any;
+  createdAt?: string;
+  timezone?: string;
 }) {
   const isUser = role === "user";
   const isDark = theme === "dark";
 
+  const timestamp = createdAt ? new Date(createdAt).toLocaleTimeString("en-US", {
+    timeZone: timezone || "America/New_York",
+    hour: "2-digit",
+    minute: "2-digit",
+  }) : "";
+
   const formatText = (text: string) => {
     if (!text) return null;
-    
+
     // Split by lines to handle paragraphs, lists, and headers
     const lines = text.split('\n');
     const elements: JSX.Element[] = [];
-    
+
     lines.forEach((line, index) => {
       const trimmedLine = line.trim();
-      
+
       // Check if it's a header (starts with #)
       const headerMatch = trimmedLine.match(/^(#{1,6})\s+(.+)$/);
       if (headerMatch) {
@@ -125,11 +138,11 @@ function Bubble({
         const fontSize = level === 1 ? 20 : level === 2 ? 18 : level === 3 ? 16 : 14;
         const marginTop = index > 0 ? (level === 1 ? 16 : level === 2 ? 14 : 12) : 0;
         const marginBottom = level <= 3 ? 8 : 4;
-        
+
         elements.push(
-          <div 
-            key={`header-${index}`} 
-            style={{ 
+          <div
+            key={`header-${index}`}
+            style={{
               marginTop,
               marginBottom,
               fontWeight: 700,
@@ -162,7 +175,7 @@ function Bubble({
         elements.push(<div key={`line-${index}`} style={{ height: 4 }} />);
       }
     });
-    
+
     return elements;
   };
 
@@ -170,12 +183,12 @@ function Bubble({
     const parts: JSX.Element[] = [];
     let currentIndex = 0;
     const textColor = isUser ? "#ffffff" : colors.text;
-    
+
     // Match **bold** or __bold__
     const boldRegex = /\*\*(.*?)\*\*|__(.*?)__/g;
     let match;
     let lastIndex = 0;
-    
+
     while ((match = boldRegex.exec(text)) !== null) {
       // Add text before the match
       if (match.index > lastIndex) {
@@ -185,7 +198,7 @@ function Bubble({
           </span>
         );
       }
-      
+
       // Add bold text
       const boldText = match[1] || match[2];
       parts.push(
@@ -193,10 +206,10 @@ function Bubble({
           {boldText}
         </strong>
       );
-      
+
       lastIndex = boldRegex.lastIndex;
     }
-    
+
     // Add remaining text
     if (lastIndex < text.length) {
       parts.push(
@@ -205,7 +218,7 @@ function Bubble({
         </span>
       );
     }
-    
+
     return parts.length > 0 ? parts : [<span key="text" style={{ color: textColor }}>{text}</span>];
   };
 
@@ -254,6 +267,18 @@ function Bubble({
               height: 32,
             }}
           />
+        )}
+        {timestamp && (
+          <div style={{
+            fontSize: "11px",
+            color: isUser ? "rgba(255,255,255,0.7)" : colors.textSecondary,
+            marginTop: 4,
+            textAlign: "right",
+            alignSelf: "flex-end",
+            width: "100%"
+          }}>
+            {timestamp}
+          </div>
         )}
       </div>
     </div>
