@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { isOriginAllowed } from "./lib/security";
+import { isOriginAllowed } from "./lib/cors";
 
 export function middleware(req: NextRequest) {
   const origin = req.headers.get("origin");
@@ -26,5 +26,3 @@ export function middleware(req: NextRequest) {
 export const config = {
   matcher: "/api/:path*",
 };
-
-
