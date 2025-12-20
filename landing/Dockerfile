@@ -44,6 +44,11 @@ COPY --from=builder /app/public ./public
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
 
+# Clean up cache and telemetry files that trigger false positive malware alerts
+RUN rm -rf .next/cache 2>/dev/null || true && \
+    rm -rf /home/nextjs/.local 2>/dev/null || true && \
+    rm -rf /root/.local 2>/dev/null || true
+
 USER nextjs
 
 EXPOSE 3000
