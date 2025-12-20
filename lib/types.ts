@@ -83,3 +83,17 @@ export interface Otp {
   expiresAt: Date;
   createdAt: Date;
 }
+
+export interface BotSettings {
+  _id?: string;
+  botId: string;
+  title: string;
+  description: string;
+  shortName: string;
+  slug: string;
+  initialGreeting?: string;
+  notificationEmail?: string;
+  timezone?: string;
+  updatedAt: Date;
+  updatedBy: string; // email of admin who updated
+}

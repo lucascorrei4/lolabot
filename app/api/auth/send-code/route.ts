@@ -18,18 +18,18 @@ export async function POST(req: Request) {
 
         const code = await createOTP(email);
 
-        // Real email sending
+        // Real email sending - using environment variables for security
         const transporter = nodemailer.createTransport({
-            host: 'smtp-relay.brevo.com',
-            port: 587,
+            host: process.env.SMTP_HOST || 'smtp-relay.brevo.com',
+            port: parseInt(process.env.SMTP_PORT || '587'),
             auth: {
-                user: '81dae5002@smtp-brevo.com',
-                pass: 'dfC29UcGNjnEHIz0'
+                user: process.env.SMTP_USER,
+                pass: process.env.SMTP_PASS
             }
         });
 
         const info = await transporter.sendMail({
-            from: '"LolaBot Intelligence Admin" <info@bizaigpt.com>',
+            from: process.env.SMTP_FROM || '"LolaBot Intelligence Admin" <info@bizaigpt.com>',
             to: email,
             subject: `Your LolaBot Login Code (${code})`,
             text: `Your login code is: ${code}`,

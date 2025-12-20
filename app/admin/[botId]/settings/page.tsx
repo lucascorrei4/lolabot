@@ -9,13 +9,18 @@ import {
     ArrowDownTrayIcon,
     GlobeAltIcon,
     TagIcon,
+    ShieldCheckIcon,
 } from '@heroicons/react/24/outline';
 
 type Theme = 'light' | 'dark';
 type Timezone = string;
 
 interface BotSettings {
-    displayName: string;
+    title: string;
+    description: string;
+    shortName: string;
+    slug: string;
+    initialGreeting: string;
     notificationEmail: string;
     timezone: Timezone;
 }
@@ -24,26 +29,56 @@ export default function SettingsPage({ params }: { params: Promise<{ botId: stri
     const [botId, setBotId] = useState<string>('');
     const [theme, setTheme] = useState<Theme>('dark');
     const [settings, setSettings] = useState<BotSettings>({
-        displayName: '',
+        title: '',
+        description: '',
+        shortName: '',
+        slug: '',
+        initialGreeting: '',
         notificationEmail: '',
         timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
     });
     const [isSaving, setIsSaving] = useState(false);
     const [isExporting, setIsExporting] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const [saveMessage, setSaveMessage] = useState('');
+    const [isSuperAdmin, setIsSuperAdmin] = useState(false);
 
     useEffect(() => {
-        params.then(p => {
+        params.then(async p => {
             setBotId(p.botId);
-            // Load settings from localStorage
+
+            // Load theme from localStorage
             const savedTheme = localStorage.getItem('theme') as Theme;
             if (savedTheme) setTheme(savedTheme);
 
-            const savedSettings = localStorage.getItem(`bot_settings_${p.botId}`);
-            if (savedSettings) {
-                setSettings(JSON.parse(savedSettings));
-            } else {
-                setSettings(prev => ({ ...prev, displayName: p.botId.toUpperCase() }));
+            // Load settings from API
+            try {
+                const response = await fetch(`/api/bot-settings/${p.botId}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.settings) {
+                        setSettings({
+                            title: data.settings.title || '',
+                            description: data.settings.description || '',
+                            shortName: data.settings.shortName || '',
+                            slug: data.settings.slug || p.botId,
+                            initialGreeting: data.settings.initialGreeting || '',
+                            notificationEmail: data.settings.notificationEmail || '',
+                            timezone: data.settings.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone,
+                        });
+                    }
+                }
+
+                // Check if user is super admin
+                const userResponse = await fetch('/api/auth/me');
+                if (userResponse.ok) {
+                    const userData = await userResponse.json();
+                    setIsSuperAdmin(userData.user?.role === 'super_admin');
+                }
+            } catch (error) {
+                console.error('Failed to load settings:', error);
+            } finally {
+                setIsLoading(false);
             }
         });
     }, [params]);
@@ -60,13 +95,21 @@ export default function SettingsPage({ params }: { params: Promise<{ botId: stri
         setSaveMessage('');
 
         try {
-            // Save to localStorage (in a real app, this would be an API call)
-            localStorage.setItem(`bot_settings_${botId}`, JSON.stringify(settings));
+            const response = await fetch(`/api/bot-settings/${botId}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(settings),
+            });
+
+            if (!response.ok) {
+                const data = await response.json();
+                throw new Error(data.error || 'Failed to save settings');
+            }
 
             setSaveMessage('Settings saved successfully!');
             setTimeout(() => setSaveMessage(''), 3000);
-        } catch (error) {
-            setSaveMessage('Failed to save settings');
+        } catch (error: any) {
+            setSaveMessage(error.message || 'Failed to save settings');
         } finally {
             setIsSaving(false);
         }
@@ -111,6 +154,17 @@ export default function SettingsPage({ params }: { params: Promise<{ botId: stri
         'UTC',
     ];
 
+    if (isLoading) {
+        return (
+            <div className="min-h-screen bg-gray-900 text-white flex font-sans">
+                <AdminSidebar botId={botId} />
+                <main className="flex-1 ml-64 flex items-center justify-center">
+                    <div className="text-gray-400">Loading settings...</div>
+                </main>
+            </div>
+        );
+    }
+
     return (
         <div className="min-h-screen bg-gray-900 text-white flex font-sans">
             <AdminSidebar botId={botId} />
@@ -123,7 +177,10 @@ export default function SettingsPage({ params }: { params: Promise<{ botId: stri
 
                 <div className="p-8 max-w-4xl">
                     {saveMessage && (
-                        <div className="mb-6 p-4 bg-green-500/10 border border-green-500/20 rounded-xl text-green-400 text-sm">
+                        <div className={`mb-6 p-4 rounded-xl text-sm ${saveMessage.includes('success')
+                                ? 'bg-green-500/10 border border-green-500/20 text-green-400'
+                                : 'bg-red-500/10 border border-red-500/20 text-red-400'
+                            }`}>
                             {saveMessage}
                         </div>
                     )}
@@ -172,16 +229,83 @@ export default function SettingsPage({ params }: { params: Promise<{ botId: stri
                         <div className="space-y-4">
                             <div>
                                 <label className="block text-sm font-medium text-gray-300 mb-2">
-                                    Display Name
+                                    Bot Title
                                 </label>
                                 <input
                                     type="text"
-                                    value={settings.displayName}
-                                    onChange={(e) => setSettings({ ...settings, displayName: e.target.value })}
+                                    value={settings.title}
+                                    onChange={(e) => setSettings({ ...settings, title: e.target.value })}
                                     className="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                                    placeholder="My Bot Name"
+                                    placeholder="LolaBot"
                                 />
-                                <p className="text-xs text-gray-500 mt-1">This name will appear in the admin interface</p>
+                                <p className="text-xs text-gray-500 mt-1">The main title of your bot</p>
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-medium text-gray-300 mb-2">
+                                    Description
+                                </label>
+                                <input
+                                    type="text"
+                                    value={settings.description}
+                                    onChange={(e) => setSettings({ ...settings, description: e.target.value })}
+                                    className="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                                    placeholder="Immigration Advisor USA (EB2 NIW, EB1A, O1)"
+                                />
+                                <p className="text-xs text-gray-500 mt-1">Brief description of what your bot does</p>
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-medium text-gray-300 mb-2">
+                                    Short Name
+                                </label>
+                                <input
+                                    type="text"
+                                    value={settings.shortName}
+                                    onChange={(e) => setSettings({ ...settings, shortName: e.target.value })}
+                                    className="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                                    placeholder="LolaBot"
+                                />
+                                <p className="text-xs text-gray-500 mt-1">Short display name for compact views</p>
+                            </div>
+
+                            <div>
+                                <div className="flex items-center gap-2 mb-2">
+                                    <label className="block text-sm font-medium text-gray-300">
+                                        Slug (URL Identifier)
+                                    </label>
+                                    {!isSuperAdmin && (
+                                        <span className="flex items-center gap-1 text-xs text-yellow-400">
+                                            <ShieldCheckIcon className="w-3 h-3" />
+                                            Super Admin Only
+                                        </span>
+                                    )}
+                                </div>
+                                <input
+                                    type="text"
+                                    value={settings.slug}
+                                    onChange={(e) => setSettings({ ...settings, slug: e.target.value })}
+                                    disabled={!isSuperAdmin}
+                                    className="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
+                                    placeholder="immigration-advisor"
+                                />
+                                <p className="text-xs text-gray-500 mt-1">
+                                    Used in URLs and API endpoints {!isSuperAdmin && '(read-only)'}
+                                </p>
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-medium text-gray-300 mb-2">
+                                    Initial Greeting
+                                </label>
+                                <textarea
+                                    value={settings.initialGreeting}
+                                    onChange={(e) => setSettings({ ...settings, initialGreeting: e.target.value })}
+                                    rows={3}
+                                    className="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none"
+                                    placeholder="Hi, I'm your AI Assistant. How can I help you?"
+                                />
+                                <p className="text-xs text-gray-500 mt-1">The first message users see when starting a chat</p>
                             </div>
                         </div>
                     </div>

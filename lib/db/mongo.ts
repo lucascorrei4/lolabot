@@ -1,6 +1,6 @@
 import { MongoClient, Document, ObjectId } from "mongodb";
 import { env } from "../env";
-import type { Message, Session, Upload, Signal, User, Otp } from "../types";
+import type { Message, Session, Upload, Signal, User, Otp, BotSettings } from "../types";
 
 let client: MongoClient | null = null;
 
@@ -27,11 +27,12 @@ export async function getCollections() {
     signals: db.collection<Signal>("signals"),
     users: db.collection<User>("users"),
     otps: db.collection<Otp>("otps"),
+    botSettings: db.collection<BotSettings>("botSettings"),
   };
 }
 
 export async function ensureIndexes() {
-  const { sessions, messages, uploads, signals, users, otps } = await getCollections();
+  const { sessions, messages, uploads, signals, users, otps, botSettings } = await getCollections();
   await sessions.createIndex({ botId: 1, userId: 1, chatId: 1 }, { unique: false });
   await messages.createIndex({ sessionId: 1, createdAt: 1 });
   await uploads.createIndex({ sessionId: 1, createdAt: 1 });
@@ -39,6 +40,7 @@ export async function ensureIndexes() {
   await users.createIndex({ email: 1 }, { unique: true });
   await otps.createIndex({ email: 1 });
   await otps.createIndex({ expiresAt: 1 }, { expireAfterSeconds: 0 }); // Auto-expire OTPs
+  await botSettings.createIndex({ botId: 1 }, { unique: true });
 }
 
 export async function resolveSession(params: {
@@ -390,4 +392,28 @@ export async function verifyOTP(email: string, code: string) {
   // Consume OTP
   await otps.deleteOne({ _id: otp._id });
   return true;
+}
+
+// Bot Settings Functions
+
+export async function getBotSettings(botId: string) {
+  const { botSettings } = await getCollections();
+  return botSettings.findOne({ botId });
+}
+
+export async function upsertBotSettings(settings: Omit<BotSettings, '_id'>) {
+  const { botSettings } = await getCollections();
+
+  await botSettings.updateOne(
+    { botId: settings.botId },
+    {
+      $set: {
+        ...settings,
+        updatedAt: new Date(),
+      },
+    },
+    { upsert: true }
+  );
+
+  return getBotSettings(settings.botId);
 }
