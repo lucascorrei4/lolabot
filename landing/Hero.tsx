@@ -67,11 +67,11 @@ export function Hero() {
           </div>
 
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60 drop-shadow-sm px-2">
-            Stop Losing Leads.<br />Stop Losing Money.
+            Kill Your Contact Us Form.
           </h1>
           <p className="mt-4 sm:mt-6 text-base sm:text-lg leading-7 sm:leading-8 text-gray-300 max-w-xl mx-auto backdrop-blur-[2px] px-4">
-            Don't let visitors just browse and leave. With LolaBot Intelligence, you won't lose any lead to navigation.
-            Engage them instantly and stop losing money on missed opportunities.
+            Nobody wants to fill out a form and wait 24 hours for an email.
+            Engage visitors instantly with LolaBot Intelligence and stop losing leads to friction.
           </p>
           <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-x-6 mb-4 relative z-20 px-4">
             <a
