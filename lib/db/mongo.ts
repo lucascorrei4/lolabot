@@ -401,19 +401,33 @@ export async function getBotSettings(botId: string) {
   return botSettings.findOne({ botId });
 }
 
+export async function getAllBotConfigs() {
+  const { botSettings } = await getCollections();
+  return botSettings.find({}).toArray();
+}
+
 export async function upsertBotSettings(settings: Omit<BotSettings, '_id'>) {
   const { botSettings } = await getCollections();
 
+  const now = new Date();
   await botSettings.updateOne(
     { botId: settings.botId },
     {
       $set: {
         ...settings,
-        updatedAt: new Date(),
+        updatedAt: now,
+      },
+      $setOnInsert: {
+        createdAt: now,
       },
     },
     { upsert: true }
   );
 
   return getBotSettings(settings.botId);
+}
+
+export async function deleteBotConfig(botId: string) {
+  const { botSettings } = await getCollections();
+  return botSettings.deleteOne({ botId });
 }

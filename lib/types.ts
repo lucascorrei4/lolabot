@@ -2,8 +2,8 @@ export type MessageRole = "user" | "bot" | "system";
 export type MessageType = "text" | "image" | "audio" | "choice";
 
 export interface BotConfig {
-  id: string; // Unique bot identifier (e.g., "lola-demo", "comiva-bot")
-  slug: string; // URL slug (e.g., "immigration-advisor", "comiva-ai-resgate-e-estoque")
+  id: string; // Unique bot identifier (e.g., "lola-demo", "my-bot")
+  slug: string; // URL slug (e.g., "lola-bot", "my-smart-bot")
   title: string;
   description: string;
   shortName: string;
@@ -92,8 +92,10 @@ export interface BotSettings {
   shortName: string;
   slug: string;
   initialGreeting?: string;
+  webhookOutgoingUrl: string; // Webhook URL for the bot
   notificationEmail?: string;
   timezone?: string;
+  createdAt?: Date;
   updatedAt: Date;
   updatedBy: string; // email of admin who updated
 }

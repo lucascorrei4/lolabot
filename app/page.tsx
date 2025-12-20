@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { getDefaultBot } from "../lib/env";
+import { getDefaultBotAsync } from "../lib/env";
 
 // Sanitize URL path to remove invalid characters for HTTP headers
 function sanitizeUrlPath(path: string): string {
@@ -8,8 +8,8 @@ function sanitizeUrlPath(path: string): string {
   return path.replace(/[\x00-\x1F\x7F\r\n]/g, '').trim();
 }
 
-export default function HomePage() {
-  const defaultBot = getDefaultBot();
+export default async function HomePage() {
+  const defaultBot = await getDefaultBotAsync();
   if (defaultBot) {
     const sanitizedSlug = sanitizeUrlPath(defaultBot.slug);
     redirect(`/${sanitizedSlug}`);

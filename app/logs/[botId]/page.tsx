@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { listSessions, countSessions } from "../../../lib/db/mongo";
-import { getBotById, getDefaultBot } from "../../../lib/env";
+import { getBotByIdAsync, getDefaultBotAsync } from "../../../lib/env";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import { LogSearch } from "../../../components/logs/LogSearch";
 
@@ -40,7 +40,7 @@ export default async function LogsPage({
     ]);
 
     const totalPages = Math.ceil(total / limit);
-    const bot = getBotById(botId) || getDefaultBot();
+    const bot = await getBotByIdAsync(botId) || await getDefaultBotAsync();
 
     // Helper to build pagination URL
     const getPageUrl = (newPage: number) => {

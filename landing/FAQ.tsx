@@ -32,15 +32,15 @@ const faqs = [
 
 export function FAQ() {
   return (
-    <section className="bg-gray-900 py-24 sm:py-32">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+    <section className="bg-gray-900 py-16 sm:py-24 lg:py-32">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl lg:text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">Frequently Asked Questions</h2>
-          <p className="mt-4 text-lg leading-8 text-gray-400">
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white lg:text-4xl">Frequently Asked Questions</h2>
+          <p className="mt-3 sm:mt-4 text-base sm:text-lg leading-7 sm:leading-8 text-gray-400">
             Everything you need to know about getting started with Lolabot.
           </p>
         </div>
-        <div className="mx-auto mt-16 max-w-2xl divide-y divide-white/10">
+        <div className="mx-auto mt-10 sm:mt-16 max-w-2xl divide-y divide-white/10">
           {faqs.map((faq) => (
             <Disclosure key={faq.question} question={faq.question} answer={faq.answer} />
           ))}
@@ -54,25 +54,24 @@ function Disclosure({ question, answer }: { question: string; answer: string }) 
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="py-6">
+    <div className="py-4 sm:py-6">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex w-full items-start justify-between text-left text-white"
+        className="flex w-full items-start justify-between text-left text-white gap-4"
       >
-        <span className="text-base font-semibold leading-7">{question}</span>
-        <span className="ml-6 flex h-7 items-center">
+        <span className="text-sm sm:text-base font-semibold leading-6 sm:leading-7">{question}</span>
+        <span className="ml-2 sm:ml-6 flex h-6 sm:h-7 items-center flex-shrink-0">
           <ChevronDownIcon
-            className={`h-6 w-6 transform duration-200 ${isOpen ? '-rotate-180' : 'rotate-0'}`}
+            className={`h-5 w-5 sm:h-6 sm:w-6 transform duration-200 ${isOpen ? '-rotate-180' : 'rotate-0'}`}
             aria-hidden="true"
           />
         </span>
       </button>
       <div
-        className={`mt-2 pr-12 text-base leading-7 text-gray-400 overflow-hidden transition-all duration-300 ease-in-out ${
-          isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
-        }`}
+        className={`mt-2 pr-8 sm:pr-12 text-sm sm:text-base leading-6 sm:leading-7 text-gray-400 overflow-hidden transition-all duration-300 ease-in-out ${isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+          }`}
       >
-        <p className="pb-4">{answer}</p>
+        <p className="pb-2 sm:pb-4">{answer}</p>
       </div>
     </div>
   );

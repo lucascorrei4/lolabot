@@ -1,13 +1,14 @@
 {
   "name": "lolabot",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "private": true,
   "scripts": {
     "dev": "npm run build:embed && next dev",
     "build": "npm run build:embed && next build",
     "build:embed": "esbuild scripts/lolabot.js --bundle --minify --outfile=public/embed/lolabot.js",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "seed:bots": "npx tsx scripts/seed-bots.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "3.674.0",
@@ -28,6 +29,7 @@
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "autoprefixer": "^10.4.23",
+    "dotenv": "^17.2.3",
     "esbuild": "^0.27.0",
     "postcss": "^8.5.6",
     "tailwindcss": "^4.1.18",

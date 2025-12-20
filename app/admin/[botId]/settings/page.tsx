@@ -10,6 +10,7 @@ import {
     GlobeAltIcon,
     TagIcon,
     ShieldCheckIcon,
+    LinkIcon,
 } from '@heroicons/react/24/outline';
 
 type Theme = 'light' | 'dark';
@@ -21,6 +22,7 @@ interface BotSettings {
     shortName: string;
     slug: string;
     initialGreeting: string;
+    webhookOutgoingUrl: string;
     notificationEmail: string;
     timezone: Timezone;
 }
@@ -34,6 +36,7 @@ export default function SettingsPage({ params }: { params: Promise<{ botId: stri
         shortName: '',
         slug: '',
         initialGreeting: '',
+        webhookOutgoingUrl: '',
         notificationEmail: '',
         timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
     });
@@ -63,6 +66,7 @@ export default function SettingsPage({ params }: { params: Promise<{ botId: stri
                             shortName: data.settings.shortName || '',
                             slug: data.settings.slug || p.botId,
                             initialGreeting: data.settings.initialGreeting || '',
+                            webhookOutgoingUrl: data.settings.webhookOutgoingUrl || '',
                             notificationEmail: data.settings.notificationEmail || '',
                             timezone: data.settings.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone,
                         });
@@ -158,7 +162,7 @@ export default function SettingsPage({ params }: { params: Promise<{ botId: stri
         return (
             <div className="min-h-screen bg-gray-900 text-white flex font-sans">
                 <AdminSidebar botId={botId} />
-                <main className="flex-1 ml-64 flex items-center justify-center">
+                <main className="flex-1 lg:ml-64 flex items-center justify-center pt-16 lg:pt-0">
                     <div className="text-gray-400">Loading settings...</div>
                 </main>
             </div>
@@ -169,50 +173,50 @@ export default function SettingsPage({ params }: { params: Promise<{ botId: stri
         <div className="min-h-screen bg-gray-900 text-white flex font-sans">
             <AdminSidebar botId={botId} />
 
-            <main className="flex-1 ml-64 overflow-auto min-h-screen">
-                <header className="bg-gray-900 border-b border-gray-800 py-6 px-8 sticky top-0 z-10 backdrop-blur-md bg-opacity-90">
-                    <h2 className="text-2xl font-bold text-white">Settings</h2>
-                    <p className="text-gray-400 mt-1">Manage your bot configuration and preferences</p>
+            <main className="flex-1 lg:ml-64 overflow-auto min-h-screen pt-16 lg:pt-0">
+                <header className="bg-gray-900 border-b border-gray-800 py-4 lg:py-6 px-4 lg:px-8 lg:sticky lg:top-0 z-10 backdrop-blur-md bg-opacity-90">
+                    <h2 className="text-xl lg:text-2xl font-bold text-white">Settings</h2>
+                    <p className="text-gray-400 mt-1 text-sm lg:text-base">Manage your bot configuration and preferences</p>
                 </header>
 
-                <div className="p-8 max-w-4xl">
+                <div className="p-4 lg:p-8 max-w-4xl">
                     {saveMessage && (
                         <div className={`mb-6 p-4 rounded-xl text-sm ${saveMessage.includes('success')
-                                ? 'bg-green-500/10 border border-green-500/20 text-green-400'
-                                : 'bg-red-500/10 border border-red-500/20 text-red-400'
+                            ? 'bg-green-500/10 border border-green-500/20 text-green-400'
+                            : 'bg-red-500/10 border border-red-500/20 text-red-400'
                             }`}>
                             {saveMessage}
                         </div>
                     )}
 
                     {/* Theme Settings */}
-                    <div className="bg-gray-800/30 rounded-xl border border-gray-700 p-6 mb-6">
+                    <div className="bg-gray-800/30 rounded-xl border border-gray-700 p-4 lg:p-6 mb-4 lg:mb-6">
                         <div className="flex items-center gap-3 mb-4">
                             {theme === 'dark' ? (
-                                <MoonIcon className="w-6 h-6 text-indigo-400" />
+                                <MoonIcon className="w-5 h-5 lg:w-6 lg:h-6 text-indigo-400" />
                             ) : (
-                                <SunIcon className="w-6 h-6 text-yellow-400" />
+                                <SunIcon className="w-5 h-5 lg:w-6 lg:h-6 text-yellow-400" />
                             )}
-                            <h3 className="text-lg font-semibold text-white">Appearance</h3>
+                            <h3 className="text-base lg:text-lg font-semibold text-white">Appearance</h3>
                         </div>
 
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <p className="text-gray-300 font-medium">Theme</p>
-                                <p className="text-sm text-gray-500 mt-1">Choose your preferred color scheme</p>
+                        <div className="flex items-center justify-between gap-4">
+                            <div className="min-w-0 flex-1">
+                                <p className="text-gray-300 font-medium text-sm lg:text-base">Theme</p>
+                                <p className="text-xs lg:text-sm text-gray-500 mt-1">Choose your preferred color scheme</p>
                             </div>
                             <button
                                 onClick={toggleTheme}
-                                className="relative inline-flex h-10 w-20 items-center rounded-full bg-gray-700 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-900"
+                                className="relative inline-flex h-9 lg:h-10 w-16 lg:w-20 items-center rounded-full bg-gray-700 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-900 flex-shrink-0"
                             >
                                 <span
-                                    className={`inline-block h-8 w-8 transform rounded-full bg-white shadow-lg transition-transform ${theme === 'dark' ? 'translate-x-10' : 'translate-x-1'
+                                    className={`inline-block h-7 lg:h-8 w-7 lg:w-8 transform rounded-full bg-white shadow-lg transition-transform ${theme === 'dark' ? 'translate-x-8 lg:translate-x-10' : 'translate-x-1'
                                         }`}
                                 >
                                     {theme === 'dark' ? (
-                                        <MoonIcon className="w-5 h-5 m-1.5 text-gray-900" />
+                                        <MoonIcon className="w-4 h-4 lg:w-5 lg:h-5 m-1.5 text-gray-900" />
                                     ) : (
-                                        <SunIcon className="w-5 h-5 m-1.5 text-yellow-500" />
+                                        <SunIcon className="w-4 h-4 lg:w-5 lg:h-5 m-1.5 text-yellow-500" />
                                     )}
                                 </span>
                             </button>
@@ -220,10 +224,10 @@ export default function SettingsPage({ params }: { params: Promise<{ botId: stri
                     </div>
 
                     {/* Bot Configuration */}
-                    <div className="bg-gray-800/30 rounded-xl border border-gray-700 p-6 mb-6">
+                    <div className="bg-gray-800/30 rounded-xl border border-gray-700 p-4 lg:p-6 mb-4 lg:mb-6">
                         <div className="flex items-center gap-3 mb-4">
-                            <TagIcon className="w-6 h-6 text-blue-400" />
-                            <h3 className="text-lg font-semibold text-white">Bot Configuration</h3>
+                            <TagIcon className="w-5 h-5 lg:w-6 lg:h-6 text-blue-400" />
+                            <h3 className="text-base lg:text-lg font-semibold text-white">Bot Configuration</h3>
                         </div>
 
                         <div className="space-y-4">
@@ -250,7 +254,7 @@ export default function SettingsPage({ params }: { params: Promise<{ botId: stri
                                     value={settings.description}
                                     onChange={(e) => setSettings({ ...settings, description: e.target.value })}
                                     className="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                                    placeholder="Immigration Advisor USA (EB2 NIW, EB1A, O1)"
+                                    placeholder="My Smart Company Bot"
                                 />
                                 <p className="text-xs text-gray-500 mt-1">Brief description of what your bot does</p>
                             </div>
@@ -287,7 +291,7 @@ export default function SettingsPage({ params }: { params: Promise<{ botId: stri
                                     onChange={(e) => setSettings({ ...settings, slug: e.target.value })}
                                     disabled={!isSuperAdmin}
                                     className="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
-                                    placeholder="immigration-advisor"
+                                    placeholder="my-smart-bot"
                                 />
                                 <p className="text-xs text-gray-500 mt-1">
                                     Used in URLs and API endpoints {!isSuperAdmin && '(read-only)'}
@@ -307,14 +311,40 @@ export default function SettingsPage({ params }: { params: Promise<{ botId: stri
                                 />
                                 <p className="text-xs text-gray-500 mt-1">The first message users see when starting a chat</p>
                             </div>
+
+                            <div>
+                                <div className="flex items-center gap-2 mb-2">
+                                    <LinkIcon className="w-4 h-4 text-cyan-400" />
+                                    <label className="block text-sm font-medium text-gray-300">
+                                        Webhook URL
+                                    </label>
+                                    {!isSuperAdmin && (
+                                        <span className="flex items-center gap-1 text-xs text-yellow-400">
+                                            <ShieldCheckIcon className="w-3 h-3" />
+                                            Super Admin Only
+                                        </span>
+                                    )}
+                                </div>
+                                <input
+                                    type="url"
+                                    value={settings.webhookOutgoingUrl}
+                                    onChange={(e) => setSettings({ ...settings, webhookOutgoingUrl: e.target.value })}
+                                    disabled={!isSuperAdmin}
+                                    className="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed font-mono text-sm"
+                                    placeholder="https://your-n8n-webhook.com/webhook/..."
+                                />
+                                <p className="text-xs text-gray-500 mt-1">
+                                    Outgoing webhook URL for AI agent integration {!isSuperAdmin && '(read-only)'}
+                                </p>
+                            </div>
                         </div>
                     </div>
 
                     {/* Timezone Settings */}
-                    <div className="bg-gray-800/30 rounded-xl border border-gray-700 p-6 mb-6">
+                    <div className="bg-gray-800/30 rounded-xl border border-gray-700 p-4 lg:p-6 mb-4 lg:mb-6">
                         <div className="flex items-center gap-3 mb-4">
-                            <GlobeAltIcon className="w-6 h-6 text-green-400" />
-                            <h3 className="text-lg font-semibold text-white">Regional Settings</h3>
+                            <GlobeAltIcon className="w-5 h-5 lg:w-6 lg:h-6 text-green-400" />
+                            <h3 className="text-base lg:text-lg font-semibold text-white">Regional Settings</h3>
                         </div>
 
                         <div>
@@ -337,10 +367,10 @@ export default function SettingsPage({ params }: { params: Promise<{ botId: stri
                     </div>
 
                     {/* Notification Settings */}
-                    <div className="bg-gray-800/30 rounded-xl border border-gray-700 p-6 mb-6">
+                    <div className="bg-gray-800/30 rounded-xl border border-gray-700 p-4 lg:p-6 mb-4 lg:mb-6">
                         <div className="flex items-center gap-3 mb-4">
-                            <BellIcon className="w-6 h-6 text-purple-400" />
-                            <h3 className="text-lg font-semibold text-white">Notifications</h3>
+                            <BellIcon className="w-5 h-5 lg:w-6 lg:h-6 text-purple-400" />
+                            <h3 className="text-base lg:text-lg font-semibold text-white">Notifications</h3>
                         </div>
 
                         <div>
@@ -359,40 +389,40 @@ export default function SettingsPage({ params }: { params: Promise<{ botId: stri
                     </div>
 
                     {/* Export Data */}
-                    <div className="bg-gray-800/30 rounded-xl border border-gray-700 p-6 mb-6">
+                    <div className="bg-gray-800/30 rounded-xl border border-gray-700 p-4 lg:p-6 mb-4 lg:mb-6">
                         <div className="flex items-center gap-3 mb-4">
-                            <ArrowDownTrayIcon className="w-6 h-6 text-orange-400" />
-                            <h3 className="text-lg font-semibold text-white">Export Data</h3>
+                            <ArrowDownTrayIcon className="w-5 h-5 lg:w-6 lg:h-6 text-orange-400" />
+                            <h3 className="text-base lg:text-lg font-semibold text-white">Export Data</h3>
                         </div>
 
-                        <p className="text-gray-400 text-sm mb-4">Download all chat logs and session data</p>
+                        <p className="text-gray-400 text-xs lg:text-sm mb-4">Download all chat logs and session data</p>
 
-                        <div className="flex gap-3">
+                        <div className="flex flex-col sm:flex-row gap-2 lg:gap-3">
                             <button
                                 onClick={() => handleExportData('json')}
                                 disabled={isExporting}
-                                className="flex-1 px-4 py-2.5 bg-gray-700 hover:bg-gray-600 disabled:bg-gray-800 disabled:cursor-not-allowed text-white rounded-lg transition-colors font-medium text-sm flex items-center justify-center gap-2"
+                                className="flex-1 px-3 lg:px-4 py-2.5 bg-gray-700 hover:bg-gray-600 disabled:bg-gray-800 disabled:cursor-not-allowed text-white rounded-lg transition-colors font-medium text-sm flex items-center justify-center gap-2"
                             >
                                 <ArrowDownTrayIcon className="w-4 h-4" />
-                                {isExporting ? 'Exporting...' : 'Export as JSON'}
+                                {isExporting ? 'Exporting...' : 'Export JSON'}
                             </button>
                             <button
                                 onClick={() => handleExportData('csv')}
                                 disabled={isExporting}
-                                className="flex-1 px-4 py-2.5 bg-gray-700 hover:bg-gray-600 disabled:bg-gray-800 disabled:cursor-not-allowed text-white rounded-lg transition-colors font-medium text-sm flex items-center justify-center gap-2"
+                                className="flex-1 px-3 lg:px-4 py-2.5 bg-gray-700 hover:bg-gray-600 disabled:bg-gray-800 disabled:cursor-not-allowed text-white rounded-lg transition-colors font-medium text-sm flex items-center justify-center gap-2"
                             >
                                 <ArrowDownTrayIcon className="w-4 h-4" />
-                                {isExporting ? 'Exporting...' : 'Export as CSV'}
+                                {isExporting ? 'Exporting...' : 'Export CSV'}
                             </button>
                         </div>
                     </div>
 
                     {/* Save Button */}
-                    <div className="flex justify-end">
+                    <div className="flex justify-end pb-4">
                         <button
                             onClick={handleSaveSettings}
                             disabled={isSaving}
-                            className="px-6 py-3 bg-indigo-600 hover:bg-indigo-500 disabled:bg-indigo-800 disabled:cursor-not-allowed text-white rounded-lg transition-colors font-medium shadow-lg shadow-indigo-500/20"
+                            className="w-full sm:w-auto px-6 py-3 bg-indigo-600 hover:bg-indigo-500 disabled:bg-indigo-800 disabled:cursor-not-allowed text-white rounded-lg transition-colors font-medium shadow-lg shadow-indigo-500/20"
                         >
                             {isSaving ? 'Saving...' : 'Save Settings'}
                         </button>

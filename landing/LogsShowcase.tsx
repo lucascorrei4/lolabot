@@ -27,49 +27,49 @@ export const LogsShowcase: React.FC = () => {
     const isClickingItem = step === 1;
 
     return (
-        <section className="bg-gray-900 py-24 relative overflow-hidden">
-            <div className="mx-auto max-w-7xl px-6 lg:px-8">
-                <div className="mx-auto max-w-2xl text-center mb-16">
+        <section className="bg-gray-900 py-16 sm:py-24 relative overflow-hidden">
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div className="mx-auto max-w-2xl text-center mb-10 sm:mb-16">
                     <h2 className="text-base font-semibold leading-7 text-indigo-400">Total Visibility</h2>
-                    <p className="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl">
+                    <p className="mt-2 text-2xl sm:text-3xl font-bold tracking-tight text-white sm:text-4xl">
                         Audit Every Conversation
                     </p>
-                    <p className="mt-6 text-lg leading-8 text-gray-300">
+                    <p className="mt-4 sm:mt-6 text-base sm:text-lg leading-7 sm:leading-8 text-gray-300">
                         Never guess what your users are asking. Search, filter, and review full chat transcripts to improve your agent perfectly.
                     </p>
                 </div>
 
-                <div className="relative mx-auto max-w-5xl bg-gray-900 rounded-xl border border-gray-700 shadow-2xl overflow-hidden min-h-[600px] flex flex-col font-sans">
+                <div className="relative mx-auto max-w-5xl bg-gray-900 rounded-xl border border-gray-700 shadow-2xl overflow-hidden min-h-[500px] sm:min-h-[600px] flex flex-col font-sans">
 
                     {/* TOP BAR - Always Visible but content changes */}
-                    <div className="bg-gray-800/80 backdrop-blur-md border-b border-gray-700 p-6 flex justify-between items-center z-10">
-                        <div>
-                            <h3 className="text-xl font-bold text-white tracking-tight">
+                    <div className="bg-gray-800/80 backdrop-blur-md border-b border-gray-700 p-3 sm:p-6 flex flex-col sm:flex-row gap-3 sm:justify-between sm:items-center z-10">
+                        <div className="min-w-0">
+                            <h3 className="text-base sm:text-xl font-bold text-white tracking-tight">
                                 {showDetail ? 'Conversation History' : 'Chat Logs'}
                             </h3>
-                            <p className="text-sm text-gray-400">
+                            <p className="text-xs sm:text-sm text-gray-400 truncate">
                                 {showDetail ? 'Session ID: 694454e3079f894334f38b38 • User: Visitor #4092' : 'Acme Corp Portal'}
                             </p>
                         </div>
-                        <div className="flex gap-4">
+                        <div className="flex gap-2 sm:gap-4">
                             {!showDetail ? (
                                 <>
-                                    <div className="relative">
+                                    <div className="relative flex-1 sm:flex-none">
                                         <input
                                             type="text"
                                             placeholder="Search by User ID..."
-                                            className="bg-gray-900 border border-gray-600 rounded-md py-2 pl-10 pr-4 text-sm text-gray-300 w-64 focus:outline-none focus:border-indigo-500"
+                                            className="bg-gray-900 border border-gray-600 rounded-md py-2 pl-8 sm:pl-10 pr-2 sm:pr-4 text-xs sm:text-sm text-gray-300 w-full sm:w-48 lg:w-64 focus:outline-none focus:border-indigo-500"
                                             readOnly
                                         />
-                                        <svg className="w-4 h-4 text-gray-500 absolute left-3 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                                        <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-500 absolute left-2.5 sm:left-3 top-2.5 sm:top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                                     </div>
-                                    <button className="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors">
+                                    <button className="hidden sm:block bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors">
                                         Back to Home
                                     </button>
                                 </>
                             ) : (
-                                <button className={`bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-md text-sm font-medium flex items-center gap-2 transition-all duration-300 ${step === 3 ? 'scale-95 bg-gray-600' : ''}`}>
-                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                                <button className={`bg-gray-700 hover:bg-gray-600 text-white px-3 sm:px-4 py-2 rounded-md text-xs sm:text-sm font-medium flex items-center gap-1.5 sm:gap-2 transition-all duration-300 ${step === 3 ? 'scale-95 bg-gray-600' : ''}`}>
+                                    <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
                                     Back to Logs
                                 </button>
                             )}
@@ -77,30 +77,30 @@ export const LogsShowcase: React.FC = () => {
                     </div>
 
                     {/* CONTENT AREA */}
-                    <div className="relative flex-1 bg-gray-900 p-6 overflow-hidden">
+                    <div className="relative flex-1 bg-gray-900 p-3 sm:p-6 overflow-hidden">
 
                         {/* LIST VIEW */}
-                        <div className={`absolute inset-0 p-6 transition-all duration-500 transform ${showDetail ? '-translate-x-full opacity-0' : 'translate-x-0 opacity-100'}`}>
+                        <div className={`absolute inset-0 p-3 sm:p-6 transition-all duration-500 transform ${showDetail ? '-translate-x-full opacity-0' : 'translate-x-0 opacity-100'}`}>
                             {/* Filters */}
-                            <div className="bg-gray-800/40 rounded-lg p-4 mb-6 border border-gray-700/50 flex items-end gap-4">
+                            <div className="bg-gray-800/40 rounded-lg p-3 sm:p-4 mb-4 sm:mb-6 border border-gray-700/50 flex flex-col sm:flex-row items-stretch sm:items-end gap-3 sm:gap-4">
                                 <div className="flex-1">
                                     <label className="block text-xs font-bold text-gray-500 uppercase mb-1">From Date</label>
                                     <div className="relative">
-                                        <input type="text" value="mm/dd/yyyy" readOnly className="w-full bg-gray-900 border border-gray-600 rounded px-3 py-2 text-gray-400 text-sm" />
+                                        <input type="text" value="mm/dd/yyyy" readOnly className="w-full bg-gray-900 border border-gray-600 rounded px-3 py-2 text-gray-400 text-xs sm:text-sm" />
                                         <svg className="w-4 h-4 text-gray-500 absolute right-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                                     </div>
                                 </div>
                                 <div className="flex-1">
                                     <label className="block text-xs font-bold text-gray-500 uppercase mb-1">To Date</label>
                                     <div className="relative">
-                                        <input type="text" value="mm/dd/yyyy" readOnly className="w-full bg-gray-900 border border-gray-600 rounded px-3 py-2 text-gray-400 text-sm" />
+                                        <input type="text" value="mm/dd/yyyy" readOnly className="w-full bg-gray-900 border border-gray-600 rounded px-3 py-2 text-gray-400 text-xs sm:text-sm" />
                                         <svg className="w-4 h-4 text-gray-500 absolute right-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                                     </div>
                                 </div>
-                                <button className="bg-blue-600 hover:bg-blue-500 text-white px-6 py-2 rounded text-sm font-medium h-[38px]">Filter</button>
+                                <button className="w-full sm:w-auto bg-blue-600 hover:bg-blue-500 text-white px-4 sm:px-6 py-2 rounded text-sm font-medium">Filter</button>
                             </div>
 
-                            <p className="text-xs text-green-400 font-medium mb-4 flex items-center gap-2">
+                            <p className="text-xs text-green-400 font-medium mb-3 sm:mb-4 flex items-center gap-2">
                                 <span className="w-2 h-2 rounded-full bg-green-500"></span> Found 16 sessions
                             </p>
 
@@ -108,17 +108,17 @@ export const LogsShowcase: React.FC = () => {
                                 {LOGS_DATA.map((log, idx) => (
                                     <div
                                         key={log.id}
-                                        className={`group py-4 px-4 border-b border-gray-800 flex justify-between items-center cursor-pointer transition-all duration-200 
+                                        className={`group py-3 sm:py-4 px-2 sm:px-4 border-b border-gray-800 flex justify-between items-center cursor-pointer transition-all duration-200 
                                             ${idx === 0 && isClickingItem ? 'bg-gray-800 scale-[0.99] border-l-4 border-l-blue-500' : 'hover:bg-gray-800/50'}
                                         `}
                                     >
-                                        <div>
-                                            <h4 className="text-white font-medium text-sm group-hover:text-blue-400 transition-colors">{log.user}</h4>
-                                            <p className="text-xs text-gray-500 mt-1 font-mono">{log.id}</p>
+                                        <div className="min-w-0 flex-1">
+                                            <h4 className="text-white font-medium text-xs sm:text-sm group-hover:text-blue-400 transition-colors">{log.user}</h4>
+                                            <p className="text-[10px] sm:text-xs text-gray-500 mt-0.5 sm:mt-1 font-mono truncate">{log.id}</p>
                                         </div>
-                                        <div className="text-right">
-                                            <p className="text-xs text-gray-400">{log.date}</p>
-                                            <p className="text-xs text-gray-500 mt-1">{log.time}</p>
+                                        <div className="text-right flex-shrink-0 ml-2">
+                                            <p className="text-[10px] sm:text-xs text-gray-400">{log.date}</p>
+                                            <p className="text-[10px] sm:text-xs text-gray-500 mt-0.5 sm:mt-1">{log.time}</p>
                                         </div>
                                     </div>
                                 ))}
@@ -138,12 +138,12 @@ export const LogsShowcase: React.FC = () => {
                         </div>
 
                         {/* DETAIL VIEW */}
-                        <div className={`absolute inset-0 p-6 overflow-y-auto transition-all duration-500 transform ${showDetail ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'}`}>
-                            <div className="space-y-6 max-w-3xl mx-auto pt-4">
+                        <div className={`absolute inset-0 p-3 sm:p-6 overflow-y-auto transition-all duration-500 transform ${showDetail ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'}`}>
+                            <div className="space-y-4 sm:space-y-6 max-w-3xl mx-auto pt-2 sm:pt-4">
                                 {/* Message 1: User */}
                                 <div className="flex justify-end animate-fade-in-up" style={{ animationDelay: '100ms' }}>
-                                    <div className="max-w-[80%]">
-                                        <div className="bg-blue-600 text-white p-3 rounded-2xl rounded-tr-sm text-sm shadow-lg">
+                                    <div className="max-w-[85%] sm:max-w-[80%]">
+                                        <div className="bg-blue-600 text-white p-2.5 sm:p-3 rounded-2xl rounded-tr-sm text-xs sm:text-sm shadow-lg">
                                             What is the status of my order?
                                         </div>
                                         <p className="text-[10px] text-gray-500 text-right mt-1 mr-1">02:28 PM</p>
@@ -152,8 +152,8 @@ export const LogsShowcase: React.FC = () => {
 
                                 {/* Message 2: Bot */}
                                 <div className="flex justify-start animate-fade-in-up" style={{ animationDelay: '300ms' }}>
-                                    <div className="max-w-[80%]">
-                                        <div className="bg-gray-800 border border-gray-700 text-gray-200 p-3 rounded-2xl rounded-tl-sm text-sm shadow-sm">
+                                    <div className="max-w-[85%] sm:max-w-[80%]">
+                                        <div className="bg-gray-800 border border-gray-700 text-gray-200 p-2.5 sm:p-3 rounded-2xl rounded-tl-sm text-xs sm:text-sm shadow-sm">
                                             Hello! I'm the ACME virtual assistant. I'm here to help you check your order status, rewards, and benefits!
                                         </div>
                                         <p className="text-[10px] text-gray-500 ml-1 mt-1">02:28 PM</p>
@@ -162,8 +162,8 @@ export const LogsShowcase: React.FC = () => {
 
                                 {/* Message 3: Bot */}
                                 <div className="flex justify-start animate-fade-in-up" style={{ animationDelay: '800ms' }}>
-                                    <div className="max-w-[80%]">
-                                        <div className="bg-gray-800 border border-gray-700 text-gray-200 p-3 rounded-2xl rounded-tl-sm text-sm shadow-sm">
+                                    <div className="max-w-[85%] sm:max-w-[80%]">
+                                        <div className="bg-gray-800 border border-gray-700 text-gray-200 p-2.5 sm:p-3 rounded-2xl rounded-tl-sm text-xs sm:text-sm shadow-sm">
                                             To check your order, I need your Order ID or Email. Please reply with your Order ID (e.g., #12345) or registered Email.
                                         </div>
                                         <p className="text-[10px] text-gray-500 ml-1 mt-1">02:28 PM</p>
@@ -172,8 +172,8 @@ export const LogsShowcase: React.FC = () => {
 
                                 {/* Message 4: User (Latest) */}
                                 <div className={`flex justify-end transform transition-all duration-500 ${showDetail ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`} style={{ transitionDelay: '1200ms' }}>
-                                    <div className="max-w-[80%]">
-                                        <div className="bg-blue-600 text-white p-3 rounded-2xl rounded-tr-sm text-sm shadow-lg">
+                                    <div className="max-w-[85%] sm:max-w-[80%]">
+                                        <div className="bg-blue-600 text-white p-2.5 sm:p-3 rounded-2xl rounded-tr-sm text-xs sm:text-sm shadow-lg">
                                             My Order ID is #98210
                                         </div>
                                         <p className="text-[10px] text-gray-500 text-right mt-1 mr-1">02:29 PM</p>
@@ -182,8 +182,8 @@ export const LogsShowcase: React.FC = () => {
 
                                 {/* Message 5: Bot (Typing then appear) */}
                                 <div className={`flex justify-start transform transition-all duration-500 ${showDetail ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`} style={{ transitionDelay: '2000ms' }}>
-                                    <div className="max-w-[80%]">
-                                        <div className="bg-gray-800 border border-gray-700 text-gray-200 p-3 rounded-2xl rounded-tl-sm text-sm shadow-sm">
+                                    <div className="max-w-[85%] sm:max-w-[80%]">
+                                        <div className="bg-gray-800 border border-gray-700 text-gray-200 p-2.5 sm:p-3 rounded-2xl rounded-tl-sm text-xs sm:text-sm shadow-sm">
                                             Thanks, Sarah! Your order #98210 has been shipped and is arriving tomorrow.
                                         </div>
                                         <p className="text-[10px] text-gray-500 ml-1 mt-1">02:29 PM</p>

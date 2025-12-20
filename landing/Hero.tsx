@@ -27,7 +27,7 @@ export function Hero() {
   };
 
   return (
-    <section className="relative overflow-hidden bg-gray-900 pt-16 pb-32 space-y-24">
+    <section className="relative overflow-hidden bg-gray-900 pt-12 sm:pt-16 pb-20 sm:pb-32 space-y-16 sm:space-y-24">
       {/* Animated Technical Background */}
       <BackgroundAnimation />
 
@@ -42,8 +42,8 @@ export function Hero() {
         />
       </div>
 
-      <div className="relative isolate px-6 pt-14 lg:px-8 z-10">
-        <div className="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56 text-center relative">
+      <div className="relative isolate px-4 sm:px-6 pt-8 sm:pt-14 lg:px-8 z-10">
+        <div className="mx-auto max-w-2xl py-16 sm:py-32 text-center relative">
           <div className="hidden sm:mb-8 sm:flex sm:justify-center">
             <div className="relative rounded-full px-3 py-1 text-sm leading-6 text-gray-400 ring-1 ring-white/10 hover:ring-white/20 transition-all duration-300 backdrop-blur-sm bg-gray-900/40">
               Announcing our new BizAI Agent.{' '}
@@ -55,28 +55,28 @@ export function Hero() {
           </div>
 
           {/* Animated Brand Title */}
-          <div className="flex justify-center mb-6">
+          <div className="flex justify-center mb-4 sm:mb-6">
             <div className="relative group cursor-default">
               <div className="absolute -inset-1 bg-gradient-to-r from-green-400 to-indigo-500 rounded-lg blur opacity-25 group-hover:opacity-75 transition duration-1000 group-hover:duration-200"></div>
-              <div className="relative px-4 py-2 bg-gray-900 ring-1 ring-white/10 rounded-lg leading-none flex items-center">
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 via-indigo-400 to-purple-500 font-mono font-bold tracking-[0.2em] text-sm animate-text-shimmer bg-[size:200%_auto]">
+              <div className="relative px-3 sm:px-4 py-1.5 sm:py-2 bg-gray-900 ring-1 ring-white/10 rounded-lg leading-none flex items-center">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 via-indigo-400 to-purple-500 font-mono font-bold tracking-[0.15em] sm:tracking-[0.2em] text-xs sm:text-sm animate-text-shimmer bg-[size:200%_auto]">
                   LOLABOT INTELLIGENCE
                 </span>
               </div>
             </div>
           </div>
 
-          <h1 className="text-4xl font-bold tracking-tight text-white sm:text-6xl bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60 drop-shadow-sm">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60 drop-shadow-sm px-2">
             Stop Losing Leads.<br />Stop Losing Money.
           </h1>
-          <p className="mt-6 text-lg leading-8 text-gray-300 max-w-xl mx-auto backdrop-blur-[2px]">
+          <p className="mt-4 sm:mt-6 text-base sm:text-lg leading-7 sm:leading-8 text-gray-300 max-w-xl mx-auto backdrop-blur-[2px] px-4">
             Don't let visitors just browse and leave. With LolaBot Intelligence, you won't lose any lead to navigation.
             Engage them instantly and stop losing money on missed opportunities.
           </p>
-          <div className="mt-10 flex items-center justify-center gap-x-6 mb-4 relative z-20">
+          <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-x-6 mb-4 relative z-20 px-4">
             <a
               href="#pricing"
-              className="relative rounded-full bg-indigo-600 px-8 py-3.5 text-sm font-semibold text-white shadow-[0_0_20px_rgba(79,70,229,0.5)] hover:bg-indigo-500 hover:shadow-[0_0_30px_rgba(79,70,229,0.7)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition-all duration-300"
+              className="w-full sm:w-auto text-center relative rounded-full bg-indigo-600 px-6 sm:px-8 py-3 sm:py-3.5 text-sm font-semibold text-white shadow-[0_0_20px_rgba(79,70,229,0.5)] hover:bg-indigo-500 hover:shadow-[0_0_30px_rgba(79,70,229,0.7)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition-all duration-300"
             >
               Get Started
             </a>
@@ -92,8 +92,8 @@ export function Hero() {
             </button>
           </div>
 
-          {/* Connection Shockwave Animation */}
-          <div className="absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-[40%] w-[600px] h-[300px] -z-10 pointer-events-none opacity-80 sm:w-[800px]">
+          {/* Connection Shockwave Animation - Hidden on very small screens */}
+          <div className="absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-[40%] w-[400px] h-[200px] sm:w-[600px] sm:h-[300px] lg:w-[800px] -z-10 pointer-events-none opacity-60 sm:opacity-80 hidden xs:block">
             <svg className="w-full h-full" viewBox="0 0 800 300" fill="none" xmlns="http://www.w3.org/2000/svg">
               <defs>
                 <linearGradient id="beam-grad" x1="400" y1="0" x2="400" y2="300" gradientUnits="userSpaceOnUse">

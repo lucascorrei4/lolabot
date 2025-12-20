@@ -42,10 +42,10 @@ export async function POST(
         const { botId } = await params;
         const body = await request.json();
 
-        // Only super admins can edit the slug
-        if (body.slug && user.role !== 'super_admin') {
+        // Only super admins can edit the slug or webhookOutgoingUrl
+        if ((body.slug || body.webhookOutgoingUrl) && user.role !== 'super_admin') {
             return NextResponse.json(
-                { error: "Only super admins can edit the slug" },
+                { error: "Only super admins can edit the slug or webhook URL" },
                 { status: 403 }
             );
         }
@@ -57,6 +57,7 @@ export async function POST(
             shortName: body.shortName,
             slug: body.slug,
             initialGreeting: body.initialGreeting,
+            webhookOutgoingUrl: body.webhookOutgoingUrl,
             notificationEmail: body.notificationEmail,
             timezone: body.timezone,
             updatedBy: session.email,

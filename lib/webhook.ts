@@ -1,5 +1,6 @@
 import { z } from "zod";
-import { env, getBotById } from "./env";
+import { env } from "./env";
+import { getBotByIdAsync } from "./botConfig";
 import type { Message, MessageType } from "./types";
 
 export const WebhookReplySchema = z.discriminatedUnion("type", [
@@ -33,15 +34,15 @@ export function getMessageType(type: MessageType): string {
 }
 
 export async function callOutgoingWebhook(payload: any, botId?: string) {
-  // Get bot-specific webhook URL
+  // Get bot-specific webhook URL from MongoDB
   let webhookUrl: string;
-  
+
   if (botId) {
-    const botConfig = getBotById(botId);
+    const botConfig = await getBotByIdAsync(botId);
     if (botConfig?.webhookOutgoingUrl) {
       webhookUrl = botConfig.webhookOutgoingUrl;
     } else {
-      // Fallback to legacy env var if bot not found
+      // Fallback to legacy env var if bot not found in MongoDB
       webhookUrl = env.WEBHOOK_OUTGOING_URL || "";
     }
   } else {
@@ -62,15 +63,15 @@ export async function callOutgoingWebhook(payload: any, botId?: string) {
     const text = await res.text().catch(() => "");
     throw new Error(`Webhook error: ${res.status} ${text}`);
   }
-  
+
   // Read response as text first to check if it's empty
   const text = await res.text().catch(() => "");
-  
+
   // If empty response, return default empty structure
   if (!text || text.trim() === "") {
     return WebhookResponseSchema.parse({ replies: [], output: null, metadata: {} });
   }
-  
+
   // Try to parse as JSON
   try {
     const json = JSON.parse(text);
@@ -83,14 +84,14 @@ export async function callOutgoingWebhook(payload: any, botId?: string) {
 }
 
 export function toWebhookHistory(messages: Message[]) {
-  return messages.map((m) => ({ 
-    role: m.role, 
-    type: m.type, 
+  return messages.map((m) => ({
+    role: m.role,
+    type: m.type,
     messageType: getMessageType(m.type),
-    text: m.text, 
-    url: m.url, 
-    mime: m.mime, 
-    choices: m.choices 
+    text: m.text,
+    url: m.url,
+    mime: m.mime,
+    choices: m.choices
   }));
 }
 

@@ -1,4 +1,4 @@
-import { getDefaultBot } from "../../lib/env";
+import { getDefaultBotAsync } from "../../lib/env";
 import { env } from "../../lib/env";
 import Script from "next/script";
 import { Metadata } from "next";
@@ -8,12 +8,12 @@ export const metadata: Metadata = {
   description: "Test and integrate the LolaBot Intelligence chat widget.",
 };
 
-export default function ChatTestPage() {
+export default async function ChatTestPage() {
   const appUrl = env.NEXT_PUBLIC_APP_URL || "";
   // Ensure we don't have double slash if appUrl ends with /
   const baseUrl = appUrl.replace(/\/$/, "");
   const scriptSrc = `${baseUrl}/embed/lolabot.js`;
-  const defaultBot = getDefaultBot();
+  const defaultBot = await getDefaultBotAsync();
   const botId = defaultBot?.id || "lola-demo";
 
   const codeSnippet = `<script 

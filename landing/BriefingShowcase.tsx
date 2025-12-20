@@ -137,80 +137,80 @@ export const BriefingShowcase: React.FC<BriefingShowcaseProps & { data?: Briefin
     const theme = getAccentColors(scenario.accentColor);
 
     return (
-        <div className="relative w-full mx-auto max-w-4xl bg-gray-800/50 rounded-2xl p-8 border border-white/10 shadow-2xl backdrop-blur-xl overflow-hidden min-h-[400px] flex items-center justify-center">
+        <div className="relative w-full mx-auto max-w-4xl bg-gray-800/50 rounded-xl sm:rounded-2xl p-4 sm:p-6 lg:p-8 border border-white/10 shadow-2xl backdrop-blur-xl overflow-hidden min-h-[320px] sm:min-h-[400px] flex items-center justify-center">
 
             {/* Background Ambience */}
             <div className={`absolute top-0 left-0 w-full h-full bg-gradient-to-br ${theme.gradient} pointer-events-none transition-colors duration-500`} />
 
             {/* STAGE 1: CHAT */}
-            <div className={`absolute transition-all duration-700 transform ${step === 0 ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 -translate-y-10 scale-95'}`}>
-                <div className="bg-gray-900 rounded-lg p-4 w-96 shadow-xl border border-white/10">
-                    <div className="flex gap-3 mb-4">
-                        <div className={`w-8 h-8 rounded-full ${theme.bg} flex items-center justify-center text-white`}>{scenario.chatIcon}</div>
-                        <div className="bg-gray-800 p-3 rounded-r-xl rounded-bl-xl text-sm text-gray-200">
+            <div className={`absolute transition-all duration-700 transform px-2 sm:px-0 w-full sm:w-auto ${step === 0 ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 -translate-y-10 scale-95'}`}>
+                <div className="bg-gray-900 rounded-lg p-3 sm:p-4 w-full sm:w-80 lg:w-96 shadow-xl border border-white/10 mx-auto">
+                    <div className="flex gap-2 sm:gap-3 mb-3 sm:mb-4">
+                        <div className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full ${theme.bg} flex items-center justify-center text-white text-sm flex-shrink-0`}>{scenario.chatIcon}</div>
+                        <div className="bg-gray-800 p-2 sm:p-3 rounded-r-xl rounded-bl-xl text-xs sm:text-sm text-gray-200">
                             {scenario.chatMessage}
                         </div>
                     </div>
-                    <div className="flex gap-3 justify-end">
-                        <div className={`${theme.button} p-3 rounded-l-xl rounded-br-xl text-sm text-white`}>
+                    <div className="flex gap-2 sm:gap-3 justify-end">
+                        <div className={`${theme.button} p-2 sm:p-3 rounded-l-xl rounded-br-xl text-xs sm:text-sm text-white`}>
                             {scenario.responseMessage}
                         </div>
-                        <div className="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center">👤</div>
+                        <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gray-700 flex items-center justify-center text-sm flex-shrink-0">👤</div>
                     </div>
                 </div>
             </div>
 
             {/* STAGE 2: PROCESSING */}
             <div className={`absolute flex flex-col items-center transition-all duration-700 transform ${step === 1 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-                <div className={`w-16 h-16 rounded-full border-4 ${theme.borderLight} ${theme.borderTop} animate-spin mb-4`}></div>
-                <p className={`${theme.text} font-mono text-sm tracking-widest uppercase`}>{scenario.processingTitle}</p>
+                <div className={`w-12 h-12 sm:w-16 sm:h-16 rounded-full border-4 ${theme.borderLight} ${theme.borderTop} animate-spin mb-3 sm:mb-4`}></div>
+                <p className={`${theme.text} font-mono text-xs sm:text-sm tracking-widest uppercase text-center px-4`}>{scenario.processingTitle}</p>
             </div>
 
             {/* STAGE 3: EMAIL NOTIFICATION */}
-            <div className={`absolute w-full max-w-2xl transition-all duration-700 transform ${step >= 2 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'}`}>
+            <div className={`absolute w-full max-w-[95%] sm:max-w-xl lg:max-w-2xl transition-all duration-700 transform ${step >= 2 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'}`}>
                 {/* Fake Email Interface */}
-                <div className="bg-white dark:bg-[#1E1E1E] rounded-xl shadow-2xl overflow-hidden border border-gray-700">
+                <div className="bg-white dark:bg-[#1E1E1E] rounded-lg sm:rounded-xl shadow-2xl overflow-hidden border border-gray-700">
                     {/* Header */}
-                    <div className="bg-gray-100 dark:bg-[#252525] px-6 py-4 border-b border-gray-700 flex justify-between items-center">
-                        <div className="flex gap-4">
-                            <span className="w-3 h-3 rounded-full bg-red-500"></span>
-                            <span className="w-3 h-3 rounded-full bg-yellow-500"></span>
-                            <span className="w-3 h-3 rounded-full bg-green-500"></span>
+                    <div className="bg-gray-100 dark:bg-[#252525] px-3 sm:px-6 py-2 sm:py-4 border-b border-gray-700 flex justify-between items-center">
+                        <div className="flex gap-2 sm:gap-4">
+                            <span className="w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-red-500"></span>
+                            <span className="w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-yellow-500"></span>
+                            <span className="w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-green-500"></span>
                         </div>
-                        <div className="text-xs text-gray-500 font-mono">Message from LolaBot Intelligence</div>
+                        <div className="text-[10px] sm:text-xs text-gray-500 font-mono hidden sm:block">Message from LolaBot Intelligence</div>
                     </div>
 
                     {/* Body */}
-                    <div className="p-8">
-                        <div className="flex justify-between items-start mb-6">
-                            <div>
-                                <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-1">{scenario.emailTitle}</h2>
-                                <p className="text-sm text-gray-500">From: <span className={theme.text}>Lolabot Intelligence</span></p>
+                    <div className="p-3 sm:p-6 lg:p-8">
+                        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2 sm:gap-4 mb-4 sm:mb-6">
+                            <div className="min-w-0 flex-1">
+                                <h2 className="text-base sm:text-lg lg:text-xl font-bold text-gray-900 dark:text-white mb-1 truncate">{scenario.emailTitle}</h2>
+                                <p className="text-xs sm:text-sm text-gray-500">From: <span className={theme.text}>LolaBot Intelligence</span></p>
                             </div>
-                            <span className={`${scenario.priorityClass} text-xs px-2 py-1 rounded border`}>{scenario.priorityLabel}</span>
+                            <span className={`${scenario.priorityClass} text-[10px] sm:text-xs px-2 py-1 rounded border flex-shrink-0 self-start`}>{scenario.priorityLabel}</span>
                         </div>
 
-                        <div className="space-y-4">
-                            <div className={`bg-gray-50 dark:bg-gray-800/50 p-4 rounded-lg border-l-4 ${theme.border}`}>
-                                <h4 className="text-sm font-semibold text-gray-400 uppercase mb-2">{scenario.summaryTitle}</h4>
-                                <p className="text-gray-300 text-sm leading-relaxed">
+                        <div className="space-y-3 sm:space-y-4">
+                            <div className={`bg-gray-50 dark:bg-gray-800/50 p-3 sm:p-4 rounded-lg border-l-4 ${theme.border}`}>
+                                <h4 className="text-xs sm:text-sm font-semibold text-gray-400 uppercase mb-1 sm:mb-2">{scenario.summaryTitle}</h4>
+                                <p className="text-gray-300 text-xs sm:text-sm leading-relaxed">
                                     {scenario.summaryText}
                                 </p>
                             </div>
 
-                            <div className="grid grid-cols-2 gap-4">
-                                <div className="bg-gray-50 dark:bg-gray-800/50 p-3 rounded border border-gray-700/50">
-                                    <span className="block text-xs text-gray-500 mb-1">{scenario.sentimentLabel}</span>
-                                    <div className="flex items-center gap-2">
-                                        <span className="text-2xl">{scenario.sentimentIcon}</span>
-                                        <span className="text-white font-bold">{scenario.sentimentScore}</span>
+                            <div className="grid grid-cols-2 gap-2 sm:gap-4">
+                                <div className="bg-gray-50 dark:bg-gray-800/50 p-2 sm:p-3 rounded border border-gray-700/50">
+                                    <span className="block text-[10px] sm:text-xs text-gray-500 mb-1">{scenario.sentimentLabel}</span>
+                                    <div className="flex items-center gap-1 sm:gap-2">
+                                        <span className="text-lg sm:text-2xl">{scenario.sentimentIcon}</span>
+                                        <span className="text-white font-bold text-xs sm:text-base">{scenario.sentimentScore}</span>
                                     </div>
                                 </div>
-                                <div className="bg-gray-50 dark:bg-gray-800/50 p-3 rounded border border-gray-700/50">
-                                    <span className="block text-xs text-gray-500 mb-1">{scenario.actionLabel}</span>
-                                    <div className={`flex items-center gap-2 ${scenario.actionClass} text-sm font-bold`}>
-                                        <span>{scenario.actionText}</span>
-                                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+                                <div className="bg-gray-50 dark:bg-gray-800/50 p-2 sm:p-3 rounded border border-gray-700/50">
+                                    <span className="block text-[10px] sm:text-xs text-gray-500 mb-1">{scenario.actionLabel}</span>
+                                    <div className={`flex items-center gap-1 sm:gap-2 ${scenario.actionClass} text-xs sm:text-sm font-bold`}>
+                                        <span className="truncate">{scenario.actionText}</span>
+                                        <svg className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
                                     </div>
                                 </div>
                             </div>

@@ -67,16 +67,16 @@ export default function SignalsDashboard({ botId, signals }: SignalsDashboardPro
             {/* Sidebar */}
             <AdminSidebar botId={botId} />
 
-            {/* Main content - add ml-64 to offset fixed sidebar */}
-            <main className="flex-1 ml-64 overflow-auto min-h-screen flex flex-col">
-                <header className="bg-gray-900 border-b border-gray-800 py-6 px-8 sticky top-0 z-10 backdrop-blur-md bg-opacity-90">
-                    <h2 className="text-2xl font-bold text-white">Live Intelligence Signals</h2>
-                    <p className="text-gray-400 mt-1">Real-time alerts and briefings from your visitor sessions.</p>
+            {/* Main content - responsive margin for sidebar */}
+            <main className="flex-1 lg:ml-64 overflow-auto min-h-screen flex flex-col pt-16 lg:pt-0">
+                <header className="bg-gray-900 border-b border-gray-800 py-4 lg:py-6 px-4 lg:px-8 lg:sticky lg:top-0 z-10 backdrop-blur-md bg-opacity-90">
+                    <h2 className="text-xl lg:text-2xl font-bold text-white">Live Intelligence Signals</h2>
+                    <p className="text-gray-400 mt-1 text-sm lg:text-base">Real-time alerts and briefings from your visitor sessions.</p>
                 </header>
 
-                <div className="p-8 flex-1">
+                <div className="p-4 lg:p-8 flex-1">
                     {/* Signal Selectors */}
-                    <div className="flex flex-wrap gap-4 mb-8">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 lg:gap-4 mb-6 lg:mb-8">
                         {signalTypes.map((signal) => {
                             const isActive = currentSignalType === signal.type;
                             // Count signals of this type
@@ -88,19 +88,19 @@ export default function SignalsDashboard({ botId, signals }: SignalsDashboardPro
                                 <button
                                     key={signal.type}
                                     onClick={() => setCurrentSignalType(signal.type as SignalType)}
-                                    className={`flex items-center gap-3 px-6 py-4 rounded-xl border transition-all duration-300 flex-1 min-w-[200px] ${isActive
+                                    className={`flex items-center gap-2 lg:gap-3 px-3 lg:px-6 py-3 lg:py-4 rounded-xl border transition-all duration-300 ${isActive
                                         ? 'bg-gray-800 border-indigo-500 shadow-lg shadow-indigo-500/10'
                                         : 'bg-gray-800/50 border-gray-700 hover:border-gray-600 hover:bg-gray-800'
                                         }`}
                                 >
-                                    <div className={`p-2 rounded-lg bg-gray-900 ${signal.color}`}>
-                                        <signal.icon className="h-6 w-6" />
+                                    <div className={`p-1.5 lg:p-2 rounded-lg bg-gray-900 ${signal.color} flex-shrink-0`}>
+                                        <signal.icon className="h-5 w-5 lg:h-6 lg:w-6" />
                                     </div>
-                                    <div className="text-left">
-                                        <p className={`font-semibold ${isActive ? 'text-white' : 'text-gray-300'}`}>
-                                            {signal.label} <span className="text-xs opacity-50 ml-1">({count})</span>
+                                    <div className="text-left min-w-0 flex-1">
+                                        <p className={`font-semibold text-sm lg:text-base truncate ${isActive ? 'text-white' : 'text-gray-300'}`}>
+                                            {signal.label} <span className="text-xs opacity-50">({count})</span>
                                         </p>
-                                        <p className="text-xs text-gray-500">Latest: {latestTime}</p>
+                                        <p className="text-xs text-gray-500 truncate">Latest: {latestTime}</p>
                                     </div>
                                 </button>
                             );
@@ -108,7 +108,7 @@ export default function SignalsDashboard({ botId, signals }: SignalsDashboardPro
                     </div>
 
                     {/* Showcase Container */}
-                    <div className="bg-gray-900/50 rounded-3xl border border-gray-800 p-8 min-h-[600px] flex items-center justify-center relative overflow-hidden">
+                    <div className="bg-gray-900/50 rounded-2xl lg:rounded-3xl border border-gray-800 p-4 lg:p-8 min-h-[400px] lg:min-h-[600px] flex items-center justify-center relative overflow-hidden">
                         <div className="absolute inset-0 bg-grid-indigo-500/[0.05] -z-10" />
 
                         {filteredSignals.length > 0 && latestSignal ? (
@@ -117,9 +117,9 @@ export default function SignalsDashboard({ botId, signals }: SignalsDashboardPro
                                 data={mapSignalToScenario(latestSignal)}
                             />
                         ) : (
-                            <div className="text-center text-gray-500">
-                                <BellAlertIcon className="h-12 w-12 mx-auto mb-4 opacity-20" />
-                                <p className="text-lg font-medium">No signals found for this category</p>
+                            <div className="text-center text-gray-500 px-4">
+                                <BellAlertIcon className="h-10 w-10 lg:h-12 lg:w-12 mx-auto mb-4 opacity-20" />
+                                <p className="text-base lg:text-lg font-medium">No signals found for this category</p>
                                 <p className="text-sm">Waiting for new intelligence...</p>
                             </div>
                         )}
