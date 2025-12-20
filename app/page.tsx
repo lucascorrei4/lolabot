@@ -15,6 +15,6 @@ export default function HomePage() {
     redirect(`/${sanitizedSlug}`);
   } else {
     // Fallback if no bots configured
-    redirect("/lolabot-landing-demo");
+    redirect("/login");
   }
 }
