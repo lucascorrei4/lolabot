@@ -23,7 +23,7 @@ export default function ChatWidget(props: WidgetProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   // Always start with a consistent default theme to avoid hydration mismatch
-  const [theme, setTheme] = useState<"light" | "dark">(props.theme || "light");
+  const [theme, setTheme] = useState<"light" | "dark">(props.theme || "dark");
   const scrollerRef = useRef<HTMLDivElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const lastMessageCountRef = useRef(0);
@@ -39,10 +39,10 @@ export default function ChatWidget(props: WidgetProps) {
   // Notify parent window about state changes (for embed resizing)
   useEffect(() => {
     if (window.parent !== window) {
-      window.parent.postMessage({ 
-        type: 'LOLA_RESIZE', 
-        isMaximized, 
-        isCollapsed 
+      window.parent.postMessage({
+        type: 'LOLA_RESIZE',
+        isMaximized,
+        isCollapsed
       }, '*');
     }
   }, [isMaximized, isCollapsed]);
@@ -56,8 +56,10 @@ export default function ChatWidget(props: WidgetProps) {
     // Also ensure html is 100% height/width for full screen
     document.documentElement.style.height = "100%";
     document.body.style.height = "100%";
-    
+
     // Only run if theme wasn't explicitly provided via props
+    // Theme defaults to dark, logic removed to prevent overriding to light mode based on system settings
+    /* 
     if (!props.theme) {
       const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
       const systemTheme = mediaQuery.matches ? "dark" : "light";
@@ -70,6 +72,7 @@ export default function ChatWidget(props: WidgetProps) {
       mediaQuery.addEventListener("change", handleChange);
       return () => mediaQuery.removeEventListener("change", handleChange);
     }
+    */
   }, [props.theme]);
 
   // Check if user is near the bottom of the scroll
@@ -98,7 +101,7 @@ export default function ChatWidget(props: WidgetProps) {
     const handleScroll = () => {
       // Don't track programmatic scrolls
       if (isProgrammaticScrollRef.current) return;
-      
+
       if (!isUserScrollingRef.current) {
         isUserScrollingRef.current = true;
       }
@@ -116,56 +119,39 @@ export default function ChatWidget(props: WidgetProps) {
       if (!mounted) return;
       try {
         setError(null);
-        
+
         // Try to get stored session ID from localStorage
         // Key includes botId so we don't mix up sessions for different bots
         const storageKey = `lolabot_session_${props.botId}${props.userId ? `_${props.userId}` : ''}`;
         const storedSessionId = localStorage.getItem(storageKey);
-        
+
         // Determine if we should try to resume a session or create a new one
         let currentSession = null;
-        
+
         if (storedSessionId) {
           // Verify if the stored session is still valid
           try {
-             const res = await fetch(`${apiBase}/api/sessions?sessionId=${storedSessionId}`);
-             // Note: We need to implement GET /api/sessions to validate/fetch session by ID
-             // For now, we'll assume we can just use it if we can fetch messages
-             if (res.ok) {
-               // Proceed to use this session
-               currentSession = { _id: storedSessionId };
-             } else {
-               // Session invalid or expired, clear it
-               localStorage.removeItem(storageKey);
-             }
+            const res = await fetch(`${apiBase}/api/sessions?sessionId=${storedSessionId}`);
+            // Note: We need to implement GET /api/sessions to validate/fetch session by ID
+            // For now, we'll assume we can just use it if we can fetch messages
+            if (res.ok) {
+              // Proceed to use this session
+              currentSession = { _id: storedSessionId };
+            } else {
+              // Session invalid or expired, clear it
+              localStorage.removeItem(storageKey);
+            }
           } catch (e) {
-             localStorage.removeItem(storageKey);
+            localStorage.removeItem(storageKey);
           }
         }
 
-        // If no valid stored session, create/resolve one via API
-        if (!currentSession) {
-          const res = await fetch(`${apiBase}/api/sessions`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ botId: props.botId, userId: props.userId, chatId: props.chatId }),
-          });
-          if (!res.ok) {
-            const errorText = await res.text().catch(() => "Unknown error");
-            throw new Error(`Failed to create session: ${res.status} ${errorText}`);
-          }
-          const json = await res.json();
-          currentSession = json.session;
-          
-          // Store the new session ID
-          if (currentSession?._id) {
-            localStorage.setItem(storageKey, currentSession._id);
-          }
-        }
-        
+        // If no valid stored session, we wait for user interaction to create one
+        // so currentSession remains null here if not found in storage.
+
         if (!mounted) return;
         setSession(currentSession);
-        
+
         // Load existing messages for this session
         if (currentSession?._id) {
           const messagesRes = await fetch(`${apiBase}/api/messages?sessionId=${encodeURIComponent(currentSession._id)}`);
@@ -220,11 +206,11 @@ export default function ChatWidget(props: WidgetProps) {
   // Smart scroll handling for new messages
   useEffect(() => {
     if (messages.length === 0) return;
-    
+
     const messageCountIncreased = messages.length > lastMessageCountRef.current;
     lastMessageCountRef.current = messages.length;
 
-            if (messageCountIncreased) {
+    if (messageCountIncreased) {
       // Small delay to ensure DOM is updated
       setTimeout(() => {
         const wasNearBottom = isNearBottom();
@@ -237,13 +223,13 @@ export default function ChatWidget(props: WidgetProps) {
           isUserScrollingRef.current = false;
           return;
         }
-        
+
         // Only auto-scroll if user was already near the bottom or hasn't manually scrolled
         if (wasNearBottom || !isUserScrollingRef.current) {
           isProgrammaticScrollRef.current = true;
           const lastMessageIndex = messages.length - 1;
           const lastMessage = scrollerRef.current?.querySelector(`[data-original-index="${lastMessageIndex}"]`);
-          
+
           if (lastMessage) {
             // Scroll to show the top of the new message (so user can read from beginning)
             lastMessage.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -278,7 +264,7 @@ export default function ChatWidget(props: WidgetProps) {
   const handleChatDragOver = (e: React.DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    if (!loading && session) {
+    if (!loading) {
       setIsDraggingOverChat(true);
     }
   };
@@ -301,20 +287,20 @@ export default function ChatWidget(props: WidgetProps) {
     e.preventDefault();
     e.stopPropagation();
     setIsDraggingOverChat(false);
-    
-    if (!session || loading) return;
+
+    if (loading) return;
 
     const files = Array.from(e.dataTransfer.files);
     const validFile = files.find(f => f.type.startsWith("image/") || f.type.startsWith("audio/"));
-    
+
     if (validFile) {
       handleFileDrop(validFile);
     }
   };
 
   const handleChatPaste = (e: React.ClipboardEvent) => {
-    if (!session || loading) return;
-    
+    if (loading) return;
+
     const items = e.clipboardData?.items;
     if (!items || items.length === 0) return;
 
@@ -324,7 +310,7 @@ export default function ChatWidget(props: WidgetProps) {
       if (item.type.startsWith("image/")) {
         e.preventDefault();
         e.stopPropagation();
-        
+
         try {
           const file = item.getAsFile();
           if (file && file.size > 0) {
@@ -340,33 +326,56 @@ export default function ChatWidget(props: WidgetProps) {
   };
 
   const onSend = async (payload: { type: "text" | "image" | "audio"; text?: string; url?: string; mime?: string; file?: File | null }) => {
-    if (!session) return;
     setLoading(true);
     setError(null);
-    
+
     // Create preview URL for files (so user can see the image immediately)
     let previewUrl: string | undefined = payload.url;
     if (payload.file && !previewUrl) {
       previewUrl = URL.createObjectURL(payload.file);
     }
-    
-    const optimistic = { 
-      role: "user", 
-      type: payload.type, 
-      text: payload.text, 
+
+    const optimistic = {
+      role: "user",
+      type: payload.type,
+      text: payload.text,
       url: previewUrl, // Use preview URL so image appears immediately
-      mime: payload.mime || payload.file?.type, 
+      mime: payload.mime || payload.file?.type,
       _optimisticId: crypto.randomUUID(),
       _isOptimistic: true, // Mark as optimistic so we can clean up the preview URL later
     };
     setMessages((m) => [...m, optimistic]);
 
     try {
+      // Lazy session initialization
+      let currentSessionId = session?._id;
+      if (!currentSessionId) {
+        const res = await fetch(`${apiBase}/api/sessions`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ botId: props.botId, userId: props.userId, chatId: props.chatId }),
+        });
+        if (!res.ok) {
+          const errorText = await res.text().catch(() => "Unknown error");
+          throw new Error(`Failed to create session: ${res.status} ${errorText}`);
+        }
+        const json = await res.json();
+        const newSession = json.session;
+        currentSessionId = newSession._id;
+        setSession(newSession);
+
+        // Store the new session ID
+        const storageKey = `lolabot_session_${props.botId}${props.userId ? `_${props.userId}` : ''}`;
+        if (currentSessionId) {
+          localStorage.setItem(storageKey, currentSessionId);
+        }
+      }
+
       let url = payload.url;
       if (payload.file) {
         const fd = new FormData();
         fd.set("file", payload.file);
-        fd.set("sessionId", session._id);
+        fd.set("sessionId", currentSessionId);
         fd.set("type", payload.type);
         fd.set("mime", payload.file.type);
         const up = await fetch(`${apiBase}/api/uploads`, { method: "POST", body: fd });
@@ -375,14 +384,14 @@ export default function ChatWidget(props: WidgetProps) {
         }
         const uj = await up.json();
         url = uj.url;
-        
+
         // Update optimistic message with real URL
         if (previewUrl && previewUrl.startsWith('blob:')) {
           URL.revokeObjectURL(previewUrl); // Clean up preview URL
         }
-        setMessages((m) => 
-          m.map((msg) => 
-            msg._optimisticId === optimistic._optimisticId 
+        setMessages((m) =>
+          m.map((msg) =>
+            msg._optimisticId === optimistic._optimisticId
               ? { ...msg, url, _isOptimistic: false }
               : msg
           )
@@ -392,8 +401,8 @@ export default function ChatWidget(props: WidgetProps) {
       const res = await fetch(`${apiBase}/api/messages`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
-          sessionId: session._id, 
+        body: JSON.stringify({
+          sessionId: currentSessionId,
           message: { type: payload.type, text: payload.text, url, mime: payload.mime },
           context: props.context
         }),
@@ -439,29 +448,29 @@ export default function ChatWidget(props: WidgetProps) {
   const isDark = theme === "dark";
   const colors = isDark
     ? {
-        bg: "#1a1a1a",
-        surface: "#252525",
-        surfaceElevated: "rgb(37 37 37)",
-        border: "rgb(37 37 37)",
-        text: "#ffffff",
-        textSecondary: "#a0a0a0",
-        userBubble: "#0066ff",
-        botBubble: "#2d2d2d",
-        inputBg: "#2d2d2d",
-        error: "#ff4444",
-      }
+      bg: "#1a1a1a",
+      surface: "#252525",
+      surfaceElevated: "rgb(37 37 37)",
+      border: "rgb(37 37 37)",
+      text: "#ffffff",
+      textSecondary: "#a0a0a0",
+      userBubble: "#0066ff",
+      botBubble: "#2d2d2d",
+      inputBg: "#2d2d2d",
+      error: "#ff4444",
+    }
     : {
-        bg: "#ffffff",
-        surface: "#f8f9fa",
-        surfaceElevated: "#ffffff",
-        border: "#e5e7eb",
-        text: "#1a1a1a",
-        textSecondary: "#6b7280",
-        userBubble: "#0066ff",
-        botBubble: "#f1f3f5",
-        inputBg: "#ffffff",
-        error: "#dc2626",
-      };
+      bg: "#ffffff",
+      surface: "#f8f9fa",
+      surfaceElevated: "#ffffff",
+      border: "#e5e7eb",
+      text: "#1a1a1a",
+      textSecondary: "#6b7280",
+      userBubble: "#0066ff",
+      botBubble: "#f1f3f5",
+      inputBg: "#ffffff",
+      error: "#dc2626",
+    };
 
   return (
     <div
@@ -471,11 +480,11 @@ export default function ChatWidget(props: WidgetProps) {
         maxWidth: isMaximized ? "1440px" : "100vw",
         maxHeight: isMaximized ? "none" : "100vh",
         borderRadius: isMaximized ? 0 : 20,
-        border: isMaximized || isCollapsed ? "none" : `1px solid ${colors.border}`,
+        border: isMaximized ? "none" : `1px solid ${colors.border}`,
         overflow: "hidden",
         display: "flex",
         flexDirection: "column",
-        background: isCollapsed ? "transparent" : colors.bg,
+        background: isCollapsed ? colors.surfaceElevated : colors.bg,
         boxShadow: isDark
           ? "0 20px 60px rgba(0, 0, 0, 0.5)"
           : "0 20px 60px rgba(0, 0, 0, 0.12)",
@@ -495,34 +504,13 @@ export default function ChatWidget(props: WidgetProps) {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          background: isCollapsed ? "transparent" : colors.surfaceElevated,
+          background: colors.surfaceElevated,
           flex: isCollapsed ? 1 : undefined,
         }}
       >
         <div style={{ fontWeight: 600, fontSize: 16, color: colors.text }}>{props.shortName || "LolaBot"}</div>
         <div style={{ display: "flex", gap: 8 }}>
-          <button
-            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-            style={{
-              background: "transparent",
-              border: `1px solid ${colors.border}`,
-              borderRadius: 8,
-              padding: 6,
-              width: 32,
-              height: 32,
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              color: colors.textSecondary,
-              transition: "all 0.2s ease",
-            }}
-            onMouseEnter={(e) => (e.currentTarget.style.background = colors.surface)}
-            onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
-            title="Toggle Theme"
-          >
-            {isDark ? "☀️" : "🌙"}
-          </button>
+          {/* Theme toggle removed */}
           <button
             onClick={() => {
               setIsCollapsed(!isCollapsed);

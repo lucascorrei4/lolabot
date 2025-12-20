@@ -1,28 +1,66 @@
 import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
-import { isOriginAllowed } from "./lib/cors";
+import { NextRequest } from "next/server";
+import { verifySession } from "./lib/auth";
 
-export function middleware(req: NextRequest) {
-  const origin = req.headers.get("origin");
-  const isApi = req.nextUrl.pathname.startsWith("/api/") || req.nextUrl.pathname === "/api";
-  if (!isApi) return NextResponse.next();
-
-  const res = NextResponse.next();
-  const allow = isOriginAllowed(origin) ? origin ?? "*" : "";
-  if (allow) {
-    res.headers.set("Access-Control-Allow-Origin", allow);
-    res.headers.set("Vary", "Origin");
-  }
-  res.headers.set("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
-  res.headers.set("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With, x-lolabot-signature");
-
-  if (req.method === "OPTIONS") {
-    return new NextResponse(null, { status: 204, headers: res.headers });
+export async function middleware(request: NextRequest) {
+  // Only run on /admin routes
+  if (!request.nextUrl.pathname.startsWith("/admin")) {
+    return NextResponse.next();
   }
 
-  return res;
+  const token = request.cookies.get("auth_token")?.value;
+  const session = token ? await verifySession(token) : null;
+
+  // If no session, redirect to login
+  if (!session) {
+    const loginUrl = new URL("/login", request.url);
+    // Optionally preserve return URL?
+    return NextResponse.redirect(loginUrl);
+  }
+
+  // Handle specific admin paths
+  const pathname = request.nextUrl.pathname;
+
+  // Root /admin -> Portal
+  if (pathname === "/admin") {
+    return NextResponse.redirect(new URL("/admin/portal", request.url));
+  }
+
+  // Super Admin
+  if (pathname.startsWith("/admin/super")) {
+    if (session.role !== "super_admin") {
+      return NextResponse.redirect(new URL("/admin/portal", request.url));
+    }
+    return NextResponse.next();
+  }
+
+  // Bot Admin Paths: /admin/[botId]
+  // Extract botId from /admin/botId/something...
+  const parts = pathname.split("/");
+  // parts = ["", "admin", "botId", ...]
+  if (parts.length >= 3) {
+    const botId = parts[2];
+    // Skip "portal" as it's not a botId
+    if (botId === "portal") return NextResponse.next();
+
+    // Check access
+    const isSuper = session.role === "super_admin";
+    const hasAccess = session.allowedBotIds?.includes(botId);
+
+    if (!isSuper && !hasAccess) {
+      // Unauthorized for this bot
+      return NextResponse.redirect(new URL("/admin/portal", request.url));
+    }
+  }
+
+  return NextResponse.next();
 }
 
 export const config = {
-  matcher: "/api/:path*",
+  matcher: [
+    /*
+     * Match all request paths starting with /admin
+     */
+    "/admin/:path*",
+  ],
 };

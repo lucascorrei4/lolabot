@@ -4,8 +4,8 @@ import Script from "next/script";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Chat Widget Integration | LolaBot",
-  description: "Test and integrate the LolaBot chat widget.",
+  title: "Chat Widget Integration | LolaBot Intelligence",
+  description: "Test and integrate the LolaBot Intelligence chat widget.",
 };
 
 export default function ChatTestPage() {

@@ -4,7 +4,7 @@ const features = [
   {
     name: 'Context Awareness',
     description:
-      'Lolabot doesn\'t just chat; it understands. It uses the specific context of the page your visitor is viewing to provide relevant, accurate answers instantly.',
+      'LolaBot Intelligence doesn\'t just chat; it understands. It uses the specific context of the page your visitor is viewing to provide relevant, accurate answers instantly.',
     icon: ChatBubbleLeftRightIcon,
   },
   {
@@ -22,7 +22,7 @@ const features = [
   {
     name: 'Universal Embed',
     description:
-      'Works everywhere. Encapsulate Lolabot in any page or tool. It seamlessly integrates with your existing workflow and tools.',
+      'Works everywhere. Encapsulate LolaBot Intelligence in any page or tool. It seamlessly integrates with your existing workflow and tools.',
     icon: GlobeAltIcon,
   },
 ];
@@ -37,7 +37,7 @@ export function Features() {
             Everything you need to support your customers
           </p>
           <p className="mt-6 text-lg leading-8 text-gray-400">
-            Lolabot is not just another chatbot. It's a smart agent designed to help small and medium businesses scale their support with AI that actually understands their business.
+            LolaBot Intelligence is not just another chatbot. It's a smart agent designed to help small and medium businesses scale their support with AI that actually understands their business.
           </p>
         </div>
         <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-4xl">

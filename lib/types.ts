@@ -44,4 +44,42 @@ export interface Upload {
   createdAt: Date;
 }
 
+export interface Signal {
+  _id?: string;
+  botId: string;
+  sessionId?: string;
+  type: 'success' | 'warning' | 'danger';
+  title: string;
+  priority: string;
+  summaryTitle: string;
+  summaryText: string;
+  sentimentLabel: string;
+  sentimentScore: string;
+  sentimentIcon: string;
+  actionLabel: string;
+  actionText: string;
+  userDetails?: {
+    name?: string;
+    email?: string;
+    phone?: string;
+    company?: string; // e.g. "Acme Corp"
+  };
+  createdAt: Date;
+}
 
+export interface User {
+  _id?: string;
+  email: string;
+  role: 'super_admin' | 'user';
+  allowedBotIds: string[]; // List of botIds this user can access
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface Otp {
+  _id?: string;
+  email: string;
+  code: string;
+  expiresAt: Date;
+  createdAt: Date;
+}

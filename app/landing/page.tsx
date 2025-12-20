@@ -10,20 +10,24 @@ import { NotificationShowcase } from '../../landing/NotificationShowcase';
 import { LolaBotIntegration } from '../../landing/LolaBotIntegration';
 
 export const metadata: Metadata = {
-  title: 'Lolabot - Smart AI Agent for Your Website',
-  description: 'Transform your website with Lolabot. A context-aware BizAI agent that provides summaries, emergency alerts, and intelligent customer support.',
+  title: 'LolaBot Intelligence - Smart AI Agent for Your Website',
+  description: 'Transform your website with LolaBot Intelligence. A context-aware BizAI agent that provides summaries, emergency alerts, and intelligent customer support.',
   openGraph: {
-    title: 'Lolabot - Smart AI Agent',
+    title: 'LolaBot Intelligence - Smart AI Agent',
     description: 'Context-aware BizAI agent for modern businesses.',
     type: 'website',
   },
 };
 
+import { SocialProof } from '../../landing/SocialProof';
+import { BriefingShowcase } from '../../landing/BriefingShowcase';
+import { LogsShowcase } from '../../landing/LogsShowcase';
+
 export default function LandingPage() {
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'SoftwareApplication',
-    name: 'Lolabot',
+    name: 'LolaBot Intelligence',
     applicationCategory: 'BusinessApplication',
     operatingSystem: 'Web',
     offers: {
@@ -42,8 +46,13 @@ export default function LandingPage() {
       />
       <LolaBotIntegration />
       <Hero />
+      <SocialProof />
       <Story />
-      <NotificationShowcase />
+      <div className="space-y-12">
+        <BriefingShowcase type="warning" />
+        <BriefingShowcase type="danger" />
+      </div>
+      <LogsShowcase />
       <Features />
       <HowItWorks />
       <Pricing />

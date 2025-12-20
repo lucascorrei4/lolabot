@@ -13,7 +13,7 @@ declare global {
 }
 
 const PAGE_CONTEXTS: Record<string, string> = {
-  '/landing': 'Lolabot Landing Page - Product overview, pricing, and features.',
+  '/landing': 'LolaBot Intelligence Landing Page - Product overview, pricing, and features.',
   '/': 'Home - Main entry point.'
 };
 
@@ -24,13 +24,13 @@ export const LolaBotIntegration: React.FC = () => {
   // Load the script once
   useEffect(() => {
     if (loadedRef.current) return;
-    
+
     const scriptId = 'lolabot-script';
     if (!document.getElementById(scriptId)) {
       const script = document.createElement('script');
       script.id = scriptId;
       // Pointing to the public script location in this app
-      script.src = '/embed/lolabot.js'; 
+      script.src = '/embed/lolabot.js';
       script.async = true;
       document.body.appendChild(script);
       loadedRef.current = true;
@@ -44,7 +44,7 @@ export const LolaBotIntegration: React.FC = () => {
 
       const path = pathname;
       let pageDescription = PAGE_CONTEXTS[path];
-      
+
       // Fallback for unknown routes
       if (!pageDescription) {
         pageDescription = `Current Page: ${path} - Lolabot Marketing Site`;
@@ -64,24 +64,24 @@ export const LolaBotIntegration: React.FC = () => {
         description: pageDescription,
         user_id: currentUserId,
         user_role: 'visitor',
-        intent: 'Evaluating Lolabot for purchase'
+        intent: 'Evaluating LolaBot Intelligence for purchase'
       };
 
       // Cleanup existing instances to prevent duplicates
       const iframes = document.querySelectorAll('iframe');
       iframes.forEach(iframe => {
         if (iframe.src && (iframe.src.includes('lolabot'))) {
-           iframe.remove();
+          iframe.remove();
         }
       });
-      
+
       const buttons = document.querySelectorAll('button');
       buttons.forEach(btn => {
         // Heuristic cleanup for existing buttons if re-mounting
         if (btn.style.position === 'fixed' && btn.style.bottom === '20px' && btn.style.right === '20px') {
-             if (btn.innerHTML.includes('<svg')) {
-                 btn.remove();
-             }
+          if (btn.innerHTML.includes('<svg')) {
+            btn.remove();
+          }
         }
       });
 
@@ -110,6 +110,35 @@ export const LolaBotIntegration: React.FC = () => {
       }, 500);
       return () => clearInterval(interval);
     }
+
+    // Active Invite: Auto-open the bot after delay
+    useEffect(() => {
+      // Only auto-open once per session to avoid annoyance
+      const hasOpened = sessionStorage.getItem('lolabot_auto_opened');
+      if (hasOpened) return;
+
+      const timer = setTimeout(() => {
+        // Find the launcher button based on the styles the cleanup script identified
+        // We look for a fixed button at the bottom right
+        const buttons = document.querySelectorAll('button');
+        let launcherBtn: HTMLButtonElement | null = null;
+
+        buttons.forEach(btn => {
+          const style = window.getComputedStyle(btn);
+          if (style.position === 'fixed' && style.bottom !== 'auto' && style.right !== 'auto') {
+            // Likely the launcher
+            launcherBtn = btn;
+          }
+        });
+
+        if (launcherBtn) {
+          (launcherBtn as HTMLButtonElement).click();
+          sessionStorage.setItem('lolabot_auto_opened', 'true');
+        }
+      }, 3500); // 3.5s delay
+
+      return () => clearTimeout(timer);
+    }, []);
 
   }, [pathname]);
 

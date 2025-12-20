@@ -1,169 +1,92 @@
-import ChatWidget from "../../../components/chat/ChatWidget";
-import MessageList from "../../../components/chat/MessageList";
-import { getBotById, getDefaultBot } from "../../../lib/env";
 import { listMessages, getSessionById } from "../../../lib/db/mongo";
 import Link from "next/link";
+import MessageList from "../../../components/chat/MessageList";
+import { AdminSidebar } from "../../../components/admin/AdminSidebar";
 
-export default async function ChatPage({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<Record<string, string | string[]>> }) {
+export default async function AdminChatPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const resolvedSearchParams = await searchParams;
-
   const isObjectId = /^[0-9a-fA-F]{24}$/.test(id);
 
-  if (isObjectId) {
-    const messages = await listMessages(id, 1000);
-    const session = await getSessionById(id);
-    const serializedMessages = messages.map(m => ({
-      ...m,
-      _id: m._id?.toString(),
-      createdAt: m.createdAt instanceof Date ? m.createdAt.toISOString() : m.createdAt,
-      sessionId: m.sessionId,
-    }));
+  if (!isObjectId) {
+    return <div>Invalid Session ID</div>;
+  }
 
-    return (
-      <main style={{
-        minHeight: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        backgroundColor: "var(--bg-primary)",
-        fontFamily: "system-ui, -apple-system, sans-serif",
-        color: "var(--text-primary)"
-      }}>
-        <style dangerouslySetInnerHTML={{
-          __html: `
-                :root {
-                  --bg-primary: #f9fafb;
-                  --bg-card: #ffffff;
-                  --text-primary: #111827;
-                  --text-secondary: #6b7280;
-                  --border-color: #e5e7eb;
-                  --header-bg: #ffffff;
-                  --bot-bubble: #f3f4f6;
-                  --link-color: #0066ff;
-                }
+  const messages = await listMessages(id, 1000);
+  const session = await getSessionById(id);
+  const serializedMessages = messages.map(m => ({
+    ...m,
+    _id: m._id?.toString(),
+    createdAt: m.createdAt instanceof Date ? m.createdAt.toISOString() : m.createdAt,
+    sessionId: m.sessionId,
+  }));
 
-                @media (prefers-color-scheme: dark) {
-                  :root {
-                    --bg-primary: #0f1115;
-                    --bg-card: #1a1d24;
-                    --text-primary: #e0e0e0;
-                    --text-secondary: #a0a0a0;
-                    --border-color: #2d2d2d;
-                    --header-bg: #1a1d24;
-                    --bot-bubble: #2d2d2d;
-                    --link-color: #3b82f6;
-                  }
-                }
-            `}} />
-        <div style={{
-          maxWidth: "800px",
-          width: "100%",
-          margin: "0 auto",
-          backgroundColor: "var(--bg-card)",
-          boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
-          minHeight: "100vh",
-          display: "flex",
-          flexDirection: "column",
-          borderLeft: "1px solid var(--border-color)",
-          borderRight: "1px solid var(--border-color)"
-        }}>
-          <div style={{
-            padding: "16px 24px",
-            borderBottom: "1px solid var(--border-color)",
-            backgroundColor: "var(--header-bg)",
-            position: "sticky",
-            top: 0,
-            zIndex: 10,
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center"
-          }}>
-            <div>
-              <h1 style={{ fontSize: "1.25rem", fontWeight: 600, margin: 0, color: "var(--text-primary)" }}>Conversation History</h1>
-              <p style={{ fontSize: "0.875rem", color: "var(--text-secondary)", margin: "4px 0 0 0" }}>
-                Session ID: {id} • User: <span style={{ color: "var(--text-primary)" }}>{session?.userId || "Anonymous"}</span>
-              </p>
-            </div>
-            {session?.botId && (
-              <Link
-                href={`/logs/${session.botId}`}
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "6px",
-                  padding: "8px 16px",
-                  backgroundColor: "var(--bg-primary)",
-                  border: "1px solid var(--border-color)",
-                  borderRadius: "8px",
-                  color: "var(--text-primary)",
-                  textDecoration: "none",
-                  fontSize: "14px",
-                  fontWeight: 500,
-                  transition: "all 0.2s"
-                }}
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M19 12H5M12 19l-7-7 7-7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-                Back to Logs
-              </Link>
-            )}
+  // Create a proper Back link using the Admin flow
+  const backLink = session?.botId ? `/admin/${session.botId}/logs` : "/";
+
+  return (
+    <div className="min-h-screen bg-gray-900 text-white flex font-sans">
+      {session?.botId && <AdminSidebar botId={session.botId} />}
+
+      <main className={`flex-1 ${session?.botId ? 'ml-64' : ''} flex flex-col min-h-screen bg-gray-50 dark:bg-gray-900`}>
+        {/* Header */}
+        <header className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 py-6 px-8 sticky top-0 z-10 flex justify-between items-center">
+          <div>
+            <h1 className="text-xl font-bold text-gray-900 dark:text-white">Conversation History</h1>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+              Session: {id} • User: <span className="text-gray-900 dark:text-gray-200">{session?.userId || "Anonymous"}</span>
+            </p>
           </div>
+          <Link
+            href={backLink}
+            className="px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg transition-colors flex items-center gap-2 shadow-sm"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M19 12H5M12 19l-7-7 7-7" />
+            </svg>
+            Back to Logs
+          </Link>
+        </header>
 
-          <div style={{ padding: "24px", flex: 1 }}>
+        {/* Content */}
+        <div className="flex-1 p-8 max-w-4xl mx-auto w-full">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden min-h-[500px] flex flex-col p-6">
             {messages.length > 0 ? (
               <MessageList
                 items={serializedMessages}
                 colors={{
                   text: "var(--text-primary)",
                   textSecondary: "var(--text-secondary)",
-                  userBubble: "#0066ff",
+                  userBubble: "#4f46e5", // Indigo-600 to match admin theme
                   botBubble: "var(--bot-bubble)",
                 }}
                 timezone={process.env.NEXT_PUBLIC_TIMEZONE}
               />
             ) : (
-              <div style={{ textAlign: "center", color: "var(--text-secondary)", marginTop: "40px" }}>
+              <div className="flex-1 flex items-center justify-center text-gray-500 dark:text-gray-400">
                 No messages found for this session.
               </div>
             )}
           </div>
         </div>
+
+        {/* Inject CSS vars for MessageList compatibility */}
+        <style dangerouslySetInnerHTML={{
+          __html: `
+            :root {
+                --text-primary: #1f2937;
+                --text-secondary: #6b7280;
+                --bot-bubble: #f3f4f6;
+            }
+            @media (prefers-color-scheme: dark) {
+                :root {
+                    --text-primary: #e5e7eb;
+                    --text-secondary: #9ca3af;
+                    --bot-bubble: #374151; /* gray-700 */
+                }
+            }
+            `
+        }} />
       </main>
-    );
-  }
-
-  // Fallback to ChatWidget for botId (existing behavior)
-  const apiBase = typeof resolvedSearchParams.apiBase === "string" ? resolvedSearchParams.apiBase : "";
-  const userId = typeof resolvedSearchParams.userId === "string" ? resolvedSearchParams.userId : undefined;
-  const chatId = typeof resolvedSearchParams.chatId === "string" ? resolvedSearchParams.chatId : undefined;
-
-  const contextParam = typeof resolvedSearchParams.context === "string" ? resolvedSearchParams.context : undefined;
-  let context = undefined;
-  if (contextParam) {
-    try {
-      context = JSON.parse(contextParam);
-    } catch (e) {
-      console.error("Invalid context param:", e);
-    }
-  }
-
-  // Get bot configuration by botId, or use default
-  const bot = getBotById(id) || getDefaultBot();
-
-  return (
-    <main style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
-      <ChatWidget
-        botId={id}
-        apiBase={apiBase}
-        userId={userId}
-        chatId={chatId}
-        context={context}
-        title={bot?.title}
-        description={bot?.description}
-        shortName={bot?.shortName}
-        initialGreeting={bot?.initialGreeting}
-      />
-    </main>
+    </div>
   );
 }
