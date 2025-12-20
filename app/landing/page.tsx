@@ -19,7 +19,6 @@ export const metadata: Metadata = {
   },
 };
 
-import { SocialProof } from '../../landing/SocialProof';
 import { BriefingShowcase } from '../../landing/BriefingShowcase';
 import { LogsShowcase } from '../../landing/LogsShowcase';
 
@@ -46,7 +45,6 @@ export default function LandingPage() {
       />
       <LolaBotIntegration />
       <Hero />
-      <SocialProof />
       <Story />
       <div className="space-y-12">
         <BriefingShowcase type="warning" />
