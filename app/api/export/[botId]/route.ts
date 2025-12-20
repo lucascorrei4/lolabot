@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { listSessions, listMessages } from "../../../../../lib/db/mongo";
+import { listSessions, listMessages } from "../../../../lib/db/mongo";
 
 export async function GET(
     request: NextRequest,
