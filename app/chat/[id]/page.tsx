@@ -31,10 +31,8 @@ export default async function AdminChatPage({ params }: { params: Promise<{ id: 
         {/* Header */}
         <header className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 py-6 px-8 sticky top-0 z-10 flex justify-between items-center">
           <div>
-            <h1 className="text-xl font-bold text-gray-900 dark:text-white">Conversation History</h1>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-              Session: {id} • User: <span className="text-gray-900 dark:text-gray-200">{session?.userId || "Anonymous"}</span>
-            </p>
+            <h2 className="text-xl lg:text-2xl font-bold text-white">Conversation History</h2>
+            <p className="text-gray-400 mt-1 text-sm lg:text-base"> Session: {id} • User: <span className="text-gray-900 dark:text-gray-200">{session?.userId || "Anonymous"}</span></p>
           </div>
           <Link
             href={backLink}
