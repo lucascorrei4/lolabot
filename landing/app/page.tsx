@@ -9,6 +9,7 @@ import { FAQ } from '../FAQ';
 import { LolaBotIntegration } from '../LolaBotIntegration';
 import { BriefingShowcase } from '../BriefingShowcase';
 import { LogsShowcase } from '../LogsShowcase';
+import { LeadScoringShowcase } from '../LeadScoringShowcase';
 
 export const metadata: Metadata = {
     title: 'Lolabot - Smart AI Agent for Your Website',
@@ -44,6 +45,7 @@ export default function LandingPage() {
             <LolaBotIntegration />
             <Hero />
             <Story />
+            <LeadScoringShowcase />
             <div className="space-y-12">
                 <BriefingShowcase type="warning" />
                 <BriefingShowcase type="danger" />

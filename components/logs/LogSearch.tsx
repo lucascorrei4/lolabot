@@ -99,7 +99,7 @@ export function LogSearch({ botId }: { botId: string }) {
                 </div>
                 <input
                     type="text"
-                    className="block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg leading-5 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-shadow"
+                    className="block w-full pl-10 pr-3 py-2 border border-gray-600 rounded-lg leading-5 bg-gray-800 text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-shadow"
                     placeholder="Search by User ID..."
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
@@ -115,16 +115,16 @@ export function LogSearch({ botId }: { botId: string }) {
             </form>
 
             {isOpen && results.length > 0 && (
-                <ul className="absolute z-10 mt-1 w-full bg-white dark:bg-gray-800 shadow-lg max-h-60 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm">
+                <ul className="absolute z-10 mt-1 w-full bg-gray-800 shadow-lg max-h-60 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm">
                     {results.map((result) => (
                         <li
                             key={result.id}
                             onClick={() => handleSelect(result)}
-                            className="cursor-pointer select-none relative py-2 pl-3 pr-9 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-900 dark:text-gray-100 group"
+                            className="cursor-pointer select-none relative py-2 pl-3 pr-9 hover:bg-gray-700 text-gray-100 group"
                         >
                             <div className="flex flex-col">
                                 <span className="font-medium truncate">{result.userId}</span>
-                                <span className="text-xs text-gray-500 dark:text-gray-400">
+                                <span className="text-xs text-gray-400">
                                     {new Date(result.lastActivity).toLocaleDateString()} • {result.id}
                                 </span>
                             </div>
@@ -134,7 +134,7 @@ export function LogSearch({ botId }: { botId: string }) {
             )}
 
             {isOpen && results.length === 0 && !isLoading && (
-                <div className="absolute z-10 mt-1 w-full bg-white dark:bg-gray-800 shadow-lg rounded-md py-3 px-4 text-sm text-gray-500 text-center border border-gray-100 dark:border-gray-700">
+                <div className="absolute z-10 mt-1 w-full bg-gray-800 shadow-lg rounded-md py-3 px-4 text-sm text-gray-500 text-center border border-gray-700">
                     No results found. Press Enter to filter list.
                 </div>
             )}

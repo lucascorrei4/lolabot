@@ -9,7 +9,7 @@ type MessageListProps = {
   timezone?: string;
 };
 
-export default function MessageList({ items, typing, theme = "light", colors, timezone = "America/New_York" }: MessageListProps) {
+export default function MessageList({ items, typing, theme = "dark", colors, timezone = "America/New_York" }: MessageListProps) {
   const defaultColors = theme === "dark"
     ? {
       text: "#ffffff",

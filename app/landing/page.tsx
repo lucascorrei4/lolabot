@@ -33,6 +33,7 @@ export const metadata: Metadata = {
 
 import { BriefingShowcase } from '../../landing/BriefingShowcase';
 import { LogsShowcase } from '../../landing/LogsShowcase';
+import { LeadScoringShowcase } from '../../landing/LeadScoringShowcase';
 
 export default function LandingPage() {
   // Comprehensive JSON-LD for rich search snippets
@@ -145,6 +146,8 @@ export default function LandingPage() {
       <LolaBotIntegration />
       <Hero />
       <Story />
+      {/* Lead Scoring Demo - Shows how AI scores leads in real-time */}
+      <LeadScoringShowcase />
       {/* Animated Email Intelligence Showcase - Shows real-time email notifications */}
       <AnimatedEmailShowcase />
       <div className="space-y-12">

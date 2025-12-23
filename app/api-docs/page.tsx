@@ -136,17 +136,25 @@ export default function ApiDocsPage() {
                     <Endpoint
                         method="POST"
                         path="/api/signals/[botId]"
-                        description="Push intelligence signals (opportunities, risks) from external sources like n8n or LLMs."
+                        description="Push intelligence signals (leads, opportunities, risks, alerts) from your AI agent or n8n workflows."
                         params={[
-                            { name: "botId", type: "string", required: true, description: "Your bot identifier, e.g. 'lolabot-landing-demo'" }
+                            { name: "botId", type: "string", required: true, description: "Your bot identifier, e.g. 'my-bot-id'" }
                         ]}
                         body={JSON.stringify({
                             sessionId: "optional-session-id",
                             type: "success",
-                            title: "Lead Opportunity",
-                            priority: "High",
+                            title: "🔥 Hot Lead: Enterprise Inquiry",
+                            priority: "High Priority",
                             summaryTitle: "Executive Summary",
-                            summaryText: "User is interested in Enterprise plan.",
+                            summaryText: "User asked about SSO integration and team pricing. Strong buying signals detected.",
+                            sentimentLabel: "Interested",
+                            sentimentScore: "85%",
+                            sentimentIcon: "😊",
+                            actionLabel: "Recommended Action",
+                            actionText: "Schedule demo call immediately",
+                            leadScore: 85,
+                            estimatedValue: 12000,
+                            buyingSignals: ["Asked about pricing", "Requested demo", "Enterprise features"],
                             userDetails: {
                                 name: "John Doe",
                                 email: "john@example.com",

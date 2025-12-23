@@ -1,6 +1,6 @@
 import { MongoClient, Document, ObjectId } from "mongodb";
 import { env } from "../env";
-import type { Message, Session, Upload, Signal, User, Otp, BotSettings } from "../types";
+import type { Message, Session, Upload, Signal, User, Otp, BotSettings, GlobalSettings } from "../types";
 
 let client: MongoClient | null = null;
 
@@ -28,6 +28,7 @@ export async function getCollections() {
     users: db.collection<User>("users"),
     otps: db.collection<Otp>("otps"),
     botSettings: db.collection<BotSettings>("botSettings"),
+    globalSettings: db.collection<GlobalSettings>("globalSettings"),
   };
 }
 
@@ -430,4 +431,42 @@ export async function upsertBotSettings(settings: Omit<BotSettings, '_id'>) {
 export async function deleteBotConfig(botId: string) {
   const { botSettings } = await getCollections();
   return botSettings.deleteOne({ botId });
+}
+
+// Global Settings Functions
+export async function getGlobalSetting(key: string): Promise<GlobalSettings | null> {
+  const { globalSettings } = await getCollections();
+  return globalSettings.findOne({ key }) as Promise<GlobalSettings | null>;
+}
+
+export async function setGlobalSetting(key: string, value: string, updatedBy: string, description?: string): Promise<GlobalSettings | null> {
+  const { globalSettings } = await getCollections();
+  const now = new Date();
+
+  await globalSettings.updateOne(
+    { key },
+    {
+      $set: {
+        key,
+        value,
+        description,
+        updatedAt: now,
+        updatedBy,
+      },
+    },
+    { upsert: true }
+  );
+
+  return getGlobalSetting(key);
+}
+
+export async function getAllGlobalSettings(): Promise<GlobalSettings[]> {
+  const { globalSettings } = await getCollections();
+  return globalSettings.find({}).toArray() as Promise<GlobalSettings[]>;
+}
+
+// Convenience function to get the default system prompt
+export async function getDefaultSystemPrompt(): Promise<string | null> {
+  const setting = await getGlobalSetting('default_system_prompt');
+  return setting?.value ?? null;
 }

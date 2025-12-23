@@ -70,16 +70,20 @@ export const LolaBotIntegration: React.FC = () => {
       // Cleanup existing instances to prevent duplicates
       const iframes = document.querySelectorAll('iframe');
       iframes.forEach(iframe => {
-        if (iframe.src && (iframe.src.includes('lolabot'))) {
+        if (iframe.src && (iframe.src.includes('lolabot') || iframe.src.includes('/chat/'))) {
           iframe.remove();
         }
       });
 
       const buttons = document.querySelectorAll('button');
       buttons.forEach(btn => {
-        // Heuristic cleanup for existing buttons if re-mounting
-        if (btn.style.position === 'fixed' && btn.style.bottom === '20px' && btn.style.right === '20px') {
-          if (btn.innerHTML.includes('<svg')) {
+        // Heuristic cleanup for existing launcher buttons
+        const style = window.getComputedStyle(btn);
+        // Check if it's a fixed position button in the bottom-right corner (our launcher)
+        if (style.position === 'fixed' &&
+          (btn.style.bottom === '24px' || btn.style.bottom === '20px') &&
+          (btn.style.right === '24px' || btn.style.right === '20px')) {
+          if (btn.innerHTML.includes('<svg') || btn.innerHTML.includes('svg')) {
             btn.remove();
           }
         }

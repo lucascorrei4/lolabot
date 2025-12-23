@@ -26,6 +26,10 @@ export async function POST(request: Request, { params }: { params: Promise<{ bot
             sentimentIcon: body.sentimentIcon || '🤖',
             actionLabel: body.actionLabel || 'Action',
             actionText: body.actionText || 'Review',
+            // Lead scoring fields (optional)
+            leadScore: body.leadScore,
+            estimatedValue: body.estimatedValue,
+            buyingSignals: body.buyingSignals,
             userDetails: body.userDetails,
             createdAt: new Date(),
         };

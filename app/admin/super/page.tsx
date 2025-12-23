@@ -1,9 +1,9 @@
 import { getSession } from "../../../lib/auth";
-import { getUserByEmail, getCollections, updateUserBotPermissions, createUser } from "../../../lib/db/mongo";
+import { getUserByEmail, getCollections, updateUserBotPermissions, createUser, getGlobalSetting } from "../../../lib/db/mongo";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
-
 import Link from "next/link";
+import { GlobalSystemPromptEditor } from "../../../components/admin/GlobalSystemPromptEditor";
 
 export default async function SuperAdminPage() {
     const session = await getSession();
@@ -16,6 +16,10 @@ export default async function SuperAdminPage() {
 
     const { users } = await getCollections();
     const allUsers = await users.find({}).sort({ createdAt: -1 }).toArray();
+
+    // Fetch global system prompt
+    const globalPromptSetting = await getGlobalSetting('default_system_prompt');
+    const globalSystemPrompt = globalPromptSetting?.value || '';
 
     // Server Action for updating permissions
     // Server Action for adding a new user
@@ -51,7 +55,7 @@ export default async function SuperAdminPage() {
                 <header className="mb-8 lg:mb-12 border-b border-gray-800 pb-6 lg:pb-8 flex flex-col sm:flex-row gap-4 sm:justify-between sm:items-end">
                     <div>
                         <h1 className="text-2xl lg:text-3xl font-bold mb-2">Super Admin Console</h1>
-                        <p className="text-gray-400 text-sm lg:text-base">Manage user access and bot permissions.</p>
+                        <p className="text-gray-400 text-sm lg:text-base">Manage global settings, user access, and bot permissions.</p>
                     </div>
                     <Link
                         href="/admin/portal"
@@ -60,6 +64,11 @@ export default async function SuperAdminPage() {
                         <span>←</span> Back to Portal
                     </Link>
                 </header>
+
+                {/* Global System Prompt Section */}
+                <div className="mb-8 lg:mb-12">
+                    <GlobalSystemPromptEditor initialValue={globalSystemPrompt} />
+                </div>
 
                 {/* Add User Section */}
                 <div className="mb-8 lg:mb-12 bg-gray-900 border border-gray-800 rounded-2xl p-4 lg:p-6">

@@ -58,6 +58,10 @@ export interface Signal {
   sentimentIcon: string;
   actionLabel: string;
   actionText: string;
+  // Lead scoring fields
+  leadScore?: number; // 0-100 score
+  estimatedValue?: number; // Estimated deal value in USD
+  buyingSignals?: string[]; // List of detected buying signals
   userDetails?: {
     name?: string;
     email?: string;
@@ -101,3 +105,14 @@ export interface BotSettings {
   updatedAt: Date;
   updatedBy: string; // email of admin who updated
 }
+
+// Global settings for the entire LolaBot platform (super admin only)
+export interface GlobalSettings {
+  _id?: string;
+  key: string; // Unique identifier for the setting (e.g., 'default_system_prompt')
+  value: string; // The actual value
+  description?: string; // Human-readable description
+  updatedAt: Date;
+  updatedBy: string; // email of super admin who updated
+}
+

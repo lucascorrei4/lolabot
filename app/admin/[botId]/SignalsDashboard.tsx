@@ -305,7 +305,7 @@ export default function SignalsDashboard({ botId, signals }: SignalsDashboardPro
                                 <>
                                     {/* Signal Info Header */}
                                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 pb-4 border-b border-gray-800">
-                                        <div className="flex items-center gap-3">
+                                        <div className="flex items-center gap-3 flex-wrap">
                                             <span className="text-xs text-gray-500">
                                                 Signal {currentIndex + 1} of {filteredSignals.length}
                                             </span>
@@ -314,6 +314,27 @@ export default function SignalsDashboard({ botId, signals }: SignalsDashboardPro
                                                 <CalendarIcon className="h-3.5 w-3.5" />
                                                 {formatDate(currentSignal.createdAt)}
                                             </span>
+                                            {/* Lead Score Badge */}
+                                            {currentSignal.leadScore !== undefined && (
+                                                <>
+                                                    <span className="text-gray-700">•</span>
+                                                    <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold ${currentSignal.leadScore >= 80
+                                                        ? 'bg-green-500/20 text-green-400 border border-green-500/30'
+                                                        : currentSignal.leadScore >= 50
+                                                            ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
+                                                            : 'bg-gray-700 text-gray-400 border border-gray-600'
+                                                        }`}>
+                                                        {currentSignal.leadScore >= 80 && <span>🔥</span>}
+                                                        Lead Score: {currentSignal.leadScore}/100
+                                                    </span>
+                                                </>
+                                            )}
+                                            {/* Estimated Value */}
+                                            {currentSignal.estimatedValue !== undefined && currentSignal.estimatedValue > 0 && (
+                                                <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-indigo-500/10 text-indigo-400 text-xs font-medium border border-indigo-500/20">
+                                                    💰 ${currentSignal.estimatedValue.toLocaleString()}
+                                                </span>
+                                            )}
                                         </div>
 
                                         <div className="flex items-center gap-2">
@@ -413,9 +434,28 @@ export default function SignalsDashboard({ botId, signals }: SignalsDashboardPro
                                                     <div className="flex-1 min-w-0">
                                                         <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-1">
                                                             <h3 className="font-semibold text-white truncate">{signal.title}</h3>
-                                                            <span className={`text-xs px-2 py-0.5 rounded-full ${typeInfo.bgColor} ${typeInfo.color} self-start`}>
-                                                                {signal.priority}
-                                                            </span>
+                                                            <div className="flex items-center gap-2 flex-wrap">
+                                                                <span className={`text-xs px-2 py-0.5 rounded-full ${typeInfo.bgColor} ${typeInfo.color}`}>
+                                                                    {signal.priority}
+                                                                </span>
+                                                                {/* Lead Score in List View */}
+                                                                {signal.leadScore !== undefined && (
+                                                                    <span className={`text-xs px-2 py-0.5 rounded-full font-bold ${signal.leadScore >= 80
+                                                                            ? 'bg-green-500/20 text-green-400'
+                                                                            : signal.leadScore >= 50
+                                                                                ? 'bg-yellow-500/20 text-yellow-400'
+                                                                                : 'bg-gray-700 text-gray-400'
+                                                                        }`}>
+                                                                        {signal.leadScore >= 80 && '🔥 '}{signal.leadScore}/100
+                                                                    </span>
+                                                                )}
+                                                                {/* Estimated Value in List View */}
+                                                                {signal.estimatedValue !== undefined && signal.estimatedValue > 0 && (
+                                                                    <span className="text-xs px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-400">
+                                                                        💰 ${signal.estimatedValue.toLocaleString()}
+                                                                    </span>
+                                                                )}
+                                                            </div>
                                                         </div>
                                                         <p className="text-sm text-gray-400 line-clamp-2">{signal.summaryText}</p>
 
@@ -427,6 +467,12 @@ export default function SignalsDashboard({ botId, signals }: SignalsDashboardPro
                                                             </span>
                                                             {signal.sentimentLabel && (
                                                                 <span>Sentiment: {signal.sentimentLabel}</span>
+                                                            )}
+                                                            {/* Buying Signals in List View */}
+                                                            {signal.buyingSignals && signal.buyingSignals.length > 0 && (
+                                                                <span className="text-indigo-400">
+                                                                    🎯 {signal.buyingSignals.length} buying signals
+                                                                </span>
                                                             )}
                                                         </div>
                                                     </div>

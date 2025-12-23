@@ -60,7 +60,7 @@ export function Hero() {
               <div className="absolute -inset-1 bg-gradient-to-r from-green-400 to-indigo-500 rounded-lg blur opacity-25 group-hover:opacity-75 transition duration-1000 group-hover:duration-200"></div>
               <div className="relative px-3 sm:px-4 py-1.5 sm:py-2 bg-gray-900 ring-1 ring-white/10 rounded-lg leading-none flex items-center">
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 via-indigo-400 to-purple-500 font-mono font-bold tracking-[0.15em] sm:tracking-[0.2em] text-xs sm:text-sm animate-text-shimmer bg-[size:200%_auto]">
-                  LOLABOT INTELLIGENCE
+                  LOLABOT <i className="text-indigo-400">REVENUE</i> INTELLIGENCE
                 </span>
               </div>
             </div>
@@ -70,11 +70,11 @@ export function Hero() {
             Remove Your Contact Form Immediately.
           </h1>
           <p className="mt-2 sm:mt-3 text-lg sm:text-xl md:text-2xl font-medium text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-indigo-400 px-4">
-            Add an Assistant That Talks, Thinks & Sends You Briefings.
+            "Hmm, another chatbot... but wait, they mention 'revenue intelligence'?"
           </p>
           <p className="mt-4 sm:mt-6 text-base sm:text-lg leading-7 sm:leading-8 text-gray-300 max-w-xl mx-auto backdrop-blur-[2px] px-4">
-            LolaBot is an AI chatbot that engages visitors 24/7, understands context,
-            and <span className="text-white font-semibold">emails you instant briefings</span> with
+            LolaBot is an AI Assistant That Talks, Thinks & Sends You Smart Briefings. It engages visitors 24/7, understands context,
+            and <span className="text-white font-semibold">notifies you with instant briefings</span> with
             sentiment analysis, urgency detection, and recommended actions—so you never miss a lead.
           </p>
           <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-x-6 mb-4 relative z-20 px-4">

@@ -41,9 +41,9 @@ export default async function AdminChatPage({ params }: { params: Promise<{ id: 
     <div className="min-h-screen bg-gray-900 text-white flex font-sans">
       {session?.botId && <AdminSidebar botId={session.botId} />}
 
-      <main className={`flex-1 ${session?.botId ? 'lg:ml-64' : ''} flex flex-col min-h-screen bg-gray-50 dark:bg-gray-900 pt-16 lg:pt-0`}>
+      <main className={`flex-1 ${session?.botId ? 'lg:ml-64' : ''} flex flex-col min-h-screen bg-gray-900 pt-16 lg:pt-0`}>
         {/* Header */}
-        <header className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 py-4 lg:py-6 px-4 lg:px-8 lg:sticky lg:top-0 z-10 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
+        <header className="bg-gray-900 border-b border-gray-800 py-4 lg:py-6 px-4 lg:px-8 lg:sticky lg:top-0 z-10 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
           <div className="min-w-0">
             <h2 className="text-lg lg:text-2xl font-bold text-white">Conversation History</h2>
             <p className="text-gray-400 mt-1 text-xs lg:text-sm truncate">
@@ -72,20 +72,13 @@ export default async function AdminChatPage({ params }: { params: Promise<{ id: 
           />
         </div>
 
-        {/* Inject CSS vars for MessageList compatibility */}
+        {/* Inject CSS vars for MessageList compatibility - Always dark mode */}
         <style dangerouslySetInnerHTML={{
           __html: `
             :root {
-                --text-primary: #1f2937;
-                --text-secondary: #6b7280;
-                --bot-bubble: #f3f4f6;
-            }
-            @media (prefers-color-scheme: dark) {
-                :root {
-                    --text-primary: #e5e7eb;
-                    --text-secondary: #9ca3af;
-                    --bot-bubble: #374151; /* gray-700 */
-                }
+                --text-primary: #e5e7eb;
+                --text-secondary: #9ca3af;
+                --bot-bubble: #374151;
             }
             `
         }} />
