@@ -89,7 +89,7 @@ Add the following code to your website's HTML, just before the closing `</body>`
 | Attribute | Description | Default |
 | :--- | :--- | :--- |
 | `src` | **Required**. URL to the `lolabot.js` file on your deployment. | - |
-| `data-bot-id` | **Required**. Must match `NEXT_PUBLIC_BOT_SLUG` set in env. | `lola-demo` |
+| `data-bot-id` | **Required**. Must match `NEXT_PUBLIC_BOT_SLUG` set in env. | `lolabot-landing-demo` |
 | `data-user-id` | Optional. Unique ID for the user (e.g. from your auth system). | Anonymous |
 | `data-theme` | Optional. `light` or `dark`. | Auto-detect |
 

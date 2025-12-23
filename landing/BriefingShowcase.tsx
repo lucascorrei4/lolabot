@@ -96,7 +96,7 @@ export const BriefingShowcase: React.FC<BriefingShowcaseProps & { data?: Briefin
     useEffect(() => {
         const interval = setInterval(() => {
             setStep((prev) => (prev + 1) % 4);
-        }, 4000); // Change step every 4s
+        }, 2000); // Change step every 4s
         return () => clearInterval(interval);
     }, []);
 
@@ -168,30 +168,30 @@ export const BriefingShowcase: React.FC<BriefingShowcaseProps & { data?: Briefin
 
             {/* STAGE 3: EMAIL NOTIFICATION */}
             <div className={`absolute w-full max-w-[95%] sm:max-w-xl lg:max-w-2xl transition-all duration-700 transform ${step >= 2 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'}`}>
-                {/* Fake Email Interface */}
-                <div className="bg-white dark:bg-[#1E1E1E] rounded-lg sm:rounded-xl shadow-2xl overflow-hidden border border-gray-700">
+                {/* Fake Email Interface - Dark Mode */}
+                <div className="bg-[#1a1f2e] rounded-lg sm:rounded-xl shadow-2xl overflow-hidden border border-gray-700/50">
                     {/* Header */}
-                    <div className="bg-gray-100 dark:bg-[#252525] px-3 sm:px-6 py-2 sm:py-4 border-b border-gray-700 flex justify-between items-center">
+                    <div className="bg-[#252a3a] px-3 sm:px-6 py-2 sm:py-4 border-b border-gray-700/50 flex justify-between items-center">
                         <div className="flex gap-2 sm:gap-4">
                             <span className="w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-red-500"></span>
                             <span className="w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-yellow-500"></span>
                             <span className="w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-green-500"></span>
                         </div>
-                        <div className="text-[10px] sm:text-xs text-gray-500 font-mono hidden sm:block">Message from LolaBot Intelligence</div>
+                        <div className="text-[10px] sm:text-xs text-gray-400 font-mono hidden sm:block">Message from LolaBot Intelligence</div>
                     </div>
 
                     {/* Body */}
                     <div className="p-3 sm:p-6 lg:p-8">
                         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2 sm:gap-4 mb-4 sm:mb-6">
                             <div className="min-w-0 flex-1">
-                                <h2 className="text-base sm:text-lg lg:text-xl font-bold text-gray-900 dark:text-white mb-1 truncate">{scenario.emailTitle}</h2>
-                                <p className="text-xs sm:text-sm text-gray-500">From: <span className={theme.text}>LolaBot Intelligence</span></p>
+                                <h2 className="text-base sm:text-lg lg:text-xl font-bold text-white mb-1 truncate">{scenario.emailTitle}</h2>
+                                <p className="text-xs sm:text-sm text-gray-400">From: <span className={theme.text}>LolaBot Intelligence</span></p>
                             </div>
                             <span className={`${scenario.priorityClass} text-[10px] sm:text-xs px-2 py-1 rounded border flex-shrink-0 self-start`}>{scenario.priorityLabel}</span>
                         </div>
 
                         <div className="space-y-3 sm:space-y-4">
-                            <div className={`bg-gray-50 dark:bg-gray-800/50 p-3 sm:p-4 rounded-lg border-l-4 ${theme.border}`}>
+                            <div className={`bg-gray-800/60 p-3 sm:p-4 rounded-lg border-l-4 ${theme.border}`}>
                                 <h4 className="text-xs sm:text-sm font-semibold text-gray-400 uppercase mb-1 sm:mb-2">{scenario.summaryTitle}</h4>
                                 <p className="text-gray-300 text-xs sm:text-sm leading-relaxed">
                                     {scenario.summaryText}
@@ -199,14 +199,14 @@ export const BriefingShowcase: React.FC<BriefingShowcaseProps & { data?: Briefin
                             </div>
 
                             <div className="grid grid-cols-2 gap-2 sm:gap-4">
-                                <div className="bg-gray-50 dark:bg-gray-800/50 p-2 sm:p-3 rounded border border-gray-700/50">
+                                <div className="bg-gray-800/60 p-2 sm:p-3 rounded border border-gray-700/50">
                                     <span className="block text-[10px] sm:text-xs text-gray-500 mb-1">{scenario.sentimentLabel}</span>
                                     <div className="flex items-center gap-1 sm:gap-2">
                                         <span className="text-lg sm:text-2xl">{scenario.sentimentIcon}</span>
                                         <span className="text-white font-bold text-xs sm:text-base">{scenario.sentimentScore}</span>
                                     </div>
                                 </div>
-                                <div className="bg-gray-50 dark:bg-gray-800/50 p-2 sm:p-3 rounded border border-gray-700/50">
+                                <div className="bg-gray-800/60 p-2 sm:p-3 rounded border border-gray-700/50">
                                     <span className="block text-[10px] sm:text-xs text-gray-500 mb-1">{scenario.actionLabel}</span>
                                     <div className={`flex items-center gap-1 sm:gap-2 ${scenario.actionClass} text-xs sm:text-sm font-bold`}>
                                         <span className="truncate">{scenario.actionText}</span>

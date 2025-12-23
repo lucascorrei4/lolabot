@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { env } from "./env";
 import { getBotByIdAsync } from "./botConfig";
 import type { Message, MessageType } from "./types";
 
@@ -34,25 +33,27 @@ export function getMessageType(type: MessageType): string {
 }
 
 export async function callOutgoingWebhook(payload: any, botId?: string) {
-  // Get bot-specific webhook URL from MongoDB
-  let webhookUrl: string;
+  // STRICT: Each bot MUST have its own webhook URL configured in MongoDB
 
-  if (botId) {
-    const botConfig = await getBotByIdAsync(botId);
-    if (botConfig?.webhookOutgoingUrl) {
-      webhookUrl = botConfig.webhookOutgoingUrl;
-    } else {
-      // Fallback to legacy env var if bot not found in MongoDB
-      webhookUrl = env.WEBHOOK_OUTGOING_URL || "";
-    }
-  } else {
-    // Fallback to legacy env var
-    webhookUrl = env.WEBHOOK_OUTGOING_URL || "";
+  if (!botId) {
+    throw new Error("Bot ID is required for webhook calls");
   }
 
-  if (!webhookUrl) {
-    throw new Error("No webhook URL configured for bot");
+  // Fetch bot configuration from MongoDB
+  const botConfig = await getBotByIdAsync(botId);
+
+  if (!botConfig) {
+    throw new Error(`Bot not found in database: ${botId}`);
   }
+
+  if (!botConfig.webhookOutgoingUrl) {
+    throw new Error(`No webhook URL configured for bot: ${botId}. Please configure webhookOutgoingUrl in bot settings.`);
+  }
+
+  const webhookUrl = botConfig.webhookOutgoingUrl;
+
+  // Log which webhook is being called (for debugging)
+  console.log(`[Webhook] Bot "${botId}" calling: ${webhookUrl.substring(0, 60)}...`);
 
   const res = await fetch(webhookUrl, {
     method: "POST",

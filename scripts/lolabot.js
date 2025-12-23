@@ -1,6 +1,6 @@
 (function () {
   function mount(options) {
-    var botId = options.botId || 'lola-demo';
+    var botId = options.botId || 'lolabot-landing-demo';
     var apiBase = options.apiBase || '';
     var userId = options.userId || '';
     var chatId = options.chatId || '';
@@ -10,8 +10,8 @@
     var launcher = document.createElement('button');
     launcher.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
     launcher.style.position = 'fixed';
-    launcher.style.bottom = '20px';
-    launcher.style.right = '20px';
+    launcher.style.bottom = '24px';
+    launcher.style.right = '24px';
     launcher.style.border = 'none';
     launcher.style.background = '#121212';
     launcher.style.color = '#fff';
@@ -47,14 +47,14 @@
     badge.style.pointerEvents = 'none';
     launcher.appendChild(badge);
 
-    launcher.onmouseenter = function() { launcher.style.transform = 'scale(1.05)'; };
-    launcher.onmouseleave = function() { launcher.style.transform = 'scale(1)'; };
+    launcher.onmouseenter = function () { launcher.style.transform = 'scale(1.05)'; };
+    launcher.onmouseleave = function () { launcher.style.transform = 'scale(1)'; };
 
 
     var iframe = document.createElement('iframe');
     iframe.style.position = 'fixed';
-    iframe.style.bottom = '100px';
-    iframe.style.right = '20px';
+    iframe.style.bottom = '104px';
+    iframe.style.right = '24px';
     iframe.style.width = '380px';
     iframe.style.height = '560px';
     iframe.style.border = '0';
@@ -76,7 +76,7 @@
     var isWidgetMaximized = false;
 
     // Handle messages from the widget (resize/maximize)
-    window.addEventListener('message', function(e) {
+    window.addEventListener('message', function (e) {
       if (e.data && e.data.type === 'LOLA_RESIZE') {
         isWidgetMaximized = e.data.isMaximized; // Update state
         if (e.data.isMaximized) {
@@ -93,8 +93,8 @@
         } else if (e.data.isCollapsed) {
           iframe.style.width = '380px';
           iframe.style.height = '80px'; // Just enough for header
-          iframe.style.bottom = '100px';
-          iframe.style.right = '20px';
+          iframe.style.bottom = '104px';
+          iframe.style.right = '24px';
           iframe.style.borderRadius = '16px';
           iframe.style.top = 'auto';
           iframe.style.left = 'auto';
@@ -104,8 +104,8 @@
           // Restore normal size
           iframe.style.width = '380px';
           iframe.style.height = '560px';
-          iframe.style.bottom = '100px';
-          iframe.style.right = '20px';
+          iframe.style.bottom = '104px';
+          iframe.style.right = '24px';
           iframe.style.borderRadius = '16px';
           iframe.style.top = 'auto';
           iframe.style.left = 'auto';
@@ -128,9 +128,9 @@
         // If maximized, respect the centered transform
         var startTransform = isWidgetMaximized ? 'translateX(-50%) translateY(20px)' : 'translateY(20px)';
         var endTransform = isWidgetMaximized ? 'translateX(-50%) translateY(0)' : 'translateY(0)';
-        
+
         iframe.style.transform = startTransform;
-        setTimeout(function() {
+        setTimeout(function () {
           iframe.style.opacity = '1';
           iframe.style.transform = endTransform;
         }, 10);
@@ -160,16 +160,26 @@
     var srcUrl = new URL(script.src);
     var baseUrl = srcUrl.origin; // Detect origin from script source
 
-    var botId = script.getAttribute('data-bot-id') || 'lola-demo';
-    
+    var botId = script.getAttribute('data-bot-id') || 'lolabot-landing-demo';
+
+    // Read context from multiple sources (priority: window.LOLABOT_CONTEXT > data-context attribute)
     var context = null;
-    try {
-      var contextStr = script.getAttribute('data-context');
-      if (contextStr) {
-        context = JSON.parse(contextStr);
+
+    // First, try to read from window.LOLABOT_CONTEXT (global variable)
+    if (window.LOLABOT_CONTEXT && typeof window.LOLABOT_CONTEXT === 'object') {
+      context = window.LOLABOT_CONTEXT;
+    }
+
+    // If no global context, try data-context attribute
+    if (!context) {
+      try {
+        var contextStr = script.getAttribute('data-context');
+        if (contextStr) {
+          context = JSON.parse(contextStr);
+        }
+      } catch (e) {
+        console.error('LolaBot: Invalid JSON in data-context attribute', e);
       }
-    } catch (e) {
-      console.error('LolaBot: Invalid JSON in data-context attribute', e);
     }
 
     mount({

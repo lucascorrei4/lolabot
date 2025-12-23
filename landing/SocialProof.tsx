@@ -37,26 +37,3 @@ const LOGOS = [
         )
     }
 ];
-
-export const SocialProof: React.FC = () => {
-    return (
-        <section className="bg-gray-900 py-12 border-b border-white/5">
-            <div className="mx-auto max-w-7xl px-6 lg:px-8">
-                <p className="text-center text-sm font-semibold leading-8 text-gray-400 mb-8">
-                    TRUSTED BY INNOVATIVE TEAMS
-                </p>
-                <div className="mx-auto grid max-w-lg grid-cols-4 items-center gap-x-8 gap-y-10 sm:max-w-xl sm:gap-x-10 lg:mx-0 lg:max-w-none lg:grid-cols-4">
-                    {LOGOS.map((logo, index) => (
-                        <div key={index} className="flex justify-center transform hover:scale-105 transition-transform duration-300">
-                            {/* Placeholder SVGs for realistic effect */}
-                            <div className="h-12 w-auto flex items-center justify-center opacity-50 hover:opacity-100 transition-opacity">
-                                {logo.svg}
-                                <span className="ml-2 font-bold text-xl text-gray-400">{logo.name}</span>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </div>
-        </section>
-    );
-};

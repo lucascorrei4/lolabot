@@ -32,6 +32,7 @@ interface BotSettingsDoc {
     slug: string;
     initialGreeting?: string;
     webhookOutgoingUrl: string;
+    systemPrompt?: string;
     notificationEmail?: string;
     timezone?: string;
     createdAt: Date;
@@ -46,15 +47,6 @@ const MONGODB_DB = process.env.MONGODB_DB || "lolabot";
 // Default bot configurations to seed (used if BOTS_CONFIG is not set)
 const DEFAULT_BOTS: BotConfig[] = [
     {
-        id: "real-vision-ai",
-        slug: "real-vision-ai",
-        title: "Real Vision AI",
-        description: "Real Vision AI Assistant",
-        shortName: "Real Vision AI",
-        initialGreeting: "Hi, I am Real Vision AI Assistant. How can I help you?",
-        webhookOutgoingUrl: "https://agents.n8n.bizaigpt.com/webhook/89ba81e1-292c-4b16-b98e-e506a6aa4f2c"
-    },
-    {
         id: "lolabot-landing-demo",
         slug: "lolabot-landing-demo",
         title: "Lolabot Demo",
@@ -62,15 +54,6 @@ const DEFAULT_BOTS: BotConfig[] = [
         shortName: "Lola Bot Demo",
         initialGreeting: "Hi, I am BizAI. I want to work for you in your projects!",
         webhookOutgoingUrl: "https://agents.n8n.bizaigpt.com/webhook/b9051d3b-f8cf-40a2-845c-ea8383d93c6e"
-    },
-    {
-        id: "focus-organize-ai",
-        slug: "focus-organize-ai",
-        title: "Focus Organize AI",
-        description: "Focus Organize AI Assistant",
-        shortName: "Focus Organize AI",
-        initialGreeting: "Hi, I'm Focus Organize AI Assistant. How can I help you?",
-        webhookOutgoingUrl: "https://agents.n8n.bizaigpt.com/webhook/e5f63dbd-2bbd-4242-bf67-8435a21c9aed"
     }
 ];
 

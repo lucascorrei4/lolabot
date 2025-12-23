@@ -14,7 +14,7 @@ export default async function ChatTestPage() {
   const baseUrl = appUrl.replace(/\/$/, "");
   const scriptSrc = `${baseUrl}/embed/lolabot.js`;
   const defaultBot = await getDefaultBotAsync();
-  const botId = defaultBot?.id || "lola-demo";
+  const botId = defaultBot?.id || "lolabot-landing-demo";
 
   const codeSnippet = `<script 
   src="${scriptSrc}"
@@ -48,7 +48,7 @@ export default async function ChatTestPage() {
       <Script
         src={scriptSrc}
         data-bot-id={botId}
-        data-user-id="lola-demo-user"
+        data-user-id="lolabot-landing-demo-user"
         data-theme="dark"
         strategy="afterInteractive"
       />

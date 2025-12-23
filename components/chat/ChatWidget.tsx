@@ -127,6 +127,7 @@ export default function ChatWidget(props: WidgetProps) {
 
         // Determine if we should try to resume a session or create a new one
         let currentSession = null;
+        let hasMessages = false;
 
         if (storedSessionId) {
           // Verify if the stored session is still valid
@@ -160,19 +161,22 @@ export default function ChatWidget(props: WidgetProps) {
             const messagesJson = await messagesRes.json();
             if (messagesJson.messages && messagesJson.messages.length > 0) {
               setMessages(messagesJson.messages);
+              hasMessages = true;
               // Scroll to bottom on initial load
               setTimeout(() => scrollToBottom("auto"), 100);
-            } else if (props.initialGreeting) {
-              console.log("Setting initial greeting:", props.initialGreeting);
-              setMessages([{
-                _id: "initial-greeting",
-                role: "bot",
-                type: "text",
-                text: props.initialGreeting,
-                createdAt: new Date().toISOString()
-              }]);
             }
           }
+        }
+
+        // Show initial greeting if no messages exist (new session or empty session)
+        if (!hasMessages && props.initialGreeting) {
+          setMessages([{
+            _id: "initial-greeting",
+            role: "bot",
+            type: "text",
+            text: props.initialGreeting,
+            createdAt: new Date().toISOString()
+          }]);
         }
       } catch (err: any) {
         if (!mounted) return;
@@ -737,7 +741,7 @@ export default function ChatWidget(props: WidgetProps) {
 
       {/* Composer */}
       <div style={{ borderTop: `1px solid ${colors.border}`, background: colors.surfaceElevated, display: isCollapsed ? "none" : "block" }}>
-        <Composer onSend={onSend} disabled={!session || loading} theme={theme} colors={colors} />
+        <Composer onSend={onSend} disabled={loading || isInitializing} theme={theme} colors={colors} />
       </div>
     </div>
   );

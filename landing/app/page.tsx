@@ -7,7 +7,6 @@ import { Story } from '../Story';
 import { HowItWorks } from '../HowItWorks';
 import { FAQ } from '../FAQ';
 import { LolaBotIntegration } from '../LolaBotIntegration';
-import { SocialProof } from '../SocialProof';
 import { BriefingShowcase } from '../BriefingShowcase';
 import { LogsShowcase } from '../LogsShowcase';
 
@@ -44,7 +43,6 @@ export default function LandingPage() {
             />
             <LolaBotIntegration />
             <Hero />
-            <SocialProof />
             <Story />
             <div className="space-y-12">
                 <BriefingShowcase type="warning" />

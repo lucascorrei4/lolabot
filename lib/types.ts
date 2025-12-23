@@ -2,7 +2,7 @@ export type MessageRole = "user" | "bot" | "system";
 export type MessageType = "text" | "image" | "audio" | "choice";
 
 export interface BotConfig {
-  id: string; // Unique bot identifier (e.g., "lola-demo", "my-bot")
+  id: string; // Unique bot identifier (e.g., "lolabot-landing-demo", "my-bot")
   slug: string; // URL slug (e.g., "lola-bot", "my-smart-bot")
   title: string;
   description: string;
@@ -93,6 +93,8 @@ export interface BotSettings {
   slug: string;
   initialGreeting?: string;
   webhookOutgoingUrl: string; // Webhook URL for the bot
+  systemPrompt?: string; // AI system prompt (super admin only)
+  pageContexts?: Record<string, string>; // Page path to context description mapping (super admin only)
   notificationEmail?: string;
   timezone?: string;
   createdAt?: Date;

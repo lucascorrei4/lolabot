@@ -11,6 +11,8 @@ import {
     ArrowRightOnRectangleIcon,
     Bars3Icon,
     XMarkIcon,
+    HomeIcon,
+    ShieldCheckIcon,
 } from '@heroicons/react/24/outline';
 
 export function AdminSidebar({ botId }: { botId: string }) {
@@ -20,9 +22,14 @@ export function AdminSidebar({ botId }: { botId: string }) {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     const navItems = [
-        { name: 'Signals', icon: BellAlertIcon, href: `/admin/${botId}` },
+        { name: 'Home', icon: HomeIcon, href: `/admin/${botId}` },
+        { name: 'Signals', icon: BellAlertIcon, href: `/admin/${botId}/signals` },
         { name: 'Chat Logs', icon: ChatBubbleLeftRightIcon, href: `/admin/${botId}/logs` },
         { name: 'Settings', icon: Cog6ToothIcon, href: `/admin/${botId}/settings` },
+    ];
+
+    const adminItems = [
+        { name: 'Admin Portal', icon: ShieldCheckIcon, href: '/admin/portal' },
     ];
 
     // Helper to check if item is active (exact match or subpath)
@@ -58,7 +65,7 @@ export function AdminSidebar({ botId }: { botId: string }) {
     const SidebarContent = () => (
         <>
             <div className="p-4 lg:p-6">
-                <div className="flex items-center gap-3 mb-1">
+                <Link href={`/admin/${botId}`} className="flex items-center gap-3 mb-1 hover:opacity-80 transition-opacity">
                     <Image
                         src="/assets/img/favicon.png"
                         alt="LolaBot"
@@ -69,7 +76,7 @@ export function AdminSidebar({ botId }: { botId: string }) {
                     <h1 className="text-lg lg:text-xl font-bold bg-gradient-to-r from-blue-400 to-indigo-500 bg-clip-text text-transparent">
                         LolaBot Admin
                     </h1>
-                </div>
+                </Link>
                 <p className="text-xs text-gray-500 mt-1 truncate">{botId}</p>
             </div>
 
@@ -86,6 +93,28 @@ export function AdminSidebar({ botId }: { botId: string }) {
                             onClick={closeMobileMenu}
                             className={`group flex items-center px-3 py-2.5 lg:py-2 text-sm font-medium rounded-md transition-colors ${active
                                 ? 'bg-gray-800 text-white'
+                                : 'text-gray-400 hover:bg-gray-800 hover:text-white'
+                                }`}
+                        >
+                            <item.icon className="mr-3 h-5 w-5 flex-shrink-0" aria-hidden="true" />
+                            {item.name}
+                        </Link>
+                    );
+                })}
+
+                {/* Admin Section */}
+                <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2 px-2 mt-6">
+                    Admin
+                </div>
+                {adminItems.map((item) => {
+                    const active = pathname === item.href;
+                    return (
+                        <Link
+                            key={item.name}
+                            href={item.href}
+                            onClick={closeMobileMenu}
+                            className={`group flex items-center px-3 py-2.5 lg:py-2 text-sm font-medium rounded-md transition-colors ${active
+                                ? 'bg-indigo-600 text-white'
                                 : 'text-gray-400 hover:bg-gray-800 hover:text-white'
                                 }`}
                         >
@@ -130,7 +159,7 @@ export function AdminSidebar({ botId }: { botId: string }) {
                 >
                     <Bars3Icon className="h-6 w-6" />
                 </button>
-                <div className="flex items-center gap-2 ml-2">
+                <Link href={`/admin/${botId}`} className="flex items-center gap-2 ml-2">
                     <Image
                         src="/assets/img/favicon.png"
                         alt="LolaBot"
@@ -139,7 +168,7 @@ export function AdminSidebar({ botId }: { botId: string }) {
                         className="rounded"
                     />
                     <span className="text-sm font-semibold text-white">LolaBot Admin</span>
-                </div>
+                </Link>
             </div>
 
             {/* Mobile Backdrop */}

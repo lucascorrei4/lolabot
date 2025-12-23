@@ -28,11 +28,6 @@ export default function LoginPage() {
             const data = await res.json();
             if (!res.ok) throw new Error(data.error || "Failed to send code");
 
-            // For dev convenience, if code is returned in debug
-            if (data.debug_code) {
-                console.log("OTP Code:", data.debug_code);
-            }
-
             setStep("otp");
         } catch (err: any) {
             setError(err.message);

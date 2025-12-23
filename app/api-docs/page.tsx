@@ -138,7 +138,7 @@ export default function ApiDocsPage() {
                         path="/api/signals/[botId]"
                         description="Push intelligence signals (opportunities, risks) from external sources like n8n or LLMs."
                         params={[
-                            { name: "botId", type: "string", required: true, description: "Your bot identifier, e.g. 'lola-demo'" }
+                            { name: "botId", type: "string", required: true, description: "Your bot identifier, e.g. 'lolabot-landing-demo'" }
                         ]}
                         body={JSON.stringify({
                             sessionId: "optional-session-id",
@@ -166,7 +166,7 @@ export default function ApiDocsPage() {
                         description="Send a message to the bot or user."
                         body={JSON.stringify({
                             sessionId: "session-123",
-                            botId: "lola-demo",
+                            botId: "lolabot-landing-demo",
                             role: "user",
                             type: "text",
                             text: "Hello world"

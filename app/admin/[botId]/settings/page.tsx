@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { AdminSidebar } from '../../../../components/admin/AdminSidebar';
+import { MarkdownEditor } from '../../../../components/admin/MarkdownEditor';
+import { PageContextEditor } from '../../../../components/admin/PageContextEditor';
 import {
     SunIcon,
     MoonIcon,
@@ -11,6 +13,11 @@ import {
     TagIcon,
     ShieldCheckIcon,
     LinkIcon,
+    CommandLineIcon,
+    CodeBracketIcon,
+    ClipboardDocumentIcon,
+    CheckIcon,
+    MapIcon,
 } from '@heroicons/react/24/outline';
 
 type Theme = 'light' | 'dark';
@@ -23,6 +30,8 @@ interface BotSettings {
     slug: string;
     initialGreeting: string;
     webhookOutgoingUrl: string;
+    systemPrompt: string;
+    pageContexts: Record<string, string>;
     notificationEmail: string;
     timezone: Timezone;
 }
@@ -37,6 +46,8 @@ export default function SettingsPage({ params }: { params: Promise<{ botId: stri
         slug: '',
         initialGreeting: '',
         webhookOutgoingUrl: '',
+        systemPrompt: '',
+        pageContexts: {},
         notificationEmail: '',
         timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
     });
@@ -45,6 +56,7 @@ export default function SettingsPage({ params }: { params: Promise<{ botId: stri
     const [isLoading, setIsLoading] = useState(true);
     const [saveMessage, setSaveMessage] = useState('');
     const [isSuperAdmin, setIsSuperAdmin] = useState(false);
+    const [copied, setCopied] = useState(false);
 
     useEffect(() => {
         params.then(async p => {
@@ -67,6 +79,8 @@ export default function SettingsPage({ params }: { params: Promise<{ botId: stri
                             slug: data.settings.slug || p.botId,
                             initialGreeting: data.settings.initialGreeting || '',
                             webhookOutgoingUrl: data.settings.webhookOutgoingUrl || '',
+                            systemPrompt: data.settings.systemPrompt || '',
+                            pageContexts: data.settings.pageContexts || {},
                             notificationEmail: data.settings.notificationEmail || '',
                             timezone: data.settings.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone,
                         });
@@ -340,6 +354,71 @@ export default function SettingsPage({ params }: { params: Promise<{ botId: stri
                         </div>
                     </div>
 
+                    {/* System Prompt - Super Admin Only */}
+                    {isSuperAdmin && (
+                        <div className="bg-gray-800/30 rounded-xl border border-gray-700 p-4 lg:p-6 mb-4 lg:mb-6">
+                            <div className="flex items-center gap-3 mb-4">
+                                <CommandLineIcon className="w-5 h-5 lg:w-6 lg:h-6 text-emerald-400" />
+                                <h3 className="text-base lg:text-lg font-semibold text-white">System Prompt</h3>
+                                <span className="flex items-center gap-1 text-xs text-yellow-400 ml-auto">
+                                    <ShieldCheckIcon className="w-3 h-3" />
+                                    Super Admin Only
+                                </span>
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-medium text-gray-300 mb-2">
+                                    AI System Instructions
+                                </label>
+                                <MarkdownEditor
+                                    value={settings.systemPrompt}
+                                    onChange={(value) => setSettings({ ...settings, systemPrompt: value })}
+                                    placeholder={`# System Prompt
+
+You are a helpful AI assistant.
+
+## Guidelines
+- Be concise and professional
+- Always greet the user warmly
+- If you don't know something, say so honestly
+
+## Personality
+**Friendly** but professional. Use markdown formatting when helpful.`}
+                                    minHeight="350px"
+                                    title="System Prompt Editor"
+                                />
+                                <p className="text-xs text-gray-500 mt-3">
+                                    The system prompt defines the AI's behavior, personality, and instructions.
+                                    Use Markdown formatting for better organization. This is sent to the AI agent at the start of every conversation.
+                                </p>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Page Contexts - Super Admin Only */}
+                    {isSuperAdmin && (
+                        <div className="bg-gray-800/30 rounded-xl border border-gray-700 p-4 lg:p-6 mb-4 lg:mb-6">
+                            <div className="flex items-center gap-3 mb-4">
+                                <MapIcon className="w-5 h-5 lg:w-6 lg:h-6 text-amber-400" />
+                                <h3 className="text-base lg:text-lg font-semibold text-white">Page Contexts</h3>
+                                <span className="flex items-center gap-1 text-xs text-yellow-400 ml-auto">
+                                    <ShieldCheckIcon className="w-3 h-3" />
+                                    Super Admin Only
+                                </span>
+                            </div>
+
+                            <p className="text-gray-400 text-xs lg:text-sm mb-4">
+                                Define context descriptions for each page of your website. This helps the AI understand
+                                what the user is looking at and provide more relevant responses.
+                            </p>
+
+                            <PageContextEditor
+                                value={settings.pageContexts}
+                                onChange={(pageContexts) => setSettings({ ...settings, pageContexts })}
+                            />
+                        </div>
+                    )}
+
                     {/* Timezone Settings */}
                     <div className="bg-gray-800/30 rounded-xl border border-gray-700 p-4 lg:p-6 mb-4 lg:mb-6">
                         <div className="flex items-center gap-3 mb-4">
@@ -385,6 +464,113 @@ export default function SettingsPage({ params }: { params: Promise<{ botId: stri
                                 placeholder="admin@example.com"
                             />
                             <p className="text-xs text-gray-500 mt-1">Receive critical alerts and summaries at this email</p>
+                        </div>
+                    </div>
+
+                    {/* Embed Script */}
+                    <div className="bg-gray-800/30 rounded-xl border border-gray-700 p-4 lg:p-6 mb-4 lg:mb-6">
+                        <div className="flex items-center gap-3 mb-4">
+                            <CodeBracketIcon className="w-5 h-5 lg:w-6 lg:h-6 text-cyan-400" />
+                            <h3 className="text-base lg:text-lg font-semibold text-white">Embed Script</h3>
+                        </div>
+
+                        <p className="text-gray-400 text-xs lg:text-sm mb-4">
+                            Add this script to your website to enable the LolaBot chat widget.
+                        </p>
+
+                        {/* Script Code Block */}
+                        <div className="relative">
+                            <pre className="bg-gray-900 border border-gray-700 rounded-lg p-4 overflow-x-auto text-xs lg:text-sm font-mono text-gray-300">
+                                {`<script
+  src="${typeof window !== 'undefined' ? window.location.origin : 'https://your-lolabot-domain.com'}/embed/lolabot.js"
+  data-bot-id="${botId}"
+  data-theme="dark"
+></script>`}
+                            </pre>
+                            <button
+                                onClick={() => {
+                                    const script = `<script\n  src="${typeof window !== 'undefined' ? window.location.origin : 'https://your-lolabot-domain.com'}/embed/lolabot.js"\n  data-bot-id="${botId}"\n  data-theme="dark"\n></script>`;
+                                    navigator.clipboard.writeText(script);
+                                    setCopied(true);
+                                    setTimeout(() => setCopied(false), 2000);
+                                }}
+                                className="absolute top-2 right-2 p-2 bg-gray-800 hover:bg-gray-700 border border-gray-600 rounded-lg transition-colors"
+                                title="Copy to clipboard"
+                            >
+                                {copied ? (
+                                    <CheckIcon className="w-4 h-4 text-green-400" />
+                                ) : (
+                                    <ClipboardDocumentIcon className="w-4 h-4 text-gray-400" />
+                                )}
+                            </button>
+                        </div>
+
+                        {/* Available Attributes */}
+                        <div className="mt-4">
+                            <h4 className="text-sm font-medium text-gray-300 mb-2">Available Attributes</h4>
+                            <div className="bg-gray-900/50 rounded-lg p-3 text-xs space-y-2">
+                                <div className="flex gap-2">
+                                    <code className="text-cyan-400">data-bot-id</code>
+                                    <span className="text-gray-500">—</span>
+                                    <span className="text-gray-400">Your bot identifier (required)</span>
+                                </div>
+                                <div className="flex gap-2">
+                                    <code className="text-cyan-400">data-theme</code>
+                                    <span className="text-gray-500">—</span>
+                                    <span className="text-gray-400">"dark" or "light" (default: dark)</span>
+                                </div>
+                                <div className="flex gap-2">
+                                    <code className="text-cyan-400">data-user-id</code>
+                                    <span className="text-gray-500">—</span>
+                                    <span className="text-gray-400">Unique user ID for tracking sessions</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Context Example */}
+                        <div className="mt-4">
+                            <h4 className="text-sm font-medium text-gray-300 mb-2">Advanced: Adding Page Context</h4>
+                            <p className="text-gray-500 text-xs mb-3">
+                                Pass dynamic context to help the AI understand what page the user is on. There are two methods:
+                            </p>
+
+                            {/* Method 1: Global Variable */}
+                            <div className="mb-4">
+                                <p className="text-xs text-cyan-400 font-medium mb-2">Method 1: Global Variable (Recommended for dynamic context)</p>
+                                <pre className="bg-gray-900 border border-gray-700 rounded-lg p-4 overflow-x-auto text-xs font-mono text-gray-300">
+                                    {`<script>
+  window.LOLABOT_CONTEXT = {
+    page: window.location.pathname,
+    pageTitle: document.title,
+    product: "Enterprise Plan",
+    userRole: "visitor"
+  };
+</script>
+<script
+  src="${typeof window !== 'undefined' ? window.location.origin : 'https://your-lolabot-domain.com'}/embed/lolabot.js"
+  data-bot-id="${botId}"
+  data-theme="dark"
+></script>`}
+                                </pre>
+                            </div>
+
+                            {/* Method 2: Data Attribute */}
+                            <div>
+                                <p className="text-xs text-cyan-400 font-medium mb-2">Method 2: Data Attribute (For static context)</p>
+                                <pre className="bg-gray-900 border border-gray-700 rounded-lg p-4 overflow-x-auto text-xs font-mono text-gray-300">
+                                    {`<script
+  src="${typeof window !== 'undefined' ? window.location.origin : 'https://your-lolabot-domain.com'}/embed/lolabot.js"
+  data-bot-id="${botId}"
+  data-theme="dark"
+  data-context='{"page": "/pricing", "userRole": "visitor"}'
+></script>`}
+                                </pre>
+                            </div>
+
+                            <p className="text-gray-500 text-xs mt-3">
+                                <span className="text-amber-400">Note:</span> If both methods are used, <code className="text-cyan-400">window.LOLABOT_CONTEXT</code> takes priority.
+                                The context is sent with every message to help the AI provide relevant responses.
+                            </p>
                         </div>
                     </div>
 
