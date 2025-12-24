@@ -31,7 +31,10 @@ export default function MessageList({ items, typing, theme = "dark", colors, tim
     const result: any[] = [];
     let globalIndex = 0;
 
-    items.forEach((m, index) => {
+    // Filter out undefined or invalid messages first
+    const validItems = items.filter(m => m && typeof m === 'object' && m.role);
+
+    validItems.forEach((m, index) => {
       // Only split bot messages with text that has double line breaks (paragraph breaks)
       if (m.role === "bot" && m.type === "text" && m.text && m.text.includes('\n\n')) {
         // Split by double line breaks (paragraph breaks) - like WhatsApp

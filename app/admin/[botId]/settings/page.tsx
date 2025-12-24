@@ -20,7 +20,7 @@ import {
     MapIcon,
 } from '@heroicons/react/24/outline';
 
-type Theme = 'light' | 'dark';
+type Theme = 'dark' | 'light' | 'system';
 type Timezone = string;
 
 interface BotSettings {

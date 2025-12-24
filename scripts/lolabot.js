@@ -4,7 +4,7 @@
     var apiBase = options.apiBase || '';
     var userId = options.userId || '';
     var chatId = options.chatId || '';
-    var theme = options.theme || 'light';
+    var theme = options.theme || 'dark';
     var context = options.context || null;
 
     // Cleanup existing instances before mounting new ones
@@ -77,8 +77,9 @@
     iframe.allow = "clipboard-read; clipboard-write; microphone";
 
     var base = options.baseUrl || '';
-    var qs = '?apiBase=' + encodeURIComponent(apiBase) + (userId ? '&userId=' + encodeURIComponent(userId) : '') + (chatId ? '&chatId=' + encodeURIComponent(chatId) : '') + (theme ? '&theme=' + encodeURIComponent(theme) : '') + (context ? '&context=' + encodeURIComponent(JSON.stringify(context)) : '');
-    iframe.src = (base || '') + '/chat/' + encodeURIComponent(botId) + qs;
+    // Always include embed=true to signal we're in iframe mode
+    var qs = '?embed=true' + (apiBase ? '&apiBase=' + encodeURIComponent(apiBase) : '') + (userId ? '&userId=' + encodeURIComponent(userId) : '') + (chatId ? '&chatId=' + encodeURIComponent(chatId) : '') + (theme ? '&theme=' + encodeURIComponent(theme) : '') + (context ? '&context=' + encodeURIComponent(JSON.stringify(context)) : '');
+    iframe.src = (base || '') + '/' + encodeURIComponent(botId) + qs;
 
     // Track maximization state
     var isWidgetMaximized = false;
@@ -195,15 +196,30 @@
       apiBase: script.getAttribute('data-api-base') || '',
       userId: script.getAttribute('data-user-id') || '',
       chatId: script.getAttribute('data-chat-id') || '',
-      theme: script.getAttribute('data-theme') || 'light',
+      theme: script.getAttribute('data-theme') || 'dark',
       context: context,
       baseUrl: baseUrl // Use detected origin
     });
   }
 
   window.LolaBot = { mount: mount };
-  if (document.readyState === 'complete' || document.readyState === 'interactive') auto();
-  else document.addEventListener('DOMContentLoaded', auto);
+
+  // Check if auto-init should be skipped (for programmatic control)
+  var scripts = document.getElementsByTagName('script');
+  var shouldAutoInit = true;
+  for (var i = 0; i < scripts.length; i++) {
+    if (scripts[i].src && scripts[i].src.includes('/embed/lolabot.js')) {
+      if (scripts[i].getAttribute('data-no-auto-init') === 'true') {
+        shouldAutoInit = false;
+      }
+      break;
+    }
+  }
+
+  if (shouldAutoInit) {
+    if (document.readyState === 'complete' || document.readyState === 'interactive') auto();
+    else document.addEventListener('DOMContentLoaded', auto);
+  }
 })();
 
 

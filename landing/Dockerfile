@@ -28,8 +28,8 @@ ENV NEXT_TELEMETRY_DISABLED=1
 
 # Build-time environment variable for the blog API URL
 # This gets baked into the Next.js build for client-side fetching
-ARG LOLABOT_API_URL=http://localhost:3000
-ENV LOLABOT_API_URL=$LOLABOT_API_URL
+ARG NEXT_PUBLIC_LOLABOT_API_URL=http://localhost:3000
+ENV NEXT_PUBLIC_LOLABOT_API_URL=$NEXT_PUBLIC_LOLABOT_API_URL
 
 # Build the Next.js app
 RUN npm run build
@@ -43,8 +43,8 @@ ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 
 # Runtime environment variable for blog API
-# Override this when running the container: -e LOLABOT_API_URL=https://your-api.com
-ENV LOLABOT_API_URL=http://localhost:3000
+# Override this when running the container: -e NEXT_PUBLIC_LOLABOT_API_URL=https://your-api.com
+ENV NEXT_PUBLIC_LOLABOT_API_URL=http://localhost:3000
 
 RUN addgroup -g 1001 -S nodejs && adduser -S nextjs -u 1001
 

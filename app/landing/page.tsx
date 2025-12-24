@@ -96,7 +96,7 @@ export default function LandingPage() {
       // WebPage
       {
         '@type': 'WebPage',
-        '@id': 'https://bizaigpt.com/landing',
+        '@id': 'https://bizaigpt.com',
         name: 'LolaBot Intelligence - AI Chatbot That Never Misses a Lead',
         description: 'Transform your customer support with AI-powered real-time intelligence',
         isPartOf: { '@id': 'https://bizaigpt.com/#website' },

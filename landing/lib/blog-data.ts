@@ -70,7 +70,7 @@ export const blogCategories: BlogCategory[] = [
 ];
 
 // API base URL - uses the main lolabot app
-const API_BASE = process.env.LOLABOT_API_URL || 'http://localhost:3000';
+const API_BASE = process.env.NEXT_PUBLIC_LOLABOT_API_URL || 'http://localhost:3000';
 
 // Static fallback posts for development/build when API is unavailable
 const staticPosts: BlogPost[] = [

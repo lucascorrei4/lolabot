@@ -47,6 +47,20 @@ export async function getBotByIdAsync(botId: string): Promise<BotConfig | null> 
 }
 
 /**
+ * Get full bot settings (including systemPrompt, pageContexts, etc.) by its ID.
+ * This is used for webhook payloads to send complete context to the AI.
+ */
+export async function getBotSettingsFullAsync(botId: string): Promise<BotSettings | null> {
+    try {
+        const settings = await getBotSettings(botId);
+        return settings || null;
+    } catch (error) {
+        console.error(`Failed to fetch full bot settings for ${botId}:`, error);
+        return null;
+    }
+}
+
+/**
  * Get a bot by its slug.
  */
 export async function getBotBySlugAsync(slug: string): Promise<BotConfig | null> {
