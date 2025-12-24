@@ -67,7 +67,7 @@ export function Hero() {
           </div>
 
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60 drop-shadow-sm px-2">
-            Remove Your Contact Form Immediately.
+            Remove Your Contact Form Immediately
           </h1>
           <p className="mt-2 sm:mt-3 text-lg sm:text-xl md:text-2xl font-medium text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-indigo-400 px-4">
             "Hmm, another chatbot... but wait, they mention 'revenue intelligence'?"
