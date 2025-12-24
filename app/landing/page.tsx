@@ -43,7 +43,7 @@ export default function LandingPage() {
       // Main Product/Software Application
       {
         '@type': 'SoftwareApplication',
-        '@id': 'https://lolabot.ai/#software',
+        '@id': 'https://bizaigpt.com/#software',
         name: 'LolaBot Intelligence',
         applicationCategory: 'BusinessApplication',
         applicationSubCategory: 'AI Chatbot & Customer Intelligence',
@@ -84,9 +84,9 @@ export default function LandingPage() {
       // Organization
       {
         '@type': 'Organization',
-        '@id': 'https://lolabot.ai/#organization',
+        '@id': 'https://bizaigpt.com/#organization',
         name: 'LolaBot Intelligence',
-        url: 'https://lolabot.ai',
+        url: 'https://bizaigpt.com',
         logo: '/logo.png',
         sameAs: [
           'https://twitter.com/lolabot_ai',
@@ -96,12 +96,12 @@ export default function LandingPage() {
       // WebPage
       {
         '@type': 'WebPage',
-        '@id': 'https://lolabot.ai/landing',
+        '@id': 'https://bizaigpt.com/landing',
         name: 'LolaBot Intelligence - AI Chatbot That Never Misses a Lead',
         description: 'Transform your customer support with AI-powered real-time intelligence',
-        isPartOf: { '@id': 'https://lolabot.ai/#website' },
-        about: { '@id': 'https://lolabot.ai/#software' },
-        mainEntity: { '@id': 'https://lolabot.ai/#software' }
+        isPartOf: { '@id': 'https://bizaigpt.com/#website' },
+        about: { '@id': 'https://bizaigpt.com/#software' },
+        mainEntity: { '@id': 'https://bizaigpt.com/#software' }
       },
       // Key Features as ItemList (enhances rich snippets)
       {
