@@ -1,6 +1,6 @@
 import { MongoClient, Document, ObjectId } from "mongodb";
 import { env } from "../env";
-import type { Message, Session, Upload, Signal, User, Otp, BotSettings, GlobalSettings } from "../types";
+import type { Message, Session, Upload, Signal, User, Otp, BotSettings, GlobalSettings, BlogPost } from "../types";
 
 let client: MongoClient | null = null;
 
@@ -29,11 +29,12 @@ export async function getCollections() {
     otps: db.collection<Otp>("otps"),
     botSettings: db.collection<BotSettings>("botSettings"),
     globalSettings: db.collection<GlobalSettings>("globalSettings"),
+    blogPosts: db.collection<BlogPost>("blogPosts"),
   };
 }
 
 export async function ensureIndexes() {
-  const { sessions, messages, uploads, signals, users, otps, botSettings } = await getCollections();
+  const { sessions, messages, uploads, signals, users, otps, botSettings, blogPosts } = await getCollections();
   await sessions.createIndex({ botId: 1, userId: 1, chatId: 1 }, { unique: false });
   await messages.createIndex({ sessionId: 1, createdAt: 1 });
   await uploads.createIndex({ sessionId: 1, createdAt: 1 });
@@ -42,6 +43,11 @@ export async function ensureIndexes() {
   await otps.createIndex({ email: 1 });
   await otps.createIndex({ expiresAt: 1 }, { expireAfterSeconds: 0 }); // Auto-expire OTPs
   await botSettings.createIndex({ botId: 1 }, { unique: true });
+  // Blog post indexes
+  await blogPosts.createIndex({ slug: 1 }, { unique: true });
+  await blogPosts.createIndex({ status: 1, publishedAt: -1 });
+  await blogPosts.createIndex({ category: 1, status: 1 });
+  await blogPosts.createIndex({ tags: 1 });
 }
 
 export async function resolveSession(params: {
@@ -469,4 +475,129 @@ export async function getAllGlobalSettings(): Promise<GlobalSettings[]> {
 export async function getDefaultSystemPrompt(): Promise<string | null> {
   const setting = await getGlobalSetting('default_system_prompt');
   return setting?.value ?? null;
+}
+
+// ============================================
+// Blog Post Functions
+// ============================================
+
+/**
+ * Get all published blog posts, sorted by publishedAt descending
+ */
+export async function getPublishedBlogPosts(limit = 50): Promise<BlogPost[]> {
+  const { blogPosts } = await getCollections();
+  return blogPosts
+    .find({ status: 'published' })
+    .sort({ publishedAt: -1 })
+    .limit(limit)
+    .toArray() as Promise<BlogPost[]>;
+}
+
+/**
+ * Get a single blog post by slug
+ */
+export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> {
+  const { blogPosts } = await getCollections();
+  return blogPosts.findOne({ slug, status: 'published' }) as Promise<BlogPost | null>;
+}
+
+/**
+ * Get featured blog posts
+ */
+export async function getFeaturedBlogPosts(limit = 2): Promise<BlogPost[]> {
+  const { blogPosts } = await getCollections();
+  return blogPosts
+    .find({ status: 'published', featured: true })
+    .sort({ publishedAt: -1 })
+    .limit(limit)
+    .toArray() as Promise<BlogPost[]>;
+}
+
+/**
+ * Get blog posts by category
+ */
+export async function getBlogPostsByCategory(category: BlogPost['category'], limit = 20): Promise<BlogPost[]> {
+  const { blogPosts } = await getCollections();
+  return blogPosts
+    .find({ status: 'published', category })
+    .sort({ publishedAt: -1 })
+    .limit(limit)
+    .toArray() as Promise<BlogPost[]>;
+}
+
+/**
+ * Get all blog post slugs (for sitemap generation)
+ */
+export async function getAllBlogSlugs(): Promise<string[]> {
+  const { blogPosts } = await getCollections();
+  const posts = await blogPosts
+    .find({ status: 'published' }, { projection: { slug: 1 } })
+    .toArray();
+  return posts.map(p => p.slug);
+}
+
+/**
+ * Get related posts (same category, excluding current post)
+ */
+export async function getRelatedBlogPosts(slug: string, limit = 3): Promise<BlogPost[]> {
+  const { blogPosts } = await getCollections();
+  const currentPost = await blogPosts.findOne({ slug });
+  if (!currentPost) return [];
+
+  return blogPosts
+    .find({
+      status: 'published',
+      category: currentPost.category,
+      slug: { $ne: slug }
+    })
+    .sort({ publishedAt: -1 })
+    .limit(limit)
+    .toArray() as Promise<BlogPost[]>;
+}
+
+/**
+ * Insert a new blog post
+ */
+export async function insertBlogPost(post: Omit<BlogPost, '_id' | 'createdAt'>): Promise<BlogPost> {
+  const { blogPosts } = await getCollections();
+  const now = new Date();
+  const toInsert = {
+    ...post,
+    createdAt: now,
+    updatedAt: now,
+  };
+  const res = await blogPosts.insertOne(toInsert as any);
+  return { ...toInsert, _id: res.insertedId.toString() } as BlogPost;
+}
+
+/**
+ * Update a blog post by slug
+ */
+export async function updateBlogPost(slug: string, updates: Partial<BlogPost>): Promise<BlogPost | null> {
+  const { blogPosts } = await getCollections();
+  const now = new Date();
+  await blogPosts.updateOne(
+    { slug },
+    { $set: { ...updates, updatedAt: now } }
+  );
+  return blogPosts.findOne({ slug }) as Promise<BlogPost | null>;
+}
+
+/**
+ * Delete a blog post by slug
+ */
+export async function deleteBlogPost(slug: string): Promise<boolean> {
+  const { blogPosts } = await getCollections();
+  const result = await blogPosts.deleteOne({ slug });
+  return result.deletedCount > 0;
+}
+
+/**
+ * Get blog post count by status
+ */
+export async function getBlogPostStats(): Promise<{ published: number; draft: number; total: number }> {
+  const { blogPosts } = await getCollections();
+  const published = await blogPosts.countDocuments({ status: 'published' });
+  const draft = await blogPosts.countDocuments({ status: 'draft' });
+  return { published, draft, total: published + draft };
 }

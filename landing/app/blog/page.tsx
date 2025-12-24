@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
-import { getAllPosts, getFeaturedPosts, blogCategories, BlogPost, BlogCategory } from '../../lib/blog-data';
+import { getAllPosts, getFeaturedPosts, blogCategories, BlogPost, BlogCategory, formatDate } from '../../lib/blog-data';
 
 export const metadata: Metadata = {
     title: 'Blog - AI Chatbot Insights & Lead Generation Tips',
@@ -15,9 +15,12 @@ export const metadata: Metadata = {
     },
 };
 
-export default function BlogPage() {
-    const allPosts = getAllPosts();
-    const featuredPosts = getFeaturedPosts();
+// Force dynamic rendering to always fetch fresh data from MongoDB
+export const dynamic = 'force-dynamic';
+
+export default async function BlogPage() {
+    const allPosts = await getAllPosts();
+    const featuredPosts = await getFeaturedPosts();
 
     return (
         <div className="min-h-screen bg-gray-900">
@@ -110,7 +113,7 @@ export default function BlogPage() {
                                             </div>
                                             <div>
                                                 <p className="text-white text-sm font-medium">{post.author.name}</p>
-                                                <p className="text-gray-500 text-xs">{post.publishedAt}</p>
+                                                <p className="text-gray-500 text-xs">{formatDate(post.publishedAt)}</p>
                                             </div>
                                         </div>
                                         <Link
@@ -131,40 +134,46 @@ export default function BlogPage() {
             <section className="px-4 py-12">
                 <div className="max-w-6xl mx-auto">
                     <h2 className="text-2xl font-bold text-white mb-8">All Articles</h2>
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {allPosts.map((post: BlogPost) => (
-                            <article
-                                key={post.slug}
-                                className="group bg-gray-800/50 rounded-xl p-6 border border-gray-700/50 hover:border-gray-600 transition-all duration-300"
-                            >
-                                <div className="flex items-center gap-2 mb-3">
-                                    <span className="px-2 py-1 bg-gray-700 text-gray-300 rounded text-xs font-medium">
-                                        {blogCategories.find((c: BlogCategory) => c.slug === post.category)?.name || post.category}
-                                    </span>
-                                    <span className="text-gray-500 text-xs">
-                                        {post.readingTime} min
-                                    </span>
-                                </div>
-                                <Link href={`/blog/${post.slug}`}>
-                                    <h3 className="text-lg font-semibold text-white mb-2 group-hover:text-indigo-400 transition line-clamp-2">
-                                        {post.title}
-                                    </h3>
-                                </Link>
-                                <p className="text-gray-400 text-sm mb-4 line-clamp-2">
-                                    {post.description}
-                                </p>
-                                <div className="flex items-center justify-between text-sm">
-                                    <span className="text-gray-500">{post.publishedAt}</span>
-                                    <Link
-                                        href={`/blog/${post.slug}`}
-                                        className="text-indigo-400 font-medium hover:text-indigo-300"
-                                    >
-                                        Read →
+                    {allPosts.length === 0 ? (
+                        <div className="text-center py-16">
+                            <p className="text-gray-400 text-lg">No articles yet. Check back soon!</p>
+                        </div>
+                    ) : (
+                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {allPosts.map((post: BlogPost) => (
+                                <article
+                                    key={post.slug}
+                                    className="group bg-gray-800/50 rounded-xl p-6 border border-gray-700/50 hover:border-gray-600 transition-all duration-300"
+                                >
+                                    <div className="flex items-center gap-2 mb-3">
+                                        <span className="px-2 py-1 bg-gray-700 text-gray-300 rounded text-xs font-medium">
+                                            {blogCategories.find((c: BlogCategory) => c.slug === post.category)?.name || post.category}
+                                        </span>
+                                        <span className="text-gray-500 text-xs">
+                                            {post.readingTime} min
+                                        </span>
+                                    </div>
+                                    <Link href={`/blog/${post.slug}`}>
+                                        <h3 className="text-lg font-semibold text-white mb-2 group-hover:text-indigo-400 transition line-clamp-2">
+                                            {post.title}
+                                        </h3>
                                     </Link>
-                                </div>
-                            </article>
-                        ))}
-                    </div>
+                                    <p className="text-gray-400 text-sm mb-4 line-clamp-2">
+                                        {post.description}
+                                    </p>
+                                    <div className="flex items-center justify-between text-sm">
+                                        <span className="text-gray-500">{formatDate(post.publishedAt)}</span>
+                                        <Link
+                                            href={`/blog/${post.slug}`}
+                                            className="text-indigo-400 font-medium hover:text-indigo-300"
+                                        >
+                                            Read →
+                                        </Link>
+                                    </div>
+                                </article>
+                            ))}
+                        </div>
+                    )}
                 </div>
             </section>
 

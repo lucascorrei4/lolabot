@@ -116,3 +116,31 @@ export interface GlobalSettings {
   updatedBy: string; // email of super admin who updated
 }
 
+// Blog post for SEO content marketing
+export interface BlogPost {
+  _id?: string;
+  slug: string; // URL-friendly identifier (unique)
+  title: string; // SEO title (50-60 chars ideal)
+  description: string; // Meta description (150-160 chars)
+  content: string; // Markdown content
+  publishedAt: Date; // Publication date
+  updatedAt?: Date; // Last update date
+  author: {
+    name: string;
+    role?: string;
+    avatar?: string;
+  };
+  category: 'ai-automation' | 'lead-generation' | 'customer-support' | 'case-studies' | 'product-updates';
+  tags: string[]; // Keywords/tags for the post
+  readingTime: number; // Estimated minutes to read
+  featured?: boolean; // Featured posts appear in hero section
+  image?: string; // Featured image URL
+  status: 'draft' | 'published' | 'archived';
+  seo?: {
+    targetKeyword?: string; // Primary keyword targeting
+    metaTitle?: string; // Override for meta title
+    metaDescription?: string; // Override for meta description
+    canonicalUrl?: string; // Canonical URL if different
+  };
+  createdAt: Date;
+}

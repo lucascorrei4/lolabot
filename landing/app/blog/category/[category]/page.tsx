@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
-import { getPostsByCategory, blogCategories, BlogCategory, BlogPost } from '../../../../lib/blog-data';
+import { getPostsByCategory, blogCategories, BlogCategory, BlogPost, formatDate } from '../../../../lib/blog-data';
 
 // Generate static params for all categories
 export async function generateStaticParams() {
@@ -35,6 +35,9 @@ export async function generateMetadata({ params }: { params: Promise<{ category:
     };
 }
 
+// Force dynamic rendering
+export const dynamic = 'force-dynamic';
+
 export default async function CategoryPage({ params }: { params: Promise<{ category: string }> }) {
     const { category: categorySlug } = await params;
     const category = blogCategories.find((c: BlogCategory) => c.slug === categorySlug);
@@ -43,7 +46,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
         notFound();
     }
 
-    const posts = getPostsByCategory(categorySlug);
+    const posts = await getPostsByCategory(categorySlug);
 
     return (
         <div className="min-h-screen bg-gray-900">
@@ -73,21 +76,19 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
             </nav>
 
             {/* Header */}
-            <header className="pt-32 pb-12 px-4">
-                <div className="max-w-4xl mx-auto">
-                    {/* Breadcrumb */}
-                    <nav className="flex items-center gap-2 text-sm text-gray-400 mb-8">
+            <header className="pt-32 pb-16 px-4">
+                <div className="max-w-4xl mx-auto text-center">
+                    <nav className="flex items-center justify-center gap-2 text-sm text-gray-400 mb-6">
                         <Link href="/" className="hover:text-white transition">Home</Link>
                         <span>/</span>
                         <Link href="/blog" className="hover:text-white transition">Blog</Link>
                         <span>/</span>
-                        <span className="text-gray-500">{category.name}</span>
+                        <span className="text-indigo-400">{category.name}</span>
                     </nav>
-
-                    <h1 className="text-4xl font-bold text-white mb-4">
+                    <h1 className="text-4xl sm:text-5xl font-bold text-white mb-6">
                         {category.name}
                     </h1>
-                    <p className="text-xl text-gray-400">
+                    <p className="text-xl text-gray-400 max-w-2xl mx-auto">
                         {category.description}
                     </p>
                 </div>
@@ -95,11 +96,11 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
 
             {/* Category Filter */}
             <section className="px-4 pb-8">
-                <div className="max-w-4xl mx-auto">
-                    <div className="flex flex-wrap gap-3">
+                <div className="max-w-6xl mx-auto">
+                    <div className="flex flex-wrap justify-center gap-3">
                         <Link
                             href="/blog"
-                            className="px-4 py-2 bg-gray-800 text-gray-300 rounded-full text-sm font-medium hover:bg-gray-700 transition"
+                            className="px-4 py-2 bg-gray-800 text-gray-300 rounded-full text-sm font-medium hover:bg-gray-700 hover:text-white transition"
                         >
                             All
                         </Link>
@@ -108,8 +109,8 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
                                 key={cat.slug}
                                 href={`/blog/category/${cat.slug}`}
                                 className={`px-4 py-2 rounded-full text-sm font-medium transition ${cat.slug === categorySlug
-                                    ? 'bg-indigo-600 text-white'
-                                    : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+                                        ? 'bg-indigo-600 text-white'
+                                        : 'bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-white'
                                     }`}
                             >
                                 {cat.name}
@@ -120,16 +121,16 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
             </section>
 
             {/* Posts */}
-            <section className="px-4 py-8">
-                <div className="max-w-4xl mx-auto">
+            <section className="px-4 py-12">
+                <div className="max-w-6xl mx-auto">
                     {posts.length === 0 ? (
                         <div className="text-center py-16">
-                            <p className="text-gray-400 text-lg">No articles in this category yet.</p>
+                            <p className="text-gray-400 text-lg mb-4">No articles in this category yet.</p>
                             <Link
                                 href="/blog"
-                                className="inline-block mt-4 text-indigo-400 hover:text-indigo-300"
+                                className="text-indigo-400 hover:text-indigo-300"
                             >
-                                ← Back to all articles
+                                ← View all articles
                             </Link>
                         </div>
                     ) : (
@@ -139,35 +140,49 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
                                     key={post.slug}
                                     className="group bg-gray-800/50 rounded-xl p-6 border border-gray-700/50 hover:border-gray-600 transition"
                                 >
-                                    <div className="flex items-center gap-3 mb-3">
-                                        <span className="text-gray-500 text-sm">
-                                            {post.publishedAt}
-                                        </span>
-                                        <span className="text-gray-600">•</span>
-                                        <span className="text-gray-500 text-sm">
-                                            {post.readingTime} min read
-                                        </span>
-                                    </div>
-                                    <Link href={`/blog/${post.slug}`}>
-                                        <h2 className="text-xl font-bold text-white mb-3 group-hover:text-indigo-400 transition">
-                                            {post.title}
-                                        </h2>
-                                    </Link>
-                                    <p className="text-gray-400 mb-4">
-                                        {post.description}
-                                    </p>
-                                    <div className="flex items-center justify-between">
-                                        <div className="flex items-center gap-3">
-                                            <div className="w-8 h-8 bg-indigo-600 rounded-full flex items-center justify-center text-white text-sm font-bold">
-                                                {post.author.name.charAt(0)}
+                                    <div className="flex flex-col md:flex-row md:items-center gap-4">
+                                        <div className="flex-1">
+                                            <div className="flex items-center gap-3 mb-3">
+                                                <span className="text-gray-500 text-sm">
+                                                    {formatDate(post.publishedAt)}
+                                                </span>
+                                                <span className="text-gray-600">•</span>
+                                                <span className="text-gray-500 text-sm">
+                                                    {post.readingTime} min read
+                                                </span>
+                                                {post.featured && (
+                                                    <>
+                                                        <span className="text-gray-600">•</span>
+                                                        <span className="text-indigo-400 text-sm font-medium">
+                                                            Featured
+                                                        </span>
+                                                    </>
+                                                )}
                                             </div>
-                                            <span className="text-white text-sm">{post.author.name}</span>
+                                            <Link href={`/blog/${post.slug}`}>
+                                                <h2 className="text-xl font-bold text-white mb-2 group-hover:text-indigo-400 transition">
+                                                    {post.title}
+                                                </h2>
+                                            </Link>
+                                            <p className="text-gray-400 mb-4 line-clamp-2">
+                                                {post.description}
+                                            </p>
+                                            <div className="flex flex-wrap gap-2">
+                                                {post.tags.slice(0, 3).map((tag) => (
+                                                    <span
+                                                        key={tag}
+                                                        className="px-2 py-1 bg-gray-700/50 text-gray-400 rounded text-xs"
+                                                    >
+                                                        {tag}
+                                                    </span>
+                                                ))}
+                                            </div>
                                         </div>
                                         <Link
                                             href={`/blog/${post.slug}`}
-                                            className="text-indigo-400 text-sm font-medium hover:text-indigo-300"
+                                            className="px-4 py-2 bg-gray-700 text-white rounded-lg font-medium hover:bg-gray-600 transition"
                                         >
-                                            Read More →
+                                            Read Article →
                                         </Link>
                                     </div>
                                 </article>
@@ -178,7 +193,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
             </section>
 
             {/* Footer */}
-            <footer className="border-t border-gray-800 py-8 px-4 mt-16">
+            <footer className="border-t border-gray-800 py-8 px-4 mt-auto">
                 <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
                     <p className="text-gray-500 text-sm">
                         © {new Date().getFullYear()} LolaBot. All rights reserved.

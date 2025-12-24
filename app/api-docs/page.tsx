@@ -231,6 +231,79 @@ export default function ApiDocsPage() {
                             ]
                         }, null, 2)}
                     />
+
+                    <h2 className="text-xl font-semibold mb-6 pt-8 border-t border-gray-200 dark:border-gray-800">Blog API</h2>
+                    <Endpoint
+                        method="GET"
+                        path="/api/blog/posts"
+                        description="Get all published blog posts for the landing page."
+                        params={[
+                            { name: "featured", type: "boolean", required: false, description: "If true, only return featured posts" },
+                            { name: "limit", type: "number", required: false, description: "Max posts to return (default 50)" },
+                            { name: "slugs", type: "boolean", required: false, description: "If true, only return slugs (for sitemap)" },
+                            { name: "stats", type: "boolean", required: false, description: "If true, return post statistics" }
+                        ]}
+                        response={JSON.stringify({
+                            success: true,
+                            data: [
+                                {
+                                    slug: "ai-chatbot-for-website-complete-guide-2024",
+                                    title: "AI Chatbot for Website: The Complete Guide",
+                                    description: "Learn how to implement an AI chatbot...",
+                                    category: "ai-automation",
+                                    readingTime: 8,
+                                    featured: true,
+                                    publishedAt: "2024-12-20T00:00:00Z"
+                                }
+                            ],
+                            count: 1
+                        }, null, 2)}
+                    />
+
+                    <Endpoint
+                        method="GET"
+                        path="/api/blog/posts/[slug]"
+                        description="Get a single blog post by its URL slug."
+                        params={[
+                            { name: "slug", type: "string", required: true, description: "The URL slug of the post" },
+                            { name: "related", type: "boolean", required: false, description: "If true, include related posts" }
+                        ]}
+                        response={JSON.stringify({
+                            success: true,
+                            data: {
+                                slug: "ai-chatbot-for-website-complete-guide-2024",
+                                title: "AI Chatbot for Website: The Complete Guide",
+                                description: "Learn how to implement an AI chatbot...",
+                                content: "## Full markdown content here...",
+                                author: { name: "Lucas Correia", role: "Founder" },
+                                category: "ai-automation",
+                                tags: ["ai chatbot", "website"],
+                                readingTime: 8,
+                                publishedAt: "2024-12-20T00:00:00Z"
+                            },
+                            related: [
+                                { slug: "best-chatbot-for-small-business", title: "..." }
+                            ]
+                        }, null, 2)}
+                    />
+
+                    <Endpoint
+                        method="GET"
+                        path="/api/blog/category/[category]"
+                        description="Get blog posts filtered by category."
+                        params={[
+                            { name: "category", type: "string", required: true, description: "Category slug: ai-automation, lead-generation, customer-support, case-studies, product-updates" },
+                            { name: "limit", type: "number", required: false, description: "Max posts to return (default 20)" }
+                        ]}
+                        response={JSON.stringify({
+                            success: true,
+                            data: [
+                                { slug: "ai-chatbot-for-website", title: "...", category: "ai-automation" }
+                            ],
+                            count: 1,
+                            category: "ai-automation"
+                        }, null, 2)}
+                    />
                 </div>
             </div>
         </div>

@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
-import { getAllPosts, blogCategories } from '../lib/blog-data';
+import { getAllSlugs, blogCategories } from '../lib/blog-data';
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const baseUrl = 'https://bizaigpt.com';
 
     // Static pages
@@ -34,15 +34,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
         priority: 0.7,
     }));
 
-    // Blog posts
-    const blogPosts = getAllPosts();
-    const postPages: MetadataRoute.Sitemap = blogPosts.map((post) => ({
-        url: `${baseUrl}/blog/${post.slug}`,
-        lastModified: post.updatedAt ? new Date(post.updatedAt) : new Date(post.publishedAt),
-        changeFrequency: 'monthly' as const,
-        priority: 0.8,
-    }));
+    // Blog posts from MongoDB
+    let postPages: MetadataRoute.Sitemap = [];
+    try {
+        const slugs = await getAllSlugs();
+        postPages = slugs.map((slug) => ({
+            url: `${baseUrl}/blog/${slug}`,
+            lastModified: new Date(),
+            changeFrequency: 'monthly' as const,
+            priority: 0.8,
+        }));
+    } catch (error) {
+        console.error('Error fetching blog slugs for sitemap:', error);
+    }
 
     return [...staticPages, ...categoryPages, ...postPages];
 }
-
