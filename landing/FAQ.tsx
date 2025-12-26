@@ -27,12 +27,39 @@ const faqs = [
   {
     question: "What happens after I pay the setup fee?",
     answer: "Our team immediately schedules a discovery call to gather your requirements, knowledge base materials, and business rules. We then build, test, and embed the bot for you. The monthly fee covers hosting, AI token usage, maintenance, and ongoing support."
+  },
+  {
+    question: "How much does LolaBot cost?",
+    answer: "LolaBot has a simple pricing model: $997 one-time setup fee for custom implementation, plus $199 per month for ongoing support, hosting, and AI usage. This is a full-service solution - our team handles everything for you."
+  },
+  {
+    question: "Is LolaBot different from other chatbots like Intercom or Drift?",
+    answer: "Yes, LolaBot is a full-service implementation, not a DIY tool. Unlike Intercom or Drift where you configure everything yourself, our team customizes LolaBot specifically for your business - your rules, your tone, your workflows. You get white-glove service instead of a generic widget."
   }
 ];
+
+// FAQPage Schema for AEO (Answer Engine Optimization)
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqs.map(faq => ({
+    "@type": "Question",
+    "name": faq.question,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": faq.answer
+    }
+  }))
+};
 
 export function FAQ() {
   return (
     <section className="bg-gray-900 py-16 sm:py-24 lg:py-32">
+      {/* FAQPage Schema for Google Rich Results & AI Search */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl lg:text-center">
           <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white lg:text-4xl">Frequently Asked Questions</h2>
@@ -76,4 +103,3 @@ function Disclosure({ question, answer }: { question: string; answer: string }) 
     </div>
   );
 }
-

@@ -113,7 +113,7 @@ const staticPosts: BlogPost[] = [
  */
 export async function getAllPosts(limit = 50): Promise<BlogPost[]> {
     try {
-        const res = await fetch(`${API_BASE}/api/blog/posts?limit=${limit}`, {
+        const res = await fetch(`${API_BASE}/api/blog/posts?limit=${limit}&sort=createdAt:desc`, {
             next: { revalidate: 60 }, // Cache for 60 seconds
         });
 

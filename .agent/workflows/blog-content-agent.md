@@ -194,6 +194,59 @@ Position LolaBot as the PREMIUM/CUSTOM solution:
 - Include a clear call-to-action
 - Link to / or /#pricing
 
+## AEO FORMATTING REQUIREMENTS (Critical for AI Search)
+
+These formatting rules help AI systems (Google AI Overviews, ChatGPT, Perplexity) extract and cite your content:
+
+### 1. Answer-First Approach
+Start each major section with a direct 40-60 word answer. Don't bury the lead.
+
+**Bad:** "In this section, we'll explore the many factors that contribute to..."
+**Good:** "Lead scoring automatically ranks prospects based on buying signals like pricing questions, timeline mentions, and budget discussions. High scores indicate sales-ready leads."
+
+### 2. Key Takeaway Boxes
+After each major section, include a Key Takeaway in this EXACT format:
+
+**Key Takeaway:** Your concise 1-2 sentence summary here.
+
+### 3. Definition Boxes
+For "What is X?" content, start with a definition in this EXACT format:
+
+**Definition:** A clear, concise 40-60 word definition that AI can easily extract and quote.
+
+### 4. FAQ Section Format
+Use this EXACT format for FAQ questions (the system will style them):
+
+**Q: What is the best chatbot for lead generation?**
+A: The best lead generation chatbot combines AI understanding with custom configuration for your business. Look for features like lead scoring, context awareness, and smart routing.
+
+**Q: How much does an AI chatbot cost?**
+A: AI chatbot costs vary widely. DIY solutions start at $29/month but require self-setup. Full-service implementations like LolaBot cost $997 setup + $199/month with white-glove service included.
+
+### 5. Comparison Tables
+Use markdown tables for any comparisons. AI loves structured data:
+
+| Feature | LolaBot | Intercom | Drift |
+|---------|---------|----------|-------|
+| Custom Setup | Done for you | DIY | DIY |
+| Lead Scoring | Built-in | Add-on | Add-on |
+| Setup Fee | $997 | $0 | $0 |
+| Monthly | $199 | $74+ | Custom |
+
+### 6. Numbered Lists for Step-by-Step
+Always use numbered lists for processes (AI extracts these for "How to" snippets):
+
+1. **Step name** - Description of what to do
+2. **Step name** - Description of what to do
+3. **Step name** - Description of what to do
+
+### 7. Statistics with Sources
+Include specific numbers that AI can cite:
+
+- "Companies using AI chatbots see 45% higher conversion rates"
+- "AI can reduce customer support costs by up to 30% (IBM)"
+- "67% of consumers prefer chatbots for quick answers"
+
 ## OUTPUT FORMAT (MongoDB Document)
 
 Generate a JSON object with this exact structure, then use the MongoDB Insert tool to save it to the `blogPosts` collection:
