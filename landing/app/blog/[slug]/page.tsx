@@ -276,6 +276,16 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
                             margin-bottom: 1rem;
                         }
                         
+                        .article-content h4 {
+                            font-size: 1.125rem;
+                            font-weight: 600;
+                            color: #a5b4fc;
+                            margin-top: 2rem;
+                            margin-bottom: 0.75rem;
+                            text-transform: uppercase;
+                            letter-spacing: 0.05em;
+                        }
+                        
                         .article-content p {
                             margin-bottom: 1.75rem;
                             color: #d1d5db;
@@ -554,14 +564,20 @@ function formatContent(content: string): string {
     // Remove H1 headings (title is already shown in header)
     html = html.replace(/^# .+$/gm, '');
 
+    // Process headings from most specific to least (H4 before H3 before H2)
+    // This prevents ### from partially matching ####
+
+    // H4 headings
+    html = html.replace(/^#### (.+)$/gm, '\n<h4>$1</h4>\n');
+
+    // H3 headings
+    html = html.replace(/^### (.+)$/gm, '\n<h3>$1</h3>\n');
+
     // Add IDs to H2 headings for TOC navigation
     html = html.replace(/^## (.+)$/gm, (_, title) => {
         const id = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '');
         return `\n<h2 id="${id}">${title}</h2>\n`;
     });
-
-    // H3 headings
-    html = html.replace(/^### (.+)$/gm, '\n<h3>$1</h3>\n');
 
     // Bold
     html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');

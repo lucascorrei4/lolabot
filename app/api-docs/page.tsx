@@ -253,7 +253,7 @@ export default function ApiDocsPage() {
                                     category: "ai-automation",
                                     readingTime: 8,
                                     featured: true,
-                                    publishedAt: "2024-12-20T00:00:00Z"
+                                    publishedAt: "2025-12-20T00:00:00Z"
                                 }
                             ],
                             count: 1
@@ -279,7 +279,7 @@ export default function ApiDocsPage() {
                                 category: "ai-automation",
                                 tags: ["ai chatbot", "website"],
                                 readingTime: 8,
-                                publishedAt: "2024-12-20T00:00:00Z"
+                                publishedAt: "2025-12-20T00:00:00Z"
                             },
                             related: [
                                 { slug: "best-chatbot-for-small-business", title: "..." }

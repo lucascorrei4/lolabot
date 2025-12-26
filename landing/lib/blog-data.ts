@@ -79,28 +79,28 @@ const staticPosts: BlogPost[] = [
         title: 'AI Chatbot for Website: The Complete Guide for 2024',
         description: 'Learn how to implement an AI chatbot on your website. Discover best practices and maximize ROI.',
         content: `## What is an AI Chatbot?\n\nAn AI chatbot uses natural language processing to understand and respond to queries...\n\n[Full content available from API]`,
-        publishedAt: '2024-12-20',
+        publishedAt: '2025-12-20',
         author: { name: 'Lucas Correia', role: 'Founder, LolaBot' },
         category: 'ai-automation',
         tags: ['ai chatbot', 'website chatbot', 'customer support'],
         readingTime: 8,
         featured: true,
         status: 'published',
-        createdAt: '2024-12-20',
+        createdAt: '2025-12-20',
     },
     {
         slug: 'lead-generation-chatbot-increase-conversions',
         title: 'Lead Generation Chatbot: How to Increase Conversions by 45%',
         description: 'Discover how lead generation chatbots work and capture more qualified leads.',
         content: `## What is a Lead Generation Chatbot?\n\nA lead generation chatbot engages visitors in real-time...\n\n[Full content available from API]`,
-        publishedAt: '2024-12-18',
+        publishedAt: '2025-12-18',
         author: { name: 'Lucas Correia', role: 'Founder, LolaBot' },
         category: 'lead-generation',
         tags: ['lead generation', 'chatbot', 'conversion'],
         readingTime: 6,
         featured: true,
         status: 'published',
-        createdAt: '2024-12-18',
+        createdAt: '2025-12-18',
     },
 ];
 
@@ -230,9 +230,57 @@ export async function getRelatedPosts(slug: string, limit = 3): Promise<BlogPost
 }
 
 /**
- * Format date for display
+ * Format date for display with time in New York timezone
+ * Example output: "December 25, 2025 at 8:35 PM EST"
  */
-export function formatDate(date: Date | string): string {
+export function formatDate(date: Date | string, includeTime = true): string {
     const d = typeof date === 'string' ? new Date(date) : date;
-    return d.toISOString().split('T')[0];
+
+    const options: Intl.DateTimeFormatOptions = {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        timeZone: 'America/New_York',
+    };
+
+    if (includeTime) {
+        options.hour = 'numeric';
+        options.minute = '2-digit';
+        options.hour12 = true;
+        options.timeZoneName = 'short';
+    }
+
+    const formatter = new Intl.DateTimeFormat('en-US', options);
+    const parts = formatter.formatToParts(d);
+
+    if (includeTime) {
+        // Build: "December 25, 2025 at 8:35 PM EST"
+        const month = parts.find(p => p.type === 'month')?.value || '';
+        const day = parts.find(p => p.type === 'day')?.value || '';
+        const year = parts.find(p => p.type === 'year')?.value || '';
+        const hour = parts.find(p => p.type === 'hour')?.value || '';
+        const minute = parts.find(p => p.type === 'minute')?.value || '';
+        const dayPeriod = parts.find(p => p.type === 'dayPeriod')?.value || '';
+        const timeZoneName = parts.find(p => p.type === 'timeZoneName')?.value || '';
+
+        return `${month} ${day}, ${year} at ${hour}:${minute} ${dayPeriod} ${timeZoneName}`;
+    }
+
+    // Date only: "December 25, 2025"
+    return formatter.format(d);
+}
+
+/**
+ * Format date for display (short format, date only)
+ * Example output: "Dec 25, 2025"
+ */
+export function formatDateShort(date: Date | string): string {
+    const d = typeof date === 'string' ? new Date(date) : date;
+
+    return new Intl.DateTimeFormat('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        timeZone: 'America/New_York',
+    }).format(d);
 }

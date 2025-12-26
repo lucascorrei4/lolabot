@@ -71,7 +71,7 @@ Implementing an AI chatbot on your website is one of the highest-ROI investments
 
 Ready to get started? [Try LolaBot free for 14 days](/pricing) and see the difference AI can make for your business.
         `,
-        publishedAt: new Date('2024-12-20'),
+        publishedAt: new Date('2025-12-20'),
         author: { name: 'Lucas Correia', role: 'Founder, LolaBot' },
         category: 'ai-automation',
         tags: ['ai chatbot', 'website chatbot', 'customer support', 'lead generation'],
@@ -137,7 +137,7 @@ Companies using LolaBot for lead generation report:
 
 [Start your free trial today →](/pricing)
         `,
-        publishedAt: new Date('2024-12-18'),
+        publishedAt: new Date('2025-12-18'),
         author: { name: 'Lucas Correia', role: 'Founder, LolaBot' },
         category: 'lead-generation',
         tags: ['lead generation', 'chatbot', 'conversion optimization', 'sales'],
