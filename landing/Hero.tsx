@@ -69,11 +69,8 @@ export function Hero() {
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60 drop-shadow-sm px-2">
             Remove Your Contact Form Immediately
           </h1>
-          <p className="mt-2 sm:mt-3 text-lg sm:text-xl md:text-2xl font-medium text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-indigo-400 px-4">
-            "Hmm, another chatbot... but wait, they mention 'revenue intelligence'?"
-          </p>
           <p className="mt-4 sm:mt-6 text-base sm:text-lg leading-7 sm:leading-8 text-gray-300 max-w-xl mx-auto backdrop-blur-[2px] px-4">
-            LolaBot is an AI Assistant That Talks, Thinks & Sends You Smart Briefings. It engages visitors 24/7, understands context,
+            LolaBot is an AI Assistant That Talks, Thinks & Sends You <span className="text-white font-semibold">Smart Briefings</span>. It engages visitors 24/7, understands context,
             and <span className="text-white font-semibold">notifies you with instant briefings</span> with
             sentiment analysis, urgency detection, and recommended actions—so you never miss a lead.
           </p>

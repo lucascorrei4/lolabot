@@ -130,7 +130,7 @@ export function LeadScoringShowcase() {
 
                         {/* Chat Messages */}
                         <div className="p-4 sm:p-6 min-h-[400px] max-h-[500px] overflow-y-auto space-y-4">
-                            {chatMessages.map((msg, idx) => (
+                            {chatMessages.filter(msg => msg && msg.role).map((msg, idx) => (
                                 <div
                                     key={idx}
                                     className={`flex gap-3 animate-fadeIn ${msg.role === 'visitor' ? 'justify-start' : 'justify-end'}`}
@@ -141,8 +141,8 @@ export function LeadScoringShowcase() {
                                         </div>
                                     )}
                                     <div className={`max-w-[80%] p-3 rounded-2xl text-sm ${msg.role === 'visitor'
-                                            ? 'bg-gray-700 text-gray-200 rounded-tl-sm'
-                                            : 'bg-indigo-600 text-white rounded-tr-sm'
+                                        ? 'bg-gray-700 text-gray-200 rounded-tl-sm'
+                                        : 'bg-indigo-600 text-white rounded-tr-sm'
                                         }`}>
                                         {msg.text}
                                     </div>

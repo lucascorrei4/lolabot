@@ -1,4 +1,7 @@
+'use client';
+
 import { CheckIcon } from '@heroicons/react/20/solid';
+import { useState } from 'react';
 
 const includedFeatures = [
   'Custom BizAI Agent Configuration',
@@ -9,7 +12,51 @@ const includedFeatures = [
   'Unlimited Conversations',
 ];
 
+// API URL for checkout
+const CHECKOUT_API_URL = process.env.NEXT_PUBLIC_LOLABOT_API_URL || 'http://localhost:3000';
+
+type ProductType = 'setup' | 'monthly' | 'bundle';
+
 export function Pricing() {
+  const [loading, setLoading] = useState<ProductType | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleCheckout = async (productType: ProductType) => {
+    setLoading(productType);
+    setError(null);
+
+    try {
+      const response = await fetch(`${CHECKOUT_API_URL}/api/checkout`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          productType,
+          successUrl: `${window.location.origin}/checkout/success`,
+          cancelUrl: `${window.location.origin}/#pricing`,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to create checkout session');
+      }
+
+      // Redirect to Stripe Checkout
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        throw new Error('No checkout URL returned');
+      }
+    } catch (err) {
+      console.error('Checkout error:', err);
+      setError(err instanceof Error ? err.message : 'Something went wrong');
+      setLoading(null);
+    }
+  };
+
   return (
     <section id="pricing" className="bg-gray-950 py-16 sm:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -19,6 +66,15 @@ export function Pricing() {
             Get started with a plan that fits
           </p>
         </div>
+
+        {error && (
+          <div className="mx-auto max-w-2xl mb-8">
+            <div className="rounded-lg bg-red-500/10 border border-red-500/20 p-4 text-center">
+              <p className="text-sm text-red-400">{error}</p>
+            </div>
+          </div>
+        )}
+
         <div className="mx-auto mt-10 sm:mt-16 lg:mt-20 max-w-2xl rounded-2xl sm:rounded-3xl ring-1 ring-white/10 bg-white/5 lg:mx-0 lg:flex lg:max-w-none">
           <div className="p-5 sm:p-8 lg:p-10 lg:flex-auto">
             <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-white">Full Service Implementation</h3>
@@ -59,14 +115,27 @@ export function Pricing() {
                   </p>
                 </div>
 
-                <a
-                  href="#"
-                  className="mt-8 sm:mt-10 block w-full rounded-md bg-indigo-600 px-3 py-2.5 sm:py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                {/* Main Bundle CTA */}
+                <button
+                  onClick={() => handleCheckout('bundle')}
+                  disabled={loading !== null}
+                  className="mt-8 sm:mt-10 block w-full rounded-md bg-indigo-600 px-3 py-3 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Get Access
-                </a>
-                <p className="mt-4 sm:mt-6 text-[10px] sm:text-xs leading-5 text-gray-500">
-                  Invoices and receipts available for easy company reimbursement
+                  {loading === 'bundle' ? (
+                    <span className="flex items-center justify-center gap-2">
+                      <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                      </svg>
+                      Processing...
+                    </span>
+                  ) : (
+                    'Get Started Now'
+                  )}
+                </button>
+
+                <p className="mt-6 text-[10px] sm:text-xs leading-5 text-gray-500">
+                  Secure payment via Stripe. Invoices and receipts available.
                 </p>
               </div>
             </div>
