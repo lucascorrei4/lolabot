@@ -218,14 +218,14 @@ function AEOSchemas({ post, category }: { post: BlogPost; category: { name: stri
             "url": "https://bizaigpt.com",
             "worksFor": {
                 "@type": "Organization",
-                "name": "LolaBot",
+                "name": "BizAI Agent",
                 "@id": "https://bizaigpt.com/#organization"
             }
         },
         "publisher": {
             "@type": "Organization",
             "@id": "https://bizaigpt.com/#organization",
-            "name": "LolaBot",
+            "name": "BizAI Agent",
             "logo": {
                 "@type": "ImageObject",
                 "url": "https://bizaigpt.com/assets/img/favicon.png"
@@ -378,7 +378,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
             <nav className="fixed top-4 left-1/2 -translate-x-1/2 z-50 px-6 py-3 bg-gray-900/80 backdrop-blur-xl rounded-full border border-gray-800/50 shadow-2xl">
                 <div className="flex items-center gap-8">
                     <Link href="/" className="text-lg font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
-                        LolaBot
+                        BizAI Agent
                     </Link>
                     <div className="hidden md:flex items-center gap-6 text-sm">
                         <Link href="/" className="text-gray-400 hover:text-white transition">Home</Link>
@@ -712,7 +712,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
                                 <h3 className="text-xl font-bold text-white mb-1">Written by {post.author.name}</h3>
                                 <p className="text-indigo-400 text-sm mb-3">{post.author.role}</p>
                                 <p className="text-gray-400 leading-relaxed">
-                                    Building LolaBot to help businesses convert more visitors into customers with AI-powered conversations.
+                                    Building BizAI Agent to help businesses convert more visitors into customers with AI-powered conversations.
                                     Passionate about automation, lead generation, and creating delightful user experiences.
                                 </p>
                             </div>
@@ -768,7 +768,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
                                 Ready to convert more visitors?
                             </h2>
                             <p className="text-gray-400 text-lg mb-8 max-w-lg mx-auto">
-                                Join thousands of businesses using LolaBot to capture leads and provide 24/7 support.
+                                Join thousands of businesses using BizAI Agent to capture leads and provide 24/7 support.
                             </p>
                             <Link
                                 href="/#pricing"
@@ -789,7 +789,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
                 <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
                     <div className="flex items-center gap-2">
                         <span className="text-lg font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
-                            LolaBot
+                            BizAI Agent
                         </span>
                         <span className="text-gray-600">·</span>
                         <span className="text-gray-500 text-sm">AI-powered sales chatbot</span>
@@ -800,7 +800,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
                         <Link href="/#pricing" className="hover:text-white transition">Pricing</Link>
                     </div>
                     <p className="text-gray-600 text-sm">
-                        © {new Date().getFullYear()} LolaBot
+                        © {new Date().getFullYear()} BizAI Agent
                     </p>
                 </div>
             </footer>

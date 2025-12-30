@@ -3,7 +3,7 @@
 import React, { useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 
-// Define the window interface to include LolaBot
+// Define the window interface to include BizAI Agent
 declare global {
   interface Window {
     LolaBot: {
@@ -16,8 +16,8 @@ declare global {
 const getPageMetadata = () => {
   // Get page title (remove site suffix if present)
   let title = document.title || '';
-  // Remove common suffixes like " | LolaBot" or " - LolaBot"
-  title = title.replace(/\s*[|\-–—]\s*LolaBot\s*$/i, '').trim();
+  // Remove common suffixes like " | BizAI Agent" or " - BizAI Agent"
+  title = title.replace(/\s*[|\-–—]\s*(LolaBot|BizAI Agent)\s*$/i, '').trim();
 
   // Get meta description
   const metaDescription = document.querySelector('meta[name="description"]');
@@ -54,7 +54,7 @@ const getPageType = (path: string): string => {
   return 'page';
 };
 
-export const LolaBotIntegration: React.FC = () => {
+export const BizAIAgentIntegration: React.FC = () => {
   const pathname = usePathname();
   const loadedRef = useRef(false);
 
@@ -62,12 +62,12 @@ export const LolaBotIntegration: React.FC = () => {
   useEffect(() => {
     if (loadedRef.current) return;
 
-    const scriptId = 'lolabot-script';
+    const scriptId = 'bizai-agent-script';
     if (!document.getElementById(scriptId)) {
       const script = document.createElement('script');
       script.id = scriptId;
       // Pointing to the public script location in this app
-      script.src = '/embed/lolabot.js';
+      script.src = '/embed/bizai-agent.js';
       script.async = true;
       // Prevent auto-init since we'll mount programmatically with correct baseUrl
       script.setAttribute('data-no-auto-init', 'true');
@@ -88,10 +88,10 @@ export const LolaBotIntegration: React.FC = () => {
         const { title, description } = getPageMetadata();
 
         // Handle Guest ID consistency
-        let guestId = localStorage.getItem('lolabot_guest_id');
+        let guestId = localStorage.getItem('bizai_agent_guest_id');
         if (!guestId) {
           guestId = 'guest_' + Math.random().toString(36).substr(2, 9);
-          localStorage.setItem('lolabot_guest_id', guestId);
+          localStorage.setItem('bizai_agent_guest_id', guestId);
         }
         const currentUserId = guestId;
 
@@ -100,18 +100,18 @@ export const LolaBotIntegration: React.FC = () => {
           page: path,
           page_type: pageType,
           page_title: title || `Page: ${path}`,
-          page_description: description || 'LolaBot - AI-Powered Sales Agent',
+          page_description: description || 'BizAI Agent - AI-Powered Sales Agent',
           user_id: currentUserId,
           user_role: 'visitor',
           intent: pageType === 'blog_article'
             ? 'Reading blog content, may have questions about the topic'
-            : 'Evaluating LolaBot Intelligence for purchase'
+            : 'Evaluating BizAI Agent Intelligence for purchase'
         };
 
         // Cleanup existing instances to prevent duplicates
         const iframes = document.querySelectorAll('iframe');
         iframes.forEach(iframe => {
-          if (iframe.src && (iframe.src.includes('lolabot') || iframe.src.includes('/chat/'))) {
+          if (iframe.src && (iframe.src.includes('bizai') || iframe.src.includes('lolabot') || iframe.src.includes('/chat/'))) {
             iframe.remove();
           }
         });
@@ -131,17 +131,20 @@ export const LolaBotIntegration: React.FC = () => {
         });
 
         // Mount the bot with new context
-        // Use env var for baseUrl (defaults to production if not set)
-        const baseUrl = process.env.NEXT_PUBLIC_LOLABOT_API_URL || 'https://lolabot.bizaigpt.com';
+        // Use env var for baseUrl, with smart localhost detection for development
+        const isLocalhost = typeof window !== 'undefined' && window.location.hostname === 'localhost';
+        const baseUrl = process.env.NEXT_PUBLIC_LOLABOT_API_URL ||
+          process.env.NEXT_PUBLIC_BIZAI_AGENT_API_URL ||
+          (isLocalhost ? 'http://localhost:3000' : 'https://app.bizaigpt.com');
         try {
           window.LolaBot.mount({
-            botId: "lolabot-landing-demo",
+            botId: "bizai-agent-demo",
             userId: currentUserId,
             baseUrl: baseUrl,
             context: context
           });
         } catch (e) {
-          console.error("Failed to mount LolaBot:", e);
+          console.error("Failed to mount BizAI Agent:", e);
         }
       }, 100); // Small delay to ensure metadata is ready
     };
@@ -162,7 +165,7 @@ export const LolaBotIntegration: React.FC = () => {
 
   // Auto-open bot after delay (only once per session, skip on mobile)
   useEffect(() => {
-    const hasOpened = sessionStorage.getItem('lolabot_auto_opened');
+    const hasOpened = sessionStorage.getItem('bizai_agent_auto_opened');
     if (hasOpened) return;
 
     // Skip auto-open on mobile devices to prevent breaking responsivity
@@ -170,7 +173,7 @@ export const LolaBotIntegration: React.FC = () => {
       /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     if (isMobile) {
       // Mark as opened so we don't keep checking
-      sessionStorage.setItem('lolabot_auto_opened', 'true');
+      sessionStorage.setItem('bizai_agent_auto_opened', 'true');
       return;
     }
 
@@ -188,7 +191,7 @@ export const LolaBotIntegration: React.FC = () => {
 
       if (launcherBtn) {
         (launcherBtn as HTMLButtonElement).click();
-        sessionStorage.setItem('lolabot_auto_opened', 'true');
+        sessionStorage.setItem('bizai_agent_auto_opened', 'true');
       }
     }, 3500);
 
@@ -198,4 +201,4 @@ export const LolaBotIntegration: React.FC = () => {
   return null;
 };
 
-export default LolaBotIntegration;
+export default BizAIAgentIntegration;

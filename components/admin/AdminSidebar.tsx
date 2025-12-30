@@ -68,13 +68,13 @@ export function AdminSidebar({ botId }: { botId: string }) {
                 <Link href={`/admin/${botId}`} className="flex items-center gap-3 mb-1 hover:opacity-80 transition-opacity">
                     <Image
                         src="/assets/img/favicon.png"
-                        alt="LolaBot"
+                        alt="BizAI Agent"
                         width={32}
                         height={32}
                         className="rounded-lg"
                     />
                     <h1 className="text-lg lg:text-xl font-bold bg-gradient-to-r from-blue-400 to-indigo-500 bg-clip-text text-transparent">
-                        LolaBot Admin
+                        BizAI Agent Admin
                     </h1>
                 </Link>
                 <p className="text-xs text-gray-500 mt-1 truncate">{botId}</p>
@@ -162,12 +162,12 @@ export function AdminSidebar({ botId }: { botId: string }) {
                 <Link href={`/admin/${botId}`} className="flex items-center gap-2 ml-2">
                     <Image
                         src="/assets/img/favicon.png"
-                        alt="LolaBot"
+                        alt="BizAI Agent"
                         width={24}
                         height={24}
                         className="rounded"
                     />
-                    <span className="text-sm font-semibold text-white">LolaBot Admin</span>
+                    <span className="text-sm font-semibold text-white">BizAI Agent Admin</span>
                 </Link>
             </div>
 

@@ -9,25 +9,25 @@ if (!stripeSecretKey) {
 // Initialize Stripe with the secret key
 const stripe = new Stripe(stripeSecretKey || 'sk_test_placeholder');
 
-// Product details for LolaBot
+// Product details for BizAI Agent
 export const PRODUCTS = {
     setup: {
-        name: 'LolaBot AI Agent - Initial Setup & Configuration',
+        name: 'BizAI Agent - Initial Setup & Configuration',
         description: 'One-time custom implementation by our team. Includes: Custom BizAI Agent Configuration, Context-Aware Integration, Real-time Sentiment Analysis, Emergency Notification System, Briefing Summaries setup, and full onboarding.',
         price: 997 * 100, // $997 in cents
         mode: 'payment' as const,
         currency: 'usd',
     },
     monthly: {
-        name: 'LolaBot AI Agent - Monthly Support & Maintenance',
+        name: 'BizAI Agent - Monthly Support & Maintenance',
         description: 'Ongoing AI hosting, unlimited conversations, token usage, maintenance, priority support, and continuous optimization of your AI sales agent.',
         price: 199 * 100, // $199 in cents
         mode: 'subscription' as const,
         currency: 'usd',
     },
     bundle: {
-        name: 'LolaBot AI Agent - Complete Bundle',
-        description: 'Get started with LolaBot! Includes Initial Setup & Configuration ($997) plus first month of Support & Maintenance ($199). Total value: $1,196.',
+        name: 'BizAI Agent - Complete Bundle',
+        description: 'Get started with BizAI Agent! Includes Initial Setup & Configuration ($997) plus first month of Support & Maintenance ($199). Total value: $1,196.',
         setupPrice: 997 * 100,
         monthlyPrice: 199 * 100,
         currency: 'usd',
@@ -65,7 +65,7 @@ export async function createCheckoutSession({
                     price_data: {
                         currency: product.currency,
                         product_data: {
-                            name: 'LolaBot AI Agent - Initial Setup & Configuration',
+                            name: 'BizAI Agent - Initial Setup & Configuration',
                             description: 'One-time setup fee for custom implementation',
                         },
                         unit_amount: PRODUCTS.bundle.setupPrice,
@@ -76,7 +76,7 @@ export async function createCheckoutSession({
                     price_data: {
                         currency: product.currency,
                         product_data: {
-                            name: 'LolaBot AI Agent - Monthly Support & Maintenance',
+                            name: 'BizAI Agent - Monthly Support & Maintenance',
                             description: 'Recurring monthly fee for hosting, support, and maintenance',
                         },
                         unit_amount: PRODUCTS.bundle.monthlyPrice,
@@ -94,7 +94,7 @@ export async function createCheckoutSession({
             },
             subscription_data: {
                 trial_period_days: 30, // Monthly billing starts after 30 days
-                description: 'LolaBot AI Agent - Monthly subscription starts after 30-day trial',
+                description: 'BizAI Agent - Monthly subscription starts after 30-day trial',
             },
             allow_promotion_codes: true,
         });

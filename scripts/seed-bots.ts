@@ -42,16 +42,15 @@ interface BotSettingsDoc {
 
 const BOTS_CONFIG_JSON = process.env.BOTS_CONFIG;
 const MONGODB_URI = process.env.MONGODB_URI;
-const MONGODB_DB = process.env.MONGODB_DB || "lolabot";
+const MONGODB_DB = process.env.MONGODB_DB || "bizai-agent";
 
-// Default bot configurations to seed (used if BOTS_CONFIG is not set)
 const DEFAULT_BOTS: BotConfig[] = [
     {
-        id: "lolabot-landing-demo",
-        slug: "lolabot-landing-demo",
-        title: "Lolabot Demo",
-        description: "Lola Bot AI Assistant",
-        shortName: "Lola Bot Demo",
+        id: "bizai-agent-demo",
+        slug: "bizai-agent-demo",
+        title: "BizAI Agent Demo",
+        description: "BizAI Agent AI Assistant",
+        shortName: "BizAI Agent Demo",
         initialGreeting: "Hi, I am BizAI. I want to work for you in your projects!",
         webhookOutgoingUrl: "https://agents.n8n.bizaigpt.com/webhook/b9051d3b-f8cf-40a2-845c-ea8383d93c6e"
     }

@@ -7,7 +7,7 @@ export function Footer() {
         </div>
         <div className="mt-8 md:order-1 md:mt-0">
           <p className="text-center text-xs leading-5 text-gray-400">
-            &copy; {new Date().getFullYear()} Lolabot, Inc. All rights reserved.
+            &copy; {new Date().getFullYear()} BizAI Agent, Inc. All rights reserved.
           </p>
         </div>
       </div>

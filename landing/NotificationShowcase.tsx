@@ -25,7 +25,7 @@ export function NotificationShowcase() {
               </span>
             </h2>
             <p className="text-lg text-gray-400 mb-8 leading-relaxed">
-              LolaBot Intelligence doesn't just chat; it analyzes. When a conversation matters, you get a clean, structured email notification with everything you need to know to close the deal or solve the issue.
+              BizAI Agent Intelligence doesn't just chat; it analyzes. When a conversation matters, you get a clean, structured email notification with everything you need to know to close the deal or solve the issue.
             </p>
 
             <div className="space-y-6">

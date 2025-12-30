@@ -1,7 +1,7 @@
 /**
  * Blog data client for the landing page
  * 
- * Fetches blog posts from the main lolabot API (/api/blog/*)
+ * Fetches blog posts from the main BizAI Agent API (/api/blog/*)
  * This avoids MongoDB connection issues with Turbopack on Windows.
  */
 
@@ -60,16 +60,16 @@ export const blogCategories: BlogCategory[] = [
     {
         name: 'Case Studies',
         slug: 'case-studies',
-        description: 'Real-world success stories from businesses using LolaBot.',
+        description: 'Real-world success stories from businesses using BizAI Agent.',
     },
     {
         name: 'Product Updates',
         slug: 'product-updates',
-        description: 'Latest features and improvements to the LolaBot platform.',
+        description: 'Latest features and improvements to the BizAI Agent platform.',
     },
 ];
 
-// API base URL - uses the main lolabot app
+// API base URL - uses the main BizAI Agent app
 const API_BASE = process.env.NEXT_PUBLIC_LOLABOT_API_URL || 'http://localhost:3000';
 
 // Static fallback posts for development/build when API is unavailable
@@ -80,7 +80,7 @@ const staticPosts: BlogPost[] = [
         description: 'Learn how to implement an AI chatbot on your website. Discover best practices and maximize ROI.',
         content: `## What is an AI Chatbot?\n\nAn AI chatbot uses natural language processing to understand and respond to queries...\n\n[Full content available from API]`,
         publishedAt: '2025-12-20',
-        author: { name: 'Lucas Correia', role: 'Founder, LolaBot' },
+        author: { name: 'Lucas Correia', role: 'Founder, BizAI Agent' },
         category: 'ai-automation',
         tags: ['ai chatbot', 'website chatbot', 'customer support'],
         readingTime: 8,
@@ -94,7 +94,7 @@ const staticPosts: BlogPost[] = [
         description: 'Discover how lead generation chatbots work and capture more qualified leads.',
         content: `## What is a Lead Generation Chatbot?\n\nA lead generation chatbot engages visitors in real-time...\n\n[Full content available from API]`,
         publishedAt: '2025-12-18',
-        author: { name: 'Lucas Correia', role: 'Founder, LolaBot' },
+        author: { name: 'Lucas Correia', role: 'Founder, BizAI Agent' },
         category: 'lead-generation',
         tags: ['lead generation', 'chatbot', 'conversion'],
         readingTime: 6,

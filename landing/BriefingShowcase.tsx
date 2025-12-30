@@ -177,7 +177,7 @@ export const BriefingShowcase: React.FC<BriefingShowcaseProps & { data?: Briefin
                             <span className="w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-yellow-500"></span>
                             <span className="w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-green-500"></span>
                         </div>
-                        <div className="text-[10px] sm:text-xs text-gray-400 font-mono hidden sm:block">Message from LolaBot Intelligence</div>
+                        <div className="text-[10px] sm:text-xs text-gray-400 font-mono hidden sm:block">Message from BizAI Agent Intelligence</div>
                     </div>
 
                     {/* Body */}
@@ -185,7 +185,7 @@ export const BriefingShowcase: React.FC<BriefingShowcaseProps & { data?: Briefin
                         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2 sm:gap-4 mb-4 sm:mb-6">
                             <div className="min-w-0 flex-1">
                                 <h2 className="text-base sm:text-lg lg:text-xl font-bold text-white mb-1 truncate">{scenario.emailTitle}</h2>
-                                <p className="text-xs sm:text-sm text-gray-400">From: <span className={theme.text}>LolaBot Intelligence</span></p>
+                                <p className="text-xs sm:text-sm text-gray-400">From: <span className={theme.text}>BizAI Agent Intelligence</span></p>
                             </div>
                             <span className={`${scenario.priorityClass} text-[10px] sm:text-xs px-2 py-1 rounded border flex-shrink-0 self-start`}>{scenario.priorityLabel}</span>
                         </div>

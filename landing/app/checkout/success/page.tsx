@@ -70,7 +70,7 @@ function SuccessContent() {
             case 'bundle':
                 return 'Complete Bundle (Setup + Monthly)';
             default:
-                return 'LolaBot AI Agent';
+                return 'BizAI Agent';
         }
     };
 

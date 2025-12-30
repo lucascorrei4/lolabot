@@ -20,7 +20,7 @@ async function addBot() {
         await client.connect();
         console.log("Connected to MongoDB");
 
-        const db = client.db(process.env.MONGODB_DB || "lolabot");
+        const db = client.db(process.env.MONGODB_DB || "bizai-agent");
         const now = new Date();
 
         const result = await db.collection("botSettings").updateOne(

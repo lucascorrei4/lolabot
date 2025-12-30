@@ -79,13 +79,13 @@ export default function LoginPage() {
                     <div className="text-center flex justify-center items-center gap-3 mb-1">
                         <Image
                             src="/assets/img/favicon.png"
-                            alt="LolaBot"
+                            alt="BizAI Agent"
                             width={32}
                             height={32}
                             className="rounded-lg"
                         />
                         <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-indigo-500 bg-clip-text text-transparent">
-                            LolaBot Intelligence
+                            BizAI Agent Intelligence
                         </h1>
                     </div>
                     <p className="text-gray-500 text-sm mt-2">
@@ -162,7 +162,7 @@ export default function LoginPage() {
             </div>
 
             <div className="mt-8 text-xs text-gray-600">
-                &copy; {new Date().getFullYear()} LolaBot Intelligence
+                &copy; {new Date().getFullYear()} BizAI Agent Intelligence
             </div>
         </div>
     );

@@ -5,10 +5,10 @@ const EnvSchema = z.object({
   NEXT_PUBLIC_APP_URL: z.string().url().optional(),
 
   // Bot identification variables (used for display purposes, actual config comes from MongoDB)
-  NEXT_PUBLIC_BOT_TITLE: z.string().default("LolaBot"),
-  NEXT_PUBLIC_BOT_DESCRIPTION: z.string().default("LolaBot Intelligence"),
-  NEXT_PUBLIC_BOT_SHORTNAME: z.string().default("LolaBot"),
-  NEXT_PUBLIC_BOT_SLUG: z.string().default("lola-intelligence"),
+  NEXT_PUBLIC_BOT_TITLE: z.string().default("BizAI Agent"),
+  NEXT_PUBLIC_BOT_DESCRIPTION: z.string().default("BizAI Agent Intelligence"),
+  NEXT_PUBLIC_BOT_SHORTNAME: z.string().default("BizAI Agent"),
+  NEXT_PUBLIC_BOT_SLUG: z.string().default("bizai-agent"),
   NEXT_PUBLIC_INITIAL_GREETING: z.string().optional(),
 
   // Legacy webhook URL (only used if no bot configs in MongoDB)

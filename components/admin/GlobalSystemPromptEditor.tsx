@@ -100,7 +100,7 @@ export function GlobalSystemPromptEditor({ initialValue }: GlobalSystemPromptEdi
                         value={value}
                         onChange={(e) => setValue(e.target.value)}
                         rows={25}
-                        placeholder="# System Prompt for LolaBot&#10;&#10;Enter the default system prompt here. This will be applied to all bots as the base configuration.&#10;&#10;Include:&#10;- Role definition&#10;- Tool instructions&#10;- Trigger scenarios&#10;- Conversation guidelines"
+                        placeholder="# System Prompt for BizAI Agent&#10;&#10;Enter the default system prompt here. This will be applied to all bots as the base configuration.&#10;&#10;Include:&#10;- Role definition&#10;- Tool instructions&#10;- Trigger scenarios&#10;- Conversation guidelines"
                         className="w-full bg-transparent text-sm text-gray-300 font-mono leading-relaxed resize-none focus:outline-none p-4"
                     />
                 </div>

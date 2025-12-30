@@ -512,7 +512,7 @@ export default function ChatWidget(props: WidgetProps) {
           flex: isCollapsed ? 1 : undefined,
         }}
       >
-        <div style={{ fontWeight: 600, fontSize: 16, color: colors.text }}>{props.shortName || "LolaBot"}</div>
+        <div style={{ fontWeight: 600, fontSize: 16, color: colors.text }}>{props.shortName || "BizAI Agent"}</div>
         <div style={{ display: "flex", gap: 8 }}>
           {/* Theme toggle removed */}
           <button

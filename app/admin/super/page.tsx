@@ -90,7 +90,7 @@ export default async function SuperAdminPage() {
                                 <input
                                     type="text"
                                     name="newBotIds"
-                                    placeholder="lolabot-landing-demo, support-bot"
+                                    placeholder="bizai-agent-demo, support-bot"
                                     className="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 lg:px-4 py-2.5 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                                 />
                             </div>
@@ -140,7 +140,7 @@ export default async function SuperAdminPage() {
                                                     name="botIds"
                                                     defaultValue={u.allowedBotIds?.join(", ")}
                                                     className="bg-gray-950 border border-gray-800 rounded-lg px-3 py-1.5 text-sm w-64 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
-                                                    placeholder="e.g. lolabot-landing-demo, bot-2"
+                                                    placeholder="e.g. bizai-agent-demo, bot-2"
                                                 />
                                                 <button
                                                     type="submit"
@@ -182,7 +182,7 @@ export default async function SuperAdminPage() {
                                             name="botIds"
                                             defaultValue={u.allowedBotIds?.join(", ")}
                                             className="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
-                                            placeholder="e.g. lolabot-landing-demo, bot-2"
+                                            placeholder="e.g. bizai-agent-demo, bot-2"
                                         />
                                     </div>
                                     <div className="flex items-center justify-between">

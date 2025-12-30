@@ -22,10 +22,10 @@ export async function generateMetadata({ params }: { params: Promise<{ category:
     }
 
     return {
-        title: `${category.name} - LolaBot Blog`,
+        title: `${category.name} - BizAI Agent Blog`,
         description: category.description,
         openGraph: {
-            title: `${category.name} Articles - LolaBot Blog`,
+            title: `${category.name} Articles - BizAI Agent Blog`,
             description: category.description,
             type: 'website',
         },
@@ -55,7 +55,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex items-center justify-between h-16">
                         <Link href="/" className="text-xl font-bold text-white">
-                            LolaBot
+                            BizAI Agent
                         </Link>
                         <div className="flex items-center gap-6">
                             <Link href="/" className="text-gray-300 hover:text-white transition">
@@ -109,8 +109,8 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
                                 key={cat.slug}
                                 href={`/blog/category/${cat.slug}`}
                                 className={`px-4 py-2 rounded-full text-sm font-medium transition ${cat.slug === categorySlug
-                                        ? 'bg-indigo-600 text-white'
-                                        : 'bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-white'
+                                    ? 'bg-indigo-600 text-white'
+                                    : 'bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-white'
                                     }`}
                             >
                                 {cat.name}
@@ -196,7 +196,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
             <footer className="border-t border-gray-800 py-8 px-4 mt-auto">
                 <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
                     <p className="text-gray-500 text-sm">
-                        © {new Date().getFullYear()} LolaBot. All rights reserved.
+                        © {new Date().getFullYear()} BizAI Agent. All rights reserved.
                     </p>
                     <div className="flex items-center gap-6">
                         <Link href="/" className="text-gray-400 hover:text-white text-sm transition">

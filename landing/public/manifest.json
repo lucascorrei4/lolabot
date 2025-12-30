@@ -1,6 +1,6 @@
 {
-    "name": "LolaBot - AI Sales Agent",
-    "short_name": "LolaBot",
+    "name": "BizAI Agent - AI Sales Agent",
+    "short_name": "BizAI Agent",
     "description": "Transform website visitors into qualified leads with AI-powered sales automation",
     "start_url": "/",
     "display": "standalone",

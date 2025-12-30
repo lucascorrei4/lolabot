@@ -34,7 +34,7 @@ async function reset() {
         await client.connect();
         console.log("Connected to MongoDB\n");
 
-        const db = client.db(process.env.MONGODB_DB || "lolabot");
+        const db = client.db(process.env.MONGODB_DB || "bizai-agent");
         const now = new Date();
 
         // Re-add client bots

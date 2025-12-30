@@ -6,7 +6,7 @@ export const metadata: Metadata = {
     title: 'Blog - AI Chatbot Insights & Lead Generation Tips',
     description: 'Expert insights on AI chatbots, lead generation, customer support automation, and business growth strategies. Learn from real-world case studies.',
     openGraph: {
-        title: 'LolaBot Blog - AI Chatbot & Lead Generation Insights',
+        title: 'BizAI Agent Blog - AI Chatbot & Lead Generation Insights',
         description: 'Expert insights on AI chatbots, lead generation, and customer support automation.',
         type: 'website',
     },
@@ -29,7 +29,7 @@ export default async function BlogPage() {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex items-center justify-between h-16">
                         <Link href="/" className="text-xl font-bold text-white">
-                            LolaBot
+                            BizAI Agent
                         </Link>
                         <div className="flex items-center gap-6">
                             <Link href="/" className="text-gray-300 hover:text-white transition">
@@ -53,7 +53,7 @@ export default async function BlogPage() {
             <header className="pt-32 pb-16 px-4">
                 <div className="max-w-4xl mx-auto text-center">
                     <h1 className="text-4xl sm:text-5xl font-bold text-white mb-6">
-                        The LolaBot Blog
+                        The BizAI Agent Blog
                     </h1>
                     <p className="text-xl text-gray-400 max-w-2xl mx-auto">
                         Expert insights on AI chatbots, lead generation, and customer support automation.
@@ -185,7 +185,7 @@ export default async function BlogPage() {
                             Ready to Transform Your Website?
                         </h2>
                         <p className="text-gray-300 mb-8 max-w-xl mx-auto">
-                            Join thousands of businesses using LolaBot to convert more visitors into customers.
+                            Join thousands of businesses using BizAI Agent to convert more visitors into customers.
                         </p>
                         <Link
                             href="/#pricing"
@@ -204,7 +204,7 @@ export default async function BlogPage() {
             <footer className="border-t border-gray-800 py-8 px-4">
                 <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
                     <p className="text-gray-500 text-sm">
-                        © {new Date().getFullYear()} LolaBot. All rights reserved.
+                        © {new Date().getFullYear()} BizAI Agent. All rights reserved.
                     </p>
                     <div className="flex items-center gap-6">
                         <Link href="/" className="text-gray-400 hover:text-white text-sm transition">

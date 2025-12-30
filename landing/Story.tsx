@@ -20,7 +20,7 @@ export function Story() {
             <p className="mt-4 sm:mt-6 text-sm sm:text-base text-gray-400 leading-relaxed">
               Imagine a knowledgeable assistant that understands the specific page your visitor is on.
               It answers questions instantly, guides them to the right resource, and gets out of the way when they no longer need help.
-              That's LolaBot Intelligence.
+              That's BizAI Agent Intelligence.
             </p>
           </div>
         </div>

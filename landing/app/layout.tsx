@@ -1,16 +1,16 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
-import { LolaBotIntegration } from "../LolaBotIntegration";
+import { BizAIAgentIntegration } from "../BizAIAgentIntegration";
 
 const siteUrl = "https://bizaigpt.com";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "LolaBot - AI-Powered Sales Agent for Your Website | 24/7 Lead Conversion",
-    template: "%s | LolaBot",
+    default: "BizAI Agent - AI-Powered Sales Agent for Your Website | 24/7 Lead Conversion",
+    template: "%s | BizAI Agent",
   },
-  description: "Transform website visitors into qualified leads with LolaBot's AI sales agent. Real-time lead scoring, smart email briefings, and 24/7 automated customer engagement. Start converting more leads today.",
+  description: "Transform website visitors into qualified leads with BizAI Agent's AI sales agent. Real-time lead scoring, smart email briefings, and 24/7 automated customer engagement. Start converting more leads today.",
   keywords: [
     "AI chatbot",
     "sales automation",
@@ -48,21 +48,21 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: siteUrl,
-    siteName: "LolaBot",
-    title: "LolaBot - AI-Powered Sales Agent for Your Website",
+    siteName: "BizAI Agent",
+    title: "BizAI Agent - AI-Powered Sales Agent for Your Website",
     description: "Transform website visitors into qualified leads. Real-time lead scoring, smart briefings, and 24/7 automated engagement.",
     images: [
       {
         url: "/assets/img/og-image.png",
         width: 1200,
         height: 630,
-        alt: "LolaBot - AI Sales Agent",
+        alt: "BizAI Agent - AI Sales Agent",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "LolaBot - AI-Powered Sales Agent",
+    title: "BizAI Agent - AI-Powered Sales Agent",
     description: "Transform website visitors into qualified leads with AI-powered sales automation.",
     images: ["/assets/img/og-image.png"],
     creator: "@bizaigpt",
@@ -139,8 +139,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         {children}
-        {/* LolaBot chat widget - appears on all pages */}
-        <LolaBotIntegration />
+        {/* BizAI Agent chat widget - appears on all pages */}
+        <BizAIAgentIntegration />
       </body>
     </html>
   );

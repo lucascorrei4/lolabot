@@ -25,7 +25,7 @@ export function LeadScoringShowcase() {
         { role: 'visitor', text: "Hi, I need help with my customer support" },
         { role: 'bot', text: "Hello! I'd be happy to help. Are you looking to improve your current support system?" },
         { role: 'visitor', text: "Yes, we're using Intercom but it's getting too expensive for our 50-person team" },
-        { role: 'bot', text: "I understand! LolaBot offers enterprise features at a fraction of the cost. What features matter most to you?" },
+        { role: 'bot', text: "I understand! BizAI Agent offers enterprise features at a fraction of the cost. What features matter most to you?" },
         { role: 'visitor', text: "We need SSO, good sentiment analysis, and integrations with Salesforce" },
         { role: 'bot', text: "Perfect match! We support all of those. Would you like to see our enterprise pricing?" },
         { role: 'visitor', text: "Yes please! Can I schedule a demo for tomorrow?" },

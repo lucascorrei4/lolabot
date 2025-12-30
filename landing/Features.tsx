@@ -4,7 +4,7 @@ const features = [
   {
     name: 'Context Awareness',
     description:
-      'LolaBot Intelligence doesn\'t just chat; it understands. It uses the specific context of the page your visitor is viewing to provide relevant, accurate answers instantly.',
+      'BizAI Agent Intelligence doesn\'t just chat; it understands. It uses the specific context of the page your visitor is viewing to provide relevant, accurate answers instantly.',
     icon: ChatBubbleLeftRightIcon,
   },
   {
@@ -16,13 +16,13 @@ const features = [
   {
     name: 'Emergency Alerts',
     description:
-      'Never miss a critical issue. Lolabot detects user sentiment and sends emergency notifications when a customer is frustrated or needs immediate human attention.',
+      'Never miss a critical issue. BizAI Agent detects user sentiment and sends emergency notifications when a customer is frustrated or needs immediate human attention.',
     icon: ShieldExclamationIcon,
   },
   {
     name: 'Universal Embed',
     description:
-      'Works everywhere. Encapsulate LolaBot Intelligence in any page or tool. It seamlessly integrates with your existing workflow and tools.',
+      'Works everywhere. Encapsulate BizAI Agent Intelligence in any page or tool. It seamlessly integrates with your existing workflow and tools.',
     icon: GlobeAltIcon,
   },
 ];
@@ -37,7 +37,7 @@ export function Features() {
             Everything you need to support your customers
           </p>
           <p className="mt-4 sm:mt-6 text-base sm:text-lg leading-7 sm:leading-8 text-gray-400">
-            LolaBot Intelligence is not just another chatbot. It's a smart agent designed to help small and medium businesses scale their support with AI that actually understands their business.
+            BizAI Agent Intelligence is not just another chatbot. It's a smart agent designed to help small and medium businesses scale their support with AI that actually understands their business.
           </p>
         </div>
         <div className="mx-auto mt-12 sm:mt-16 lg:mt-24 max-w-2xl lg:max-w-4xl">

@@ -2,7 +2,7 @@ export type MessageRole = "user" | "bot" | "system";
 export type MessageType = "text" | "image" | "audio" | "choice";
 
 export interface BotConfig {
-  id: string; // Unique bot identifier (e.g., "lolabot-landing-demo", "my-bot")
+  id: string; // Unique bot identifier (e.g., "bizai-agent-demo", "my-bot")
   slug: string; // URL slug (e.g., "lola-bot", "my-smart-bot")
   title: string;
   description: string;
@@ -106,7 +106,7 @@ export interface BotSettings {
   updatedBy: string; // email of admin who updated
 }
 
-// Global settings for the entire LolaBot platform (super admin only)
+// Global settings for the entire BizAI Agent platform (super admin only)
 export interface GlobalSettings {
   _id?: string;
   key: string; // Unique identifier for the setting (e.g., 'default_system_prompt')

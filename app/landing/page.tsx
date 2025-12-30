@@ -7,22 +7,22 @@ import { Story } from '../../landing/Story';
 import { HowItWorks } from '../../landing/HowItWorks';
 import { FAQ } from '../../landing/FAQ';
 import { NotificationShowcase } from '../../landing/NotificationShowcase';
-import { LolaBotIntegration } from '../../landing/LolaBotIntegration';
+import { BizAIAgentIntegration } from '../../landing/BizAIAgentIntegration';
 import { AnimatedEmailShowcase } from '../../landing/AnimatedEmailShowcase';
 
 export const metadata: Metadata = {
-  title: 'LolaBot Intelligence - AI Chatbot That Never Misses a Lead | 24/7 Smart Support',
-  description: 'Stop losing leads while you sleep. LolaBot is an AI-powered chatbot that monitors conversations 24/7, detects urgency and opportunities, and sends you instant email briefings with sentiment analysis and recommended actions.',
+  title: 'BizAI Agent Intelligence - AI Chatbot That Never Misses a Lead | 24/7 Smart Support',
+  description: 'Stop losing leads while you sleep. BizAI Agent is an AI-powered chatbot that monitors conversations 24/7, detects urgency and opportunities, and sends you instant email briefings with sentiment analysis and recommended actions.',
   keywords: ['AI chatbot', 'customer support automation', 'lead generation', 'sentiment analysis', 'business intelligence', 'real-time notifications', 'emergency alerts'],
   openGraph: {
-    title: 'LolaBot Intelligence - Never Miss Another Lead',
+    title: 'BizAI Agent Intelligence - Never Miss Another Lead',
     description: 'AI-powered chatbot with real-time intelligence. Get instant email briefings with sentiment analysis, urgency detection, and recommended actions.',
     type: 'website',
-    images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'LolaBot Intelligence Dashboard' }],
+    images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'BizAI Agent Intelligence Dashboard' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'LolaBot Intelligence - AI That Works While You Sleep',
+    title: 'BizAI Agent Intelligence - AI That Works While You Sleep',
     description: 'Stop losing leads. Get instant AI-powered briefings for every conversation.',
   },
   robots: {
@@ -44,7 +44,7 @@ export default function LandingPage() {
       {
         '@type': 'SoftwareApplication',
         '@id': 'https://bizaigpt.com/#software',
-        name: 'LolaBot Intelligence',
+        name: 'BizAI Agent Intelligence',
         applicationCategory: 'BusinessApplication',
         applicationSubCategory: 'AI Chatbot & Customer Intelligence',
         operatingSystem: 'Web, Cloud-based',
@@ -85,19 +85,19 @@ export default function LandingPage() {
       {
         '@type': 'Organization',
         '@id': 'https://bizaigpt.com/#organization',
-        name: 'LolaBot Intelligence',
+        name: 'BizAI Agent Intelligence',
         url: 'https://bizaigpt.com',
         logo: '/logo.png',
         sameAs: [
-          'https://twitter.com/lolabot_ai',
-          'https://linkedin.com/company/lolabot'
+          'https://twitter.com/bizaigpt',
+          'https://linkedin.com/company/bizaigpt'
         ]
       },
       // WebPage
       {
         '@type': 'WebPage',
         '@id': 'https://bizaigpt.com',
-        name: 'LolaBot Intelligence - AI Chatbot That Never Misses a Lead',
+        name: 'BizAI Agent Intelligence - AI Chatbot That Never Misses a Lead',
         description: 'Transform your customer support with AI-powered real-time intelligence',
         isPartOf: { '@id': 'https://bizaigpt.com/#website' },
         about: { '@id': 'https://bizaigpt.com/#software' },
@@ -106,7 +106,7 @@ export default function LandingPage() {
       // Key Features as ItemList (enhances rich snippets)
       {
         '@type': 'ItemList',
-        name: 'LolaBot Key Capabilities',
+        name: 'BizAI Agent Key Capabilities',
         itemListElement: [
           {
             '@type': 'ListItem',
@@ -143,7 +143,7 @@ export default function LandingPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <LolaBotIntegration />
+      <BizAIAgentIntegration />
       <Hero />
       <Story />
       {/* Lead Scoring Demo - Shows how AI scores leads in real-time */}

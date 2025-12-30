@@ -1,4 +1,4 @@
-# LolaBot
+# BizAI Agent
 
 A modern, embeddable AI chat widget built with Next.js, optimized for easy integration into any website.
 
@@ -30,9 +30,9 @@ NODE_ENV=production
 NEXT_PUBLIC_APP_URL=http://localhost:3000
 
 # Bot Info (Customizable)
-NEXT_PUBLIC_BOT_TITLE=LolaBot
+NEXT_PUBLIC_BOT_TITLE=BizAI Agent
 NEXT_PUBLIC_BOT_DESCRIPTION="Your AI Assistant"
-NEXT_PUBLIC_BOT_SHORTNAME=Lola
+NEXT_PUBLIC_BOT_SHORTNAME=BizAI
 NEXT_PUBLIC_BOT_SLUG=my-bot-slug
 
 # Webhooks (Your AI Agent Backend)
@@ -40,7 +40,7 @@ WEBHOOK_OUTGOING_URL=https://your-n8n-or-backend.com/webhook
 
 # MongoDB
 MONGODB_URI=mongodb://localhost:27017
-MONGODB_DB=lolabot
+MONGODB_DB=bizai-agent
 
 # Storage (S3/R2)
 STORAGE_PROVIDER=S3
@@ -60,14 +60,14 @@ Build and run the container:
 
 ```bash
 # Build the image
-docker build -t lolabot:latest .
+docker build -t bizai-agent:latest .
 
 # Run the container (replace env vars or pass --env-file)
 docker run -d \
   -p 3000:3000 \
-  --name lolabot \
+  --name bizai-agent \
   --env-file .env \
-  lolabot:latest
+  bizai-agent:latest
 ```
 
 The app will be available at `http://localhost:3000`.
@@ -78,7 +78,7 @@ Add the following code to your website's HTML, just before the closing `</body>`
 
 ```html
 <script 
-  src="https://your-lolabot-domain.com/embed/lolabot.js"
+  src="https://bizaigpt.com/embed/bizai-agent.js"
   data-bot-id="my-bot-slug"
   data-theme="light" 
 ></script>
@@ -88,8 +88,8 @@ Add the following code to your website's HTML, just before the closing `</body>`
 
 | Attribute | Description | Default |
 | :--- | :--- | :--- |
-| `src` | **Required**. URL to the `lolabot.js` file on your deployment. | - |
-| `data-bot-id` | **Required**. Must match `NEXT_PUBLIC_BOT_SLUG` set in env. | `lolabot-landing-demo` |
+| `src` | **Required**. URL to the `bizai-agent.js` file on your deployment. | - |
+| `data-bot-id` | **Required**. Must match `NEXT_PUBLIC_BOT_SLUG` set in env. | `bizai-agent-demo` |
 | `data-user-id` | Optional. Unique ID for the user (e.g. from your auth system). | Anonymous |
 | `data-theme` | Optional. `light` or `dark`. | Auto-detect |
 
@@ -116,5 +116,3 @@ If your website has logged-in users, pass their unique ID to persist their chat 
     npm run dev
     ```
 3.  Open `http://localhost:3000`.
-4.  Test the embed widget locally at `http://localhost:3000/test-embed.html`.
-

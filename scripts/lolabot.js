@@ -1,6 +1,6 @@
 (function () {
   function mount(options) {
-    var botId = options.botId || 'lolabot-landing-demo';
+    var botId = options.botId || 'bizai-agent-demo';
     var apiBase = options.apiBase || '';
     var userId = options.userId || '';
     var chatId = options.chatId || '';
@@ -169,7 +169,7 @@
     var srcUrl = new URL(script.src);
     var baseUrl = srcUrl.origin; // Detect origin from script source
 
-    var botId = script.getAttribute('data-bot-id') || 'lolabot-landing-demo';
+    var botId = script.getAttribute('data-bot-id') || 'bizai-agent-demo';
 
     // Read context from multiple sources (priority: window.LOLABOT_CONTEXT > data-context attribute)
     var context = null;

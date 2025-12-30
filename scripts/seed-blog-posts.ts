@@ -10,7 +10,7 @@ import * as dotenv from "dotenv";
 dotenv.config();
 
 const MONGODB_URI = process.env.MONGODB_URI!;
-const MONGODB_DB = process.env.MONGODB_DB || "lolabot";
+const MONGODB_DB = process.env.MONGODB_DB || "bizai-agent";
 
 // Initial blog posts to seed
 const blogPosts = [
@@ -50,7 +50,7 @@ When choosing an AI chatbot for your website, consider these essential features:
 The best AI chatbots understand the context of where your visitor is on your website and tailor responses accordingly. For example, a visitor on your pricing page likely has different questions than someone on your blog.
 
 ### Lead Scoring
-Advanced chatbots like LolaBot can automatically score leads based on conversation signals, helping your sales team prioritize high-intent prospects.
+Advanced chatbots like BizAI Agent can automatically score leads based on conversation signals, helping your sales team prioritize high-intent prospects.
 
 ### Smart Email Briefings
 Get daily or weekly summaries of important conversations, highlighted with key buying signals and urgent requests.
@@ -69,10 +69,10 @@ Look for chatbots that integrate seamlessly with your existing tools—CRM, emai
 
 Implementing an AI chatbot on your website is one of the highest-ROI investments you can make in 2024. With the right solution, you can provide better customer experiences, generate more leads, and scale your operations efficiently.
 
-Ready to get started? [Try LolaBot free for 14 days](/pricing) and see the difference AI can make for your business.
+Ready to get started? [Try BizAI Agent free for 14 days](/pricing) and see the difference AI can make for your business.
         `,
         publishedAt: new Date('2025-12-20'),
-        author: { name: 'Lucas Correia', role: 'Founder, LolaBot' },
+        author: { name: 'Lucas Correia', role: 'Founder, BizAI Agent' },
         category: 'ai-automation',
         tags: ['ai chatbot', 'website chatbot', 'customer support', 'lead generation'],
         readingTime: 8,
@@ -109,7 +109,7 @@ Each interaction can be tailored based on the visitor's behavior and responses.
 
 ## Lead Scoring in Action
 
-LolaBot's lead scoring feature analyzes conversation patterns to identify high-intent prospects:
+BizAI Agent's lead scoring feature analyzes conversation patterns to identify high-intent prospects:
 
 | Signal | Score Impact |
 |--------|-------------|
@@ -121,7 +121,7 @@ LolaBot's lead scoring feature analyzes conversation patterns to identify high-i
 
 ## Real Results
 
-Companies using LolaBot for lead generation report:
+Companies using BizAI Agent for lead generation report:
 
 - **45% increase** in lead capture rate
 - **3x faster** lead qualification
@@ -130,7 +130,7 @@ Companies using LolaBot for lead generation report:
 
 ## Getting Started
 
-1. Install LolaBot on your website (one line of code)
+1. Install BizAI Agent on your website (one line of code)
 2. Configure your qualification questions
 3. Set up lead routing rules
 4. Watch the leads flow in
@@ -138,7 +138,7 @@ Companies using LolaBot for lead generation report:
 [Start your free trial today →](/pricing)
         `,
         publishedAt: new Date('2025-12-18'),
-        author: { name: 'Lucas Correia', role: 'Founder, LolaBot' },
+        author: { name: 'Lucas Correia', role: 'Founder, BizAI Agent' },
         category: 'lead-generation',
         tags: ['lead generation', 'chatbot', 'conversion optimization', 'sales'],
         readingTime: 6,
@@ -198,9 +198,9 @@ The smartest companies use both:
 - Complex troubleshooting
 - Building strategic relationships
 
-## LolaBot's Approach
+## BizAI Agent's Approach
 
-LolaBot combines the best of both worlds:
+BizAI Agent combines the best of both worlds:
 
 - AI handles initial engagement and qualification
 - Smart escalation to human agents when needed
@@ -210,7 +210,7 @@ LolaBot combines the best of both worlds:
 [See it in action →](/)
         `,
         publishedAt: new Date('2024-12-15'),
-        author: { name: 'Lucas Correia', role: 'Founder, LolaBot' },
+        author: { name: 'Lucas Correia', role: 'Founder, BizAI Agent' },
         category: 'customer-support',
         tags: ['chatbot', 'live chat', 'customer support', 'comparison'],
         readingTime: 5,
@@ -234,7 +234,7 @@ Unlike enterprise solutions, small business chatbots should be:
 
 ## Top Chatbot Solutions Compared
 
-### LolaBot
+### BizAI Agent
 **Best for: Lead generation and sales automation**
 - One-line installation
 - AI-powered lead scoring
@@ -259,7 +259,7 @@ Unlike enterprise solutions, small business chatbots should be:
 - Limited AI capabilities
 - Starting at $29/month
 
-## Why LolaBot Wins for Small Business
+## Why BizAI Agent Wins for Small Business
 
 1. **Context-Aware AI** - Understands your specific business
 2. **Lead Scoring** - Focus on hot prospects automatically
@@ -274,10 +274,10 @@ Unlike enterprise solutions, small business chatbots should be:
 - Start a free trial
 - Measure results after 2 weeks
 
-[Start your free LolaBot trial →](/pricing)
+[Start your free BizAI Agent trial →](/pricing)
         `,
         publishedAt: new Date('2024-12-10'),
-        author: { name: 'Lucas Correia', role: 'Founder, LolaBot' },
+        author: { name: 'Lucas Correia', role: 'Founder, BizAI Agent' },
         category: 'ai-automation',
         tags: ['small business', 'chatbot', 'buyer guide', 'comparison'],
         readingTime: 7,
@@ -344,14 +344,14 @@ Track these KPIs weekly:
 
 ## Real-World Example
 
-A LolaBot customer automated 78% of their support tickets within 30 days:
+A BizAI Agent customer automated 78% of their support tickets within 30 days:
 
-> "We went from 3 support agents working overtime to 1 agent handling only complex cases. LolaBot pays for itself 50x over." — Sarah M., CTO
+> "We went from 3 support agents working overtime to 1 agent handling only complex cases. BizAI Agent pays for itself 50x over." — Sarah M., CTO
 
 [Start automating your support →](/pricing)
         `,
         publishedAt: new Date('2024-12-05'),
-        author: { name: 'Lucas Correia', role: 'Founder, LolaBot' },
+        author: { name: 'Lucas Correia', role: 'Founder, BizAI Agent' },
         category: 'customer-support',
         tags: ['customer support', 'automation', 'AI', 'cost reduction'],
         readingTime: 9,

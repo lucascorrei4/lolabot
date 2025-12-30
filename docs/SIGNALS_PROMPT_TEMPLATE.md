@@ -1,4 +1,4 @@
-# LolaBot Global System Prompt Template
+# BizAI Agent Global System Prompt Template
 
 This is the generic tool usage section that can be included in all bot system prompts.
 
@@ -13,13 +13,13 @@ This is the generic tool usage section that can be included in all bot system pr
 
 ---
 
-## Tool Usage: LolaBot Signals API
+## Tool Usage: BizAI Agent Signals API
 
-You have access to the **LolaBot Signals API** to push intelligence signals. This helps track leads, prevent churn, and handle emergencies.
+You have access to the **BizAI Agent Signals API** to push intelligence signals. This helps track leads, prevent churn, and handle emergencies.
 
 ### API Endpoint
 ```
-POST https://{{LOLABOT_URL}}/api/signals/{{BOT_ID}}
+POST https://{{BIZAI_AGENT_URL}}/api/signals/{{BOT_ID}}
 ```
 
 ### Trigger Scenarios (When to call the API)

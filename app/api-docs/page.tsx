@@ -126,7 +126,7 @@ export default function ApiDocsPage() {
                         </div>
                         <div>
                             <h1 className="text-3xl font-bold tracking-tight">API Documentation</h1>
-                            <p className="text-gray-500 dark:text-gray-400 mt-1">Integrate Lolabot Intelligence directly into your applications.</p>
+                            <p className="text-gray-500 dark:text-gray-400 mt-1">Integrate BizAI Agent Intelligence directly into your applications.</p>
                         </div>
                     </div>
                 </header>
@@ -174,7 +174,7 @@ export default function ApiDocsPage() {
                         description="Send a message to the bot or user."
                         body={JSON.stringify({
                             sessionId: "session-123",
-                            botId: "lolabot-landing-demo",
+                            botId: "bizai-agent-demo",
                             role: "user",
                             type: "text",
                             text: "Hello world"

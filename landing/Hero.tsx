@@ -7,7 +7,7 @@ export function Hero() {
   const openChat = (e: React.MouseEvent) => {
     e.preventDefault();
     // Logic to find and click the chat launcher
-    // We look for a fixed button at the bottom right which is the standard Lolabot launcher position
+    // We look for a fixed button at the bottom right which is the standard BizAI Agent launcher position
     const buttons = document.querySelectorAll('button');
     let launcherBtn: HTMLButtonElement | null = null;
 
@@ -22,7 +22,7 @@ export function Hero() {
     if (launcherBtn) {
       (launcherBtn as HTMLButtonElement).click();
     } else {
-      console.warn("Lolabot launcher not found");
+      console.warn("BizAI Agent launcher not found");
     }
   };
 
@@ -60,7 +60,7 @@ export function Hero() {
               <div className="absolute -inset-1 bg-gradient-to-r from-green-400 to-indigo-500 rounded-lg blur opacity-25 group-hover:opacity-75 transition duration-1000 group-hover:duration-200"></div>
               <div className="relative px-3 sm:px-4 py-1.5 sm:py-2 bg-gray-900 ring-1 ring-white/10 rounded-lg leading-none flex items-center">
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 via-indigo-400 to-purple-500 font-mono font-bold tracking-[0.15em] sm:tracking-[0.2em] text-xs sm:text-sm animate-text-shimmer bg-[size:200%_auto]">
-                  LOLABOT <i className="text-indigo-400">REVENUE</i> INTELLIGENCE
+                  BIZAI <i className="text-indigo-400">AGENT</i> INTELLIGENCE
                 </span>
               </div>
             </div>
@@ -70,7 +70,7 @@ export function Hero() {
             Remove Your Contact Form Immediately
           </h1>
           <p className="mt-4 sm:mt-6 text-base sm:text-lg leading-7 sm:leading-8 text-gray-300 max-w-xl mx-auto backdrop-blur-[2px] px-4">
-            LolaBot is an AI Assistant That Talks, Thinks & Sends You <span className="text-white font-semibold">Smart Briefings</span>. It engages visitors 24/7, understands context,
+            BizAI Agent is an AI Assistant That Talks, Thinks & Sends You <span className="text-white font-semibold">Smart Briefings</span>. It engages visitors 24/7, understands context,
             and <span className="text-white font-semibold">notifies you with instant briefings</span> with
             sentiment analysis, urgency detection, and recommended actions—so you never miss a lead.
           </p>
@@ -116,7 +116,7 @@ export function Hero() {
 
               {/* New Brand Title */}
               <text x="400" y="250" textAnchor="middle" fill="#a5b4fc" fontSize="12" letterSpacing="0.3em" fontWeight="bold" filter="url(#glow)" className="uppercase font-mono">
-                Lolabot Intelligence
+                BizAI Agent Intelligence
                 <animate attributeName="opacity" values="0.4;1;0.4" dur="4s" repeatCount="indefinite" />
               </text>
 

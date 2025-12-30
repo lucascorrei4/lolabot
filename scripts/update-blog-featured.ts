@@ -10,7 +10,7 @@ import * as dotenv from "dotenv";
 dotenv.config();
 
 const MONGODB_URI = process.env.MONGODB_URI!;
-const MONGODB_DB = process.env.MONGODB_DB || "lolabot";
+const MONGODB_DB = process.env.MONGODB_DB || "bizai-agent";
 
 // Best articles based on strategy (high-intent buyer keywords)
 const FEATURED_SLUGS = [

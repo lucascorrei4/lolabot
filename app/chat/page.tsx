@@ -4,17 +4,17 @@ import Script from "next/script";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Chat Widget Integration | LolaBot Intelligence",
-  description: "Test and integrate the LolaBot Intelligence chat widget.",
+  title: "Chat Widget Integration | BizAI Agent Intelligence",
+  description: "Test and integrate the BizAI Agent Intelligence chat widget.",
 };
 
 export default async function ChatTestPage() {
   const appUrl = env.NEXT_PUBLIC_APP_URL || "";
   // Ensure we don't have double slash if appUrl ends with /
   const baseUrl = appUrl.replace(/\/$/, "");
-  const scriptSrc = `${baseUrl}/embed/lolabot.js`;
+  const scriptSrc = `${baseUrl}/embed/bizai-agent.js`;
   const defaultBot = await getDefaultBotAsync();
-  const botId = defaultBot?.id || "lolabot-landing-demo";
+  const botId = defaultBot?.id || "bizai-agent-demo";
 
   const codeSnippet = `<script 
   src="${scriptSrc}"
@@ -48,7 +48,7 @@ export default async function ChatTestPage() {
       <Script
         src={scriptSrc}
         data-bot-id={botId}
-        data-user-id="lolabot-landing-demo-user"
+        data-user-id="bizai-agent-demo-user"
         data-theme="dark"
         strategy="afterInteractive"
       />

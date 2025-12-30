@@ -11,7 +11,7 @@ async function cleanup() {
         await client.connect();
         console.log("Connected to MongoDB");
 
-        const db = client.db(process.env.MONGODB_DB || "lolabot");
+        const db = client.db(process.env.MONGODB_DB || "bizai-agent");
 
         // Delete old bots
         console.log("\n🗑️  Deleting old bots...");
@@ -21,10 +21,10 @@ async function cleanup() {
         const r2 = await db.collection("botSettings").deleteOne({ botId: "focus-organize-ai" });
         console.log(`   Deleted focus-organize-ai: ${r2.deletedCount}`);
 
-        // Delete sessions with old botIds (keep only lolabot-landing-demo)
+        // Delete sessions with old botIds (keep only bizai-agent-demo)
         console.log("\n🗑️  Deleting sessions with old botIds...");
         const r3 = await db.collection("sessions").deleteMany({
-            botId: { $ne: "lolabot-landing-demo" }
+            botId: { $ne: "bizai-agent-demo" }
         });
         console.log(`   Deleted old sessions: ${r3.deletedCount}`);
 

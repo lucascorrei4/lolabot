@@ -254,7 +254,7 @@ export default function SettingsPage({ params }: { params: Promise<{ botId: stri
                                     value={settings.title}
                                     onChange={(e) => setSettings({ ...settings, title: e.target.value })}
                                     className="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                                    placeholder="LolaBot"
+                                    placeholder="BizAI Agent"
                                 />
                                 <p className="text-xs text-gray-500 mt-1">The main title of your bot</p>
                             </div>
@@ -282,7 +282,7 @@ export default function SettingsPage({ params }: { params: Promise<{ botId: stri
                                     value={settings.shortName}
                                     onChange={(e) => setSettings({ ...settings, shortName: e.target.value })}
                                     className="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                                    placeholder="LolaBot"
+                                    placeholder="BizAI Agent"
                                 />
                                 <p className="text-xs text-gray-500 mt-1">Short display name for compact views</p>
                             </div>
@@ -475,21 +475,21 @@ You are a helpful AI assistant.
                         </div>
 
                         <p className="text-gray-400 text-xs lg:text-sm mb-4">
-                            Add this script to your website to enable the LolaBot chat widget.
+                            Add this script to your website to enable the BizAI Agent chat widget.
                         </p>
 
                         {/* Script Code Block */}
                         <div className="relative">
                             <pre className="bg-gray-900 border border-gray-700 rounded-lg p-4 overflow-x-auto text-xs lg:text-sm font-mono text-gray-300">
                                 {`<script
-  src="${typeof window !== 'undefined' ? window.location.origin : 'https://your-lolabot-domain.com'}/embed/lolabot.js"
+  src="${typeof window !== 'undefined' ? window.location.origin : 'https://bizaigpt.com'}/embed/bizai-agent.js"
   data-bot-id="${botId}"
   data-theme="dark"
 ></script>`}
                             </pre>
                             <button
                                 onClick={() => {
-                                    const script = `<script\n  src="${typeof window !== 'undefined' ? window.location.origin : 'https://your-lolabot-domain.com'}/embed/lolabot.js"\n  data-bot-id="${botId}"\n  data-theme="dark"\n></script>`;
+                                    const script = `<script\n  src="${typeof window !== 'undefined' ? window.location.origin : 'https://bizaigpt.com'}/embed/bizai-agent.js"\n  data-bot-id="${botId}"\n  data-theme="dark"\n></script>`;
                                     navigator.clipboard.writeText(script);
                                     setCopied(true);
                                     setTimeout(() => setCopied(false), 2000);
@@ -539,7 +539,7 @@ You are a helpful AI assistant.
                                 <p className="text-xs text-cyan-400 font-medium mb-2">Method 1: Global Variable (Recommended for dynamic context)</p>
                                 <pre className="bg-gray-900 border border-gray-700 rounded-lg p-4 overflow-x-auto text-xs font-mono text-gray-300">
                                     {`<script>
-  window.LOLABOT_CONTEXT = {
+  window.BIZAI_AGENT_CONTEXT = {
     page: window.location.pathname,
     pageTitle: document.title,
     product: "Enterprise Plan",
@@ -547,7 +547,7 @@ You are a helpful AI assistant.
   };
 </script>
 <script
-  src="${typeof window !== 'undefined' ? window.location.origin : 'https://your-lolabot-domain.com'}/embed/lolabot.js"
+  src="${typeof window !== 'undefined' ? window.location.origin : 'https://bizaigpt.com'}/embed/bizai-agent.js"
   data-bot-id="${botId}"
   data-theme="dark"
 ></script>`}
@@ -559,7 +559,7 @@ You are a helpful AI assistant.
                                 <p className="text-xs text-cyan-400 font-medium mb-2">Method 2: Data Attribute (For static context)</p>
                                 <pre className="bg-gray-900 border border-gray-700 rounded-lg p-4 overflow-x-auto text-xs font-mono text-gray-300">
                                     {`<script
-  src="${typeof window !== 'undefined' ? window.location.origin : 'https://your-lolabot-domain.com'}/embed/lolabot.js"
+  src="${typeof window !== 'undefined' ? window.location.origin : 'https://bizaigpt.com'}/embed/bizai-agent.js"
   data-bot-id="${botId}"
   data-theme="dark"
   data-context='{"page": "/pricing", "userRole": "visitor"}'
@@ -568,7 +568,7 @@ You are a helpful AI assistant.
                             </div>
 
                             <p className="text-gray-500 text-xs mt-3">
-                                <span className="text-amber-400">Note:</span> If both methods are used, <code className="text-cyan-400">window.LOLABOT_CONTEXT</code> takes priority.
+                                <span className="text-amber-400">Note:</span> If both methods are used, <code className="text-cyan-400">window.BIZAI_AGENT_CONTEXT</code> takes priority.
                                 The context is sent with every message to help the AI provide relevant responses.
                             </p>
                         </div>

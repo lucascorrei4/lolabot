@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "LolaBot Intelligence",
-  description: "Typebot-like embeddable chatbot",
+  title: "BizAI Agent Intelligence",
+  description: "AI-powered sales agent for your website",
   icons: {
     icon: '/assets/img/favicon.png',
   },

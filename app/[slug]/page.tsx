@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     bot = await getBotBySlugAsync(slug);
   }
   return {
-    title: bot?.shortName || "LolaBot",
+    title: bot?.shortName || "BizAI Agent",
   };
 }
 

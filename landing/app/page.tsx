@@ -6,17 +6,17 @@ import { Footer } from '../Footer';
 import { Story } from '../Story';
 import { HowItWorks } from '../HowItWorks';
 import { FAQ } from '../FAQ';
-import { LolaBotIntegration } from '../LolaBotIntegration';
+import { BizAIAgentIntegration } from '../BizAIAgentIntegration';
 import { BriefingShowcase } from '../BriefingShowcase';
 import { LogsShowcase } from '../LogsShowcase';
 import { LeadScoringShowcase } from '../LeadScoringShowcase';
 
 export const metadata: Metadata = {
-    title: 'Lolabot - Smart AI Agent for Your Website',
-    description: 'Transform your website with Lolabot. A context-aware BizAI agent that provides summaries, emergency alerts, and intelligent customer support.',
+    title: 'BizAI Agent - Smart AI Agent for Your Website',
+    description: 'Transform your website with BizAI Agent. A context-aware AI agent that provides summaries, emergency alerts, and intelligent customer support.',
     openGraph: {
-        title: 'Lolabot - Smart AI Agent',
-        description: 'Context-aware BizAI agent for modern businesses.',
+        title: 'BizAI Agent - Smart AI Agent',
+        description: 'Context-aware AI agent for modern businesses.',
         type: 'website',
     },
 };
@@ -28,7 +28,7 @@ const jsonLd = {
         {
             "@type": "Organization",
             "@id": "https://bizaigpt.com/#organization",
-            "name": "LolaBot",
+            "name": "BizAI Agent",
             "alternateName": "BizAI",
             "url": "https://bizaigpt.com",
             "logo": {
@@ -40,7 +40,7 @@ const jsonLd = {
             "sameAs": [
                 "https://twitter.com/bizaigpt"
             ],
-            "description": "LolaBot provides full-service AI chatbot implementation for businesses. Unlike DIY chatbots, we custom-configure every aspect of your AI sales agent.",
+            "description": "BizAI Agent provides full-service AI chatbot implementation for businesses. Unlike DIY chatbots, we custom-configure every aspect of your AI sales agent.",
             "foundingDate": "2024",
             "contactPoint": {
                 "@type": "ContactPoint",
@@ -52,7 +52,7 @@ const jsonLd = {
         {
             "@type": "Product",
             "@id": "https://bizaigpt.com/#product",
-            "name": "LolaBot AI Sales Agent",
+            "name": "BizAI Agent AI Sales Agent",
             "description": "Full-service AI chatbot implementation with custom configuration, real-time lead scoring, smart email briefings, and 24/7 automated customer engagement. Our team handles everything - no DIY setup required.",
             "brand": {
                 "@id": "https://bizaigpt.com/#organization"
@@ -117,7 +117,7 @@ const jsonLd = {
             "@type": "WebSite",
             "@id": "https://bizaigpt.com/#website",
             "url": "https://bizaigpt.com",
-            "name": "LolaBot",
+            "name": "BizAI Agent",
             "publisher": {
                 "@id": "https://bizaigpt.com/#organization"
             },
@@ -138,7 +138,7 @@ export default function LandingPage() {
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
             />
-            <LolaBotIntegration />
+            <BizAIAgentIntegration />
             <Hero />
             <Story />
             <LeadScoringShowcase />
