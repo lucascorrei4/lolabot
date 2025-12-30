@@ -488,7 +488,7 @@ export async function getPublishedBlogPosts(limit = 50): Promise<BlogPost[]> {
   const { blogPosts } = await getCollections();
   return blogPosts
     .find({ status: 'published' })
-    .sort({ publishedAt: -1 })
+    .sort({ createdAt: -1 })
     .limit(limit)
     .toArray() as Promise<BlogPost[]>;
 }
