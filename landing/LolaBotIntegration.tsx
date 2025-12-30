@@ -160,10 +160,19 @@ export const LolaBotIntegration: React.FC = () => {
     }
   }, [pathname]);
 
-  // Auto-open bot after delay (only once per session)
+  // Auto-open bot after delay (only once per session, skip on mobile)
   useEffect(() => {
     const hasOpened = sessionStorage.getItem('lolabot_auto_opened');
     if (hasOpened) return;
+
+    // Skip auto-open on mobile devices to prevent breaking responsivity
+    const isMobile = window.innerWidth <= 768 ||
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    if (isMobile) {
+      // Mark as opened so we don't keep checking
+      sessionStorage.setItem('lolabot_auto_opened', 'true');
+      return;
+    }
 
     const timer = setTimeout(() => {
       // Find the launcher button

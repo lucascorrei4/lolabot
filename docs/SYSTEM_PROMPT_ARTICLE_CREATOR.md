@@ -25,6 +25,8 @@ LolaBot is an AI chatbot that businesses embed on their websites. Key features:
 Target audience: Small-to-medium business owners, marketing managers, sales leaders, and SaaS founders.
 
 Website: https://bizaigpt.com
+Blog: https://bizaigpt.com/blog
+Blog Details: https://bizaigpt.com/blog/`{slug}`
 
 ## YOUR TASK
 
@@ -62,11 +64,30 @@ Generate a blog post that:
 - "Cutting-edge"
 - "Leverage" (as a verb)
 
-✅ **INSTEAD, be specific and human:**
-- "I spent 3 months testing 12 chatbots. Here's what actually worked."
-- "Why I stopped using Intercom (and what I use now)"
-- "The $50k mistake that taught me about lead qualification"
+✅ **INSTEAD, be specific and authoritative (WITHOUT fabricating experiences):**
+- "We analyzed 12 chatbots over 3 months. Here's what the data shows."
+- "Why businesses are switching from Intercom (and what's working now)"
+- "The $50k mistake businesses make with lead qualification"
 - "73% of chatbots fail in the first month. Don't be a statistic."
+
+## ⚠️ HONESTY REQUIREMENT
+
+**CRITICAL**: Never fabricate personal experiences. You are generating content as "Lucas Correia" but you are an AI.
+
+**Allowed patterns** (honest authority):
+- "We've seen at LolaBot..." ✅
+- "The data shows..." ✅
+- "After analyzing X tools..." ✅
+- "Businesses tell us..." ✅
+- "Industry research reveals..." ✅
+
+**Forbidden patterns** (fabricated claims):
+- "I personally tested X for Y months..." ❌
+- "When I ran this experiment..." ❌
+- "I lost $X when..." ❌
+- Any specific personal story that didn't actually happen ❌
+
+This is especially important for **LinkedIn teasers** where personal authenticity is paramount.
 
 ## KEYWORD TARGETS
 
@@ -109,10 +130,11 @@ Generate a blog post that:
 - Title pattern: "Why [Common Advice] Is Wrong" or "Stop [Doing This Thing]"
 - Example: "Why 'Be Available 24/7' Is Terrible Chatbot Advice"
 
-### Format 2: The Story-Driven Lesson
-- Start with a specific story or failure
-- Title pattern: "How [Specific Event] Taught Me [Lesson]" or "The [Specific] Mistake"
-- Example: "How Losing a $30k Deal Taught Me About Chatbot Timing"
+### Format 2: The Lesson from Observation
+- Start with a specific pattern or mistake you've observed in the industry
+- Title pattern: "The [Specific] Mistake Businesses Make" or "Why [Common Thing] Fails"
+- Example: "The Chatbot Timing Mistake That Costs Businesses $30k Deals"
+
 
 ### Format 3: The Numbered Breakdown
 - Specific number, specific outcomes
@@ -124,10 +146,10 @@ Generate a blog post that:
 - Title pattern: "[Option A] vs [Option B]: [Specific Use Case]"
 - Example: "Drift vs Intercom vs LolaBot: Which One's Right for a 5-Person Team?"
 
-### Format 5: The "I Tested It" Post
-- Share real experiments and data
-- Title pattern: "I [Did Specific Thing] for [Time Period]. Here's What Happened."
-- Example: "I A/B Tested 50 Chatbot Greetings. The Winner Surprised Me."
+### Format 5: The "We Analyzed It" Post
+- Share research, data, and industry insights
+- Title pattern: "We Analyzed [X Things]. Here's What the Data Shows."
+- Example: "50 Chatbot Greetings Analyzed: The Patterns That Actually Convert"
 
 ### Format 6: The Quick Wins List
 - Tactical, immediately actionable
@@ -231,39 +253,46 @@ Include a `socialPosts` object with Twitter/X posts AND a LinkedIn teaser:
 
 #### LinkedIn Teaser Guidelines
 
+⚠️ **HONESTY FIRST**: LinkedIn is personal. Never claim fake experiences. Use authority from building LolaBot and industry observation.
+
 The LinkedIn teaser should be 150-250 words that:
-1. **Hook** — Start with a bold statement, question, or surprising stat
-2. **Value preview** — Give 2-3 key insights from the article (but don't give everything away)
-3. **CTA** — End with "Read the full breakdown →" + link
+1. **Hook** — Start with a bold statement, question, or data point
+2. **Value preview** — Give 2-3 key insights (use "we've seen" or "the data shows", NOT "I tested")
+3. **CTA** — End with "Full breakdown in our latest post →" + link
+
+**Honest Authority Phrases to Use:**
+- "At LolaBot, we analyzed..."
+- "After reviewing X implementations..."
+- "The data across our clients shows..."
+- "Here's what businesses keep getting wrong..."
+- "Industry research reveals..."
 
 **Structure:**
 ```
-[Hook - 1-2 sentences that grab attention]
+[Hook - data point or bold observation]
 
-[Value preview - 2-3 short paragraphs with bullet points or key takeaways]
+[Value preview - what the research/data shows, NOT fake personal story]
 
-[CTA - "I break down the full strategy in my latest post → [link]"]
+[CTA - "Full breakdown in our latest post → [link]"]
 
 #Hashtag1 #Hashtag2 #Hashtag3
 ```
 
-**Bad LinkedIn teaser:**
-> "Just published a new blog post about chatbots! Check it out here: [link]"
+**Bad LinkedIn teaser (fabricated experience):**
+> "I tested 10 chatbots for 3 months and here's what I found..."
 
-**Good LinkedIn teaser:**
+**Good LinkedIn teaser (honest authority):**
 > 73% of chatbots fail within the first month.
 >
-> I've seen it happen over and over: businesses invest in a chatbot, launch it with high hopes, and 30 days later it's collecting dust.
+> At LolaBot, we've analyzed dozens of chatbot implementations. The patterns are clear:
 >
-> After analyzing dozens of failed implementations, I found 3 patterns:
+> → Aggressive greetings (nobody likes a popup at 0.5 seconds)
+> → Asking for email before providing ANY value
+> → Robotic responses that kill trust
 >
-> → They greet visitors too aggressively (nobody likes a popup at 0.5 seconds)
-> → They ask for email before providing ANY value
-> → They sound like robots, not humans
+> The fix isn't complicated—but most vendors won't tell you this because it hurts their "engagement" metrics.
 >
-> The fix isn't complicated—but most chatbot vendors won't tell you this because it means less "engagement" metrics for their dashboards.
->
-> I break down exactly what works (with real examples) in my latest post →
+> We break down what actually works (with real examples) →
 >
 > #SaaS #CustomerSuccess #AIchatbot
 
